@@ -41,7 +41,7 @@
 #include "j3AstroIO.hpp"
 
 typedef Exiv2::ExifData::const_iterator (*EasyAccessFct)(
-    const Exiv2::ExifData& ed);
+    const Exiv2::ExifData &ed);
 
 struct EasyAccess
 {
@@ -63,6 +63,7 @@ void printerror(int status)
 
 int writeTif(const char* ofile, cv::InputArray output, float factor)
 {
+    // TBD 8bit 16bit 32bit? jpg png?? TIF COMPRESSION? EXIF DATA?
     cv::Mat out;
     if (output.channels() == 3)
     {
@@ -77,32 +78,32 @@ int writeTif(const char* ofile, cv::InputArray output, float factor)
     return 0;
 }
 
-int writeFits(const char* ofile, cv::InputArray outA) 
+int writeFits(const char* ofile, cv::InputArray outA)
 {
     cv::Mat out = outA.getMat();
-    cv::Mat outp(cv::Size(out.size().width, out.size().height), CV_32FC1);
-    cv::Mat output(cv::Size(out.size().width, out.size().height), CV_32FC1);
-    out.convertTo(outp, CV_32FC1);
-    flip(outp, output, 0);
+    //cv::Mat outp(cv::Size(out.size().width, out.size().height), CV_32FC1);
+    cv::Mat output; //(cv::Size(out.size().height, out.size().width), out.type());
+    //out.convertTo(outp, CV_32FC1);
+    flip(out, output, 0); // TBD doe away with flip by indexing properly
 
-    // TBD check 1 channel, also: what to do if multiple channels available?
+    fitsfile* fptr;
+    int status, ii, jj, bitpix;
+    long fpixel, nelements;
 
-    fitsfile* fptr; 
-    int status, ii, jj;
-    long fpixel, nelements, exposure;
-    float* array[output.size().height];
-
-    int bitpix = FLOAT_IMG; /* 16-bit unsigned short pixel values       */
-    int naxis = 2;          
+    int naxis = 2;
     long naxes[2] = {output.size().width,
-        output.size().height};
+                     output.size().height
+                    };
 
-    /* allocate memory for the whole image */
-    array[0] = (float*)malloc(naxes[0] * naxes[1] * sizeof(float));
+    float* farray[output.size().height];
+    double* darray[output.size().height];
+    unsigned short* usarray[output.size().height];
+    short* sarray[output.size().height];
+    int* iarray[output.size().height];
+    unsigned char* ucarray[output.size().height];
+    char* carray[output.size().height];
 
-    /* initialize pointers to the start of each row of the image */
-    for (ii = 1; ii < naxes[1]; ii++)
-        array[ii] = array[ii - 1] + naxes[0];
+    std::cout << out.channels() << std::endl;
 
     remove(ofile); /* Delete old file if it already exists */
 
@@ -119,25 +120,190 @@ int writeFits(const char* ofile, cv::InputArray outA)
     /* and BZERO keywords will be automatically written by cfitsio  */
     /* in this case.                                                */
 
-    if (fits_create_img(fptr, bitpix, naxis, naxes, &status))
-        printerror(status);
-
-    /* initialize the values in the image with a linear ramp function */
-    for (ii = 0; ii < naxes[0]; ii++)
+    //int na3 = 3;
+    std::vector<cv::Mat> planes;
+    if(out.channels() > 1)
     {
-        for (jj = 0; jj < naxes[1]; jj++)
+        if (fits_create_img(fptr, 8, 0, 0, &status))
+            printerror(status);
+        cv::split(out, planes);
+    }
+    else
+    {
+        planes.push_back(out);
+    }
+    for(int c = planes.size() - 1; c >= 0; c--)
+    {
+
+        switch (out.type() & CV_MAT_DEPTH_MASK)
         {
-            array[jj][ii] = *output.ptr<float>(jj, ii);
+            case CV_64F:
+                std::cout << "CV_64F" << std::endl;
+                if (fits_create_img(fptr, DOUBLE_IMG, naxis, naxes, &status))
+                    printerror(status);
+                darray[0] = (double*)malloc(naxes[0] * naxes[1] * sizeof(double));
+                /* initialize pointers to the start of each row of the image */
+                for (ii = 1; ii < naxes[1]; ii++)
+                    darray[ii] = darray[ii - 1] + naxes[0];
+                for (ii = 0; ii < naxes[0]; ii++)
+                {
+                    for (jj = 0; jj < naxes[1]; jj++)
+                    {
+                        darray[jj][ii] = *planes[c].ptr<double>(jj, ii);
+                    }
+                }
+                fpixel = 1;                      /* first pixel to write      */
+                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
+
+                /* write the array of unsigned integers to the FITS file */
+                if (fits_write_img(fptr, TDOUBLE, fpixel, nelements, darray[0], &status))
+                    printerror(status);
+                //free(darray[0]); /* free previously allocated memory */
+                break;
+            case CV_32F:
+                std::cout << "CV_32F" << std::endl;
+                if (fits_create_img(fptr, FLOAT_IMG, naxis, naxes, &status))
+                    printerror(status);
+                farray[0] = (float*)malloc(naxes[0] * naxes[1] * sizeof(float));
+                /* initialize pointers to the start of each row of the image */
+                for (ii = 1; ii < naxes[1]; ii++)
+                    farray[ii] = farray[ii - 1] + naxes[0];
+                for (ii = 0; ii < naxes[0]; ii++)
+                {
+                    for (jj = 0; jj < naxes[1]; jj++)
+                    {
+                        farray[jj][ii] = *planes[c].ptr<float>(jj, ii);
+                    }
+                }
+                fpixel = 1;                      /* first pixel to write      */
+                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
+
+                /* write the array of unsigned integers to the FITS file */
+                if (fits_write_img(fptr, TFLOAT, fpixel, nelements, farray[0], &status))
+                    printerror(status);
+                //free(farray[0]); /* free previously allocated memory */
+                break;
+            case CV_32S:
+                std::cout << "CV_32S" << std::endl;
+                if (fits_create_img(fptr, LONG_IMG, naxis, naxes, &status))
+                    printerror(status);
+                iarray[0] = (int*)malloc(naxes[0] * naxes[1] * sizeof(int));
+                /* initialize pointers to the start of each row of the image */
+                for (ii = 1; ii < naxes[1]; ii++)
+                    iarray[ii] = iarray[ii - 1] + naxes[0];
+
+                for (ii = 0; ii < naxes[0]; ii++)
+                {
+                    for (jj = 0; jj < naxes[1]; jj++)
+                    {
+                        iarray[jj][ii] = *planes[c].ptr<int>(jj, ii);
+                    }
+                }
+                fpixel = 1;                      /* first pixel to write      */
+                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
+
+                /* write the array of unsigned integers to the FITS file */
+                if (fits_write_img(fptr, TLONG, fpixel, nelements, iarray[0], &status))
+                    printerror(status);
+                //free(iarray[0]); /* free previously allocated memory */
+                break;
+            case CV_16U:
+                std::cout << "CV_16U" << std::endl;
+                if (fits_create_img(fptr, USHORT_IMG, naxis, naxes, &status))
+                    printerror(status);
+                usarray[0] = (unsigned short*)malloc(naxes[0] * naxes[1] * sizeof(unsigned short));
+                /* initialize pointers to the start of each row of the image */
+                for (ii = 1; ii < naxes[1]; ii++)
+                    usarray[ii] = usarray[ii - 1] + naxes[0];
+                for (ii = 0; ii < naxes[0]; ii++)
+                {
+                    for (jj = 0; jj < naxes[1]; jj++)
+                    {
+                        usarray[jj][ii] = *planes[c].ptr<unsigned short>(jj, ii);
+                    }
+                }
+                fpixel = 1;                      /* first pixel to write      */
+                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
+
+                /* write the array of unsigned integers to the FITS file */
+
+                std::cout << "T" << std::endl;
+                if (fits_write_img(fptr, TUSHORT, fpixel, nelements, usarray[0], &status))
+                    printerror(status);
+                std::cout << "T" << std::endl;
+                break;
+            case CV_16S:
+                std::cout << "CV_16S" << std::endl;
+                if (fits_create_img(fptr, SHORT_IMG, naxis, naxes, &status))
+                    printerror(status);
+                sarray[0] = (short*)malloc(naxes[0] * naxes[1] * sizeof(short));
+                /* initialize pointers to the start of each row of the image */
+                for (ii = 1; ii < naxes[1]; ii++)
+                    sarray[ii] = sarray[ii - 1] + naxes[0];
+                for (ii = 0; ii < naxes[0]; ii++)
+                {
+                    for (jj = 0; jj < naxes[1]; jj++)
+                    {
+                        sarray[jj][ii] = *planes[c].ptr<short>(jj, ii);
+                    }
+                }
+                fpixel = 1;                      /* first pixel to write      */
+                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
+
+                /* write the array of unsigned integers to the FITS file */
+                if (fits_write_img(fptr, TSHORT, fpixel, nelements, sarray[0], &status))
+                    printerror(status);
+                break;
+            case CV_8S:
+                std::cout << "CV_8S" << std::endl;
+                if (fits_create_img(fptr, SBYTE_IMG, naxis, naxes, &status))
+                    printerror(status);
+                carray[0] = (char*)malloc(naxes[0] * naxes[1] * sizeof(char));
+                /* initialize pointers to the start of each row of the image */
+                for (ii = 1; ii < naxes[1]; ii++)
+                    carray[ii] = carray[ii - 1] + naxes[0];
+
+                for (ii = 0; ii < naxes[0]; ii++)
+                {
+                    for (jj = 0; jj < naxes[1]; jj++)
+                    {
+                        carray[jj][ii] = *planes[c].ptr<char>(jj, ii);
+                    }
+                }
+                fpixel = 1;                      /* first pixel to write      */
+                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
+
+                /* write the array of unsigned integers to the FITS file */
+                if (fits_write_img(fptr, TSBYTE, fpixel, nelements, carray[0], &status))
+                    printerror(status);
+                break;
+            case CV_8U:
+
+                std::cout << "CV_8U" << std::endl;
+                if (fits_create_img(fptr, BYTE_IMG, naxis, naxes, &status))
+                    printerror(status);
+                ucarray[0] = (unsigned char*)malloc(naxes[0] * naxes[1] * sizeof(unsigned char));
+                /* initialize pointers to the start of each row of the image */
+                for (ii = 1; ii < naxes[1]; ii++)
+                    ucarray[ii] = ucarray[ii - 1] + naxes[0];
+                for (ii = 0; ii < naxes[0]; ii++)
+                {
+                    for (jj = 0; jj < naxes[1]; jj++)
+                    {
+                        ucarray[jj][ii] = *planes[c].ptr<unsigned char>(jj, ii);
+                    }
+                }
+                fpixel = 1;                      /* first pixel to write      */
+                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
+
+                /* write the array of unsigned integers to the FITS file */
+                if (fits_write_img(fptr, TBYTE, fpixel, nelements, ucarray[0], &status))
+                    printerror(status);
+                break;
+            default:
+                return 1;
         }
     }
-
-    fpixel = 1;                      /* first pixel to write      */
-    nelements = naxes[0] * naxes[1]; /* number of pixels to write */
-
-    /* write the array of unsigned integers to the FITS file */
-    if (fits_write_img(fptr, TFLOAT, fpixel, nelements, array[0], &status))
-        printerror(status);
-
 
     /* write another optional keyword to the header */
     /* Note that the ADDRESS of the value is passed in the routine */
@@ -151,15 +317,14 @@ int writeFits(const char* ofile, cv::InputArray outA)
     fits_copy_header(fptr, ofptr, &status);
     */
 
-    exposure = 1500;
-    if (fits_update_key(
-            fptr, TLONG, "EXPOSURE", &exposure, "Total Exposure Time", &status))
-        printerror(status);
+    //  exposure = 1500;
+
+    //            fptr, TLONG, "EXPOSURE", &exposure, "Total Exposure Time", &status))
+    printerror(status);
 
     if (fits_close_file(fptr, &status)) /* close the file */
         printerror(status);
 
-    free(array[0]); /* free previously allocated memory */
     return 0;
 }
 
@@ -172,7 +337,8 @@ int writeFile(char* ofile, cv::InputArray output)
     {
         writeFits(ofile, output);
     }
-    if (strcmp(ext, ".tiff") == 0 || strcmp(ext, ".tif") == 0)
+    else
+        //if (strcmp(ext, ".tiff") == 0 || strcmp(ext, ".tif") == 0)
     {
         writeTif(ofile, output);
     }
@@ -212,62 +378,62 @@ LensPars getPars(const char* file)
 {
     LensPars par;
     try
-        {
-            Exiv2::XmpParser::initialize();
-            ::atexit(Exiv2::XmpParser::terminate);
+    {
+        Exiv2::XmpParser::initialize();
+        ::atexit(Exiv2::XmpParser::terminate);
 
-            // Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
-            Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
-            assert(EXimage.get() != 0);
-            EXimage->readMetadata();
-            Exiv2::ExifData& ed = EXimage->exifData();
+        // Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
+        Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
+        assert(EXimage.get() != 0);
+        EXimage->readMetadata();
+        Exiv2::ExifData &ed = EXimage->exifData();
 
-            // static const EasyAccess easyAccess = {"Lens name",
-            // Exiv2::lensName     }; Exiv2::ExifData::const_iterator pos =
-            // easyAccess.findFct_(ed);
-            Exiv2::ExifData::const_iterator pos = lensName(ed);
-            Exiv2::ExifData::const_iterator posFN = fNumber(ed);
-            Exiv2::ExifData::const_iterator posFL = focalLength(ed);
-            // lensName exposureTime focalLength
-            // std::cout << std::setw(20) << std::left << easyAccess.label_;
-            /*if (pos != ed.end()) {
-                std::cout << " (" << std::setw(35) << pos->key() << ") : "
-                              << pos->print(&ed) << "\n";
-            } else {
-                    std::cout << " (" << std::setw(35) << " " << ") : \n";
-                }
-              */
+        // static const EasyAccess easyAccess = {"Lens name",
+        // Exiv2::lensName     }; Exiv2::ExifData::const_iterator pos =
+        // easyAccess.findFct_(ed);
+        Exiv2::ExifData::const_iterator pos = lensName(ed);
+        Exiv2::ExifData::const_iterator posFN = fNumber(ed);
+        Exiv2::ExifData::const_iterator posFL = focalLength(ed);
+        // lensName exposureTime focalLength
+        // std::cout << std::setw(20) << std::left << easyAccess.label_;
+        /*if (pos != ed.end()) {
+            std::cout << " (" << std::setw(35) << pos->key() << ") : "
+                          << pos->print(&ed) << "\n";
+        } else {
+                std::cout << " (" << std::setw(35) << " " << ") : \n";
+            }
+          */
 
-            Exiv2::ExifKey key("Exif.Photo.FocalPlaneXResolution");
-            Exiv2::ExifData::iterator CRpos = ed.findKey(key);
-            if (CRpos == ed.end())
-                std::cout << "THIS IS THE PROBLEM" << std::endl;
-            float xres = std::stof(CRpos->print(&ed));
-            key = Exiv2::ExifKey("Exif.Photo.FocalPlaneYResolution");
-            CRpos = ed.findKey(key);
-            float yres = std::stof(CRpos->print(&ed));
-            key = Exiv2::ExifKey("Exif.Photo.FocalPlaneResolutionUnit");
-            CRpos = ed.findKey(key);
-            float fac = CRpos->print(&ed) == "inch" ? 25.4 : 10.;
-            xres /= fac;
-            yres /= fac;
-            float xmm, ymm;
-            key = Exiv2::ExifKey("Exif.Photo.PixelXDimension");
-            CRpos = ed.findKey(key);
-            xmm = std::stof(CRpos->print(&ed)) / xres;
-            key = Exiv2::ExifKey("Exif.Photo.PixelYDimension");
-            CRpos = ed.findKey(key);
-            ymm = std::stof(CRpos->print(&ed)) / yres;
-            par.cropFactor = sqrt(xmm * xmm + ymm * ymm) / 43.267;
+        Exiv2::ExifKey key("Exif.Photo.FocalPlaneXResolution");
+        Exiv2::ExifData::iterator CRpos = ed.findKey(key);
+        if (CRpos == ed.end())
+            std::cout << "THIS IS THE PROBLEM" << std::endl;
+        float xres = std::stof(CRpos->print(&ed));
+        key = Exiv2::ExifKey("Exif.Photo.FocalPlaneYResolution");
+        CRpos = ed.findKey(key);
+        float yres = std::stof(CRpos->print(&ed));
+        key = Exiv2::ExifKey("Exif.Photo.FocalPlaneResolutionUnit");
+        CRpos = ed.findKey(key);
+        float fac = CRpos->print(&ed) == "inch" ? 25.4 : 10.;
+        xres /= fac;
+        yres /= fac;
+        float xmm, ymm;
+        key = Exiv2::ExifKey("Exif.Photo.PixelXDimension");
+        CRpos = ed.findKey(key);
+        xmm = std::stof(CRpos->print(&ed)) / xres;
+        key = Exiv2::ExifKey("Exif.Photo.PixelYDimension");
+        CRpos = ed.findKey(key);
+        ymm = std::stof(CRpos->print(&ed)) / yres;
+        par.cropFactor = sqrt(xmm * xmm + ymm * ymm) / 43.267;
 
-            par.name = std::string(pos->print(&ed));
-            par.apertureN = std::stof((std::string(posFN->print(&ed))).substr(1, 10));
-            par.focalLength = std::stof(posFL->print(&ed));
-        }
-        catch (Exiv2::AnyError& e)
-        {
-            std::cout << "Caught Exiv2 exception '" << e << "'\n";
-        }
+        par.name = std::string(pos->print(&ed));
+        par.apertureN = std::stof((std::string(posFN->print(&ed))).substr(1, 10));
+        par.focalLength = std::stof(posFL->print(&ed));
+    }
+    catch (Exiv2::AnyError &e)
+    {
+        std::cout << "Caught Exiv2 exception '" << e << "'\n";
+    }
     return par;
 }
 
@@ -300,14 +466,14 @@ int open_raw(const char* file, cv::OutputArray image)
     if (LIBRAW_SUCCESS != ret)
     {
         fprintf(stderr, "Cannot do postpocessing on %s: %s\n", file,
-            libraw_strerror(ret));
+                libraw_strerror(ret));
     }
 
     libraw_processed_image_t* imag = iProcessor.dcraw_make_mem_image(&ret);
 
     cv::Mat im =
         cv::Mat(cv::Size(imag->width, imag->height), CV_16UC3, imag->data, cv::Mat::AUTO_STEP)
-            .clone();
+        .clone();
 
     LibRaw::dcraw_clear_mem(imag);
     cvtColor(im, image, cv::COLOR_RGB2BGR);
@@ -354,9 +520,18 @@ int open_fits(const char* file, cv::OutputArray image)
                 cvtype = CV_8UC1;
                 // sep_type = SEP_TBYTE;
                 break;
+            case SBYTE_IMG:
+                datatype = TBYTE;
+                cvtype = CV_8SC1;
+                // sep_type = SEP_TBYTE;
+                break;
             case SHORT_IMG:
                 datatype = TSHORT;
                 cvtype = CV_16SC1;
+                break;
+            case USHORT_IMG:
+                datatype = TSHORT;
+                cvtype = CV_16UC1;
                 break;
             case LONG_IMG:
                 datatype = TINT;
@@ -382,7 +557,7 @@ int open_fits(const char* file, cv::OutputArray image)
         int width = (int)naxes[0];
         int height = (int)naxes[1];
 
-        array = (float*)calloc(totpix, bytepix);
+        array = (float*)calloc(totpix, bytepix); // TBD will this work also for eg 8bit data? double?
         if (!array)
         {
             printf("Memory allocation error\n");
@@ -425,7 +600,7 @@ int open_opencv(const char* file, cv::OutputArray image)
 std::string mime(const char* file)
 {
     struct magic_set* myt = magic_open(MAGIC_CONTINUE |
-        MAGIC_ERROR /*|MAGIC_DEBUG*/ | MAGIC_PRESERVE_ATIME | MAGIC_MIME);
+                                       MAGIC_ERROR /*|MAGIC_DEBUG*/ | MAGIC_PRESERVE_ATIME | MAGIC_MIME);
     // magic_t myt =
     // magic_open(MAGIC_CONTINUE|MAGIC_ERROR/*|MAGIC_DEBUG*/|MAGIC_MIME_TYPE);
     if (myt == NULL)
@@ -435,9 +610,9 @@ std::string mime(const char* file)
     // printf("%s\n",magic_version());
 
     int status = magic_load(myt,
-        NULL /*"./magic.mgc"*/); // TBD do this copy thing and get the path
-                                 // relative to project...
-                                 // TBD if not == 0 -> error with magic.mgc...
+                            NULL /*"./magic.mgc"*/); // TBD do this copy thing and get the path
+    // relative to project...
+    // TBD if not == 0 -> error with magic.mgc...
     if (status != 0)
     {
         printf("ERROR\n");
