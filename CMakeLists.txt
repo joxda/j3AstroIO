@@ -25,6 +25,7 @@ add_compile_options(-std=c++11)
 
 if(DEFINED $ENV{CI})
   set(BUILD_SHARED_LIBS=OFF)
+  SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
 endif()
 
 add_library( j3AstroIO  j3AstroIO.cpp )
