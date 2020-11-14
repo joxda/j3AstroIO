@@ -130,7 +130,6 @@ int wrtFts(const char* ofile, cv::InputArray outA, int bitpix, int datatype)
     if (fits_close_file(fptr, &status)) /* close the file */
         printerror(status);
     return status;
-
 }
 
 int writeFits(const char* ofile, cv::InputArray outA)
@@ -184,39 +183,33 @@ int writeFits(const char* ofile, cv::InputArray outA)
 int writeFile(char* ofile, cv::InputArray output)
 {
     char* ext;
+    int success;
     ext = std::strrchr(ofile, '.');
     if (strcasecmp(ext, ".fits") == 0 || strcasecmp(ext, ".fit") == 0)
     {
-        writeFits(ofile, output);
+        success = writeFits(ofile, output);
     }
     else
     {
-        write_opencv(ofile, output);
+        success = write_opencv(ofile, output);
     }
-    return 0;
+    return success;
 }
-
-
 
 int open(const char* file, cv::OutputArray image)
 {
-
     std::string str = mime(file);
 
     int success = -1;
-    // TBD: CHECK WHETHER ACTUALLY SUCCESSFUL
-    // TBD: ERROR MESSAGE AND GRACEFUL EXIT IF NOT
 
     if (str.find("image/fits") == 0)
     {
-        open_fits(file, image);
-        success = 0;
+        success = open_fits(file, image);
     }
     else if (str.find("image/x") == 0)
     {
         std::cout << "raw" << std::endl;
-        open_raw(file, image);
-        success = 0;
+        success = open_raw(file, image);
     }
     else if (cv::haveImageReader(file)) // TBD!! not in v3
     {
@@ -233,32 +226,19 @@ LensPars getPars(const char* file)
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
 
-        // Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
         Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
         assert(EXimage.get() != 0);
         EXimage->readMetadata();
         Exiv2::ExifData &ed = EXimage->exifData();
 
-        // static const EasyAccess easyAccess = {"Lens name",
-        // Exiv2::lensName     }; Exiv2::ExifData::const_iterator pos =
-        // easyAccess.findFct_(ed);
         Exiv2::ExifData::const_iterator pos = lensName(ed);
         Exiv2::ExifData::const_iterator posFN = fNumber(ed);
         Exiv2::ExifData::const_iterator posFL = focalLength(ed);
-        // lensName exposureTime focalLength
-        // std::cout << std::setw(20) << std::left << easyAccess.label_;
-        /*if (pos != ed.end()) {
-            std::cout << " (" << std::setw(35) << pos->key() << ") : "
-                          << pos->print(&ed) << "\n";
-        } else {
-                std::cout << " (" << std::setw(35) << " " << ") : \n";
-            }
-          */
 
         Exiv2::ExifKey key("Exif.Photo.FocalPlaneXResolution");
         Exiv2::ExifData::iterator CRpos = ed.findKey(key);
         if (CRpos == ed.end())
-            std::cout << "THIS IS THE PROBLEM" << std::endl;
+            std::cout << "Did not find key" << std::endl;
         float xres = std::stof(CRpos->print(&ed));
         key = Exiv2::ExifKey("Exif.Photo.FocalPlaneYResolution");
         CRpos = ed.findKey(key);
