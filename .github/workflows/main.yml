@@ -103,10 +103,11 @@ jobs:
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
 #         mkdir -p build
 #          cd build
+ #         ./configure --prefix=/usr/
 #          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ..
         run: |
           cd cfitsio
-          ./configure --prefix=/usr/
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
           make
           sudo make install
           
