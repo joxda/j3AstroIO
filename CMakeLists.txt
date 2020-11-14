@@ -29,17 +29,19 @@ endif()
 
 add_library( j3AstroIO  j3AstroIO.cpp )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
+set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER j3AstroIO.hpp)
 target_include_directories(j3AstroIO PRIVATE ${libraw_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 #set(MY_OpenCV_LIBS "opencv_core;opencv_highgui;")
 
 target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic)
 
-install(TARGETS j3AstroIO DESTINATION lib)
-#install(FILE j3AstroIO.hpp DESTINATION include)
+install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable( j3AstroIOconvert  j3AstroIOconvert.cpp )
 target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO)
+install(TARGETS j3AstroIOconvert DESTINATION bin)
 
 set(CPACK_GENERATOR "TGZ")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Joachim Janz") # required
