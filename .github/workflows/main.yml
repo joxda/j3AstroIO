@@ -107,7 +107,7 @@ jobs:
 #          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ..
         run: |
           cd cfitsio
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DC_STANDARD=11 .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -Wno-error=dev .
           make
           sudo make install
           
