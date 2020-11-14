@@ -69,7 +69,7 @@ jobs:
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
-          repository: Exiv2/exiv
+          repository: Exiv2/exiv2
           path: exiv2
           token: ${{ github.token }}
           ref: ${{secrets.EXIV2_VERSION}}
