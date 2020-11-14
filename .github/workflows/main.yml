@@ -94,7 +94,7 @@ jobs:
           repository: healpy/cfitsio
           path: cfitsio
           token: ${{ github.token }}
-          ref: ${{secrets.CFITSIO_VERSION}}
+          ref: 'master' #${{secrets.CFITSIO_VERSION}}
         
       - name: Build cfitsio
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
