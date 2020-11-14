@@ -226,7 +226,8 @@ LensPars getPars(const char* file)
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
 
-        Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
+        //Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
+        Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
         assert(EXimage.get() != 0);
         EXimage->readMetadata();
         Exiv2::ExifData &ed = EXimage->exifData();
