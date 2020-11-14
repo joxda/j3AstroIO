@@ -33,10 +33,9 @@
 
 int main(int argc, char** argv)
 {
-    if(argc!=3) return 1;
-
+    if(argc != 3) return 1;
     cv::Mat in;
-    open(argv[1],in);
-    writeFile(argv[2],in);
-
+    open(argv[1], in);
+    write_opencv(argv[2], in);
+    return 0;
 }

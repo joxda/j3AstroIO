@@ -34,6 +34,7 @@
 #include <magic.h>
 #include <iostream>
 #include <stdio.h>
+#include <strings.h>
 
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -61,271 +62,122 @@ void printerror(int status)
     return;
 }
 
-int writeTif(const char* ofile, cv::InputArray output, float factor)
+int write_opencv(const char* ofile, cv::InputArray output, float factor, int depth)
 {
-    // TBD 8bit 16bit 32bit? jpg png?? TIF COMPRESSION? EXIF DATA?
     cv::Mat out;
-    if (output.channels() == 3)
-    {
-        output.getMat().convertTo(out, CV_16UC3, factor);
-    }
-    if (output.channels() == 1)
-    {
-        output.getMat().convertTo(out, CV_16UC1, factor);
-    }
-
+    output.getMat().convertTo(out, depth, factor);
     cv::imwrite(ofile, out);
     return 0;
 }
 
-int writeFits(const char* ofile, cv::InputArray outA)
+template <typename T>
+int wrtFts(const char* ofile, cv::InputArray outA, int bitpix, int datatype)
 {
-    cv::Mat out = outA.getMat();
-    //cv::Mat outp(cv::Size(out.size().width, out.size().height), CV_32FC1);
-    cv::Mat output; //(cv::Size(out.size().height, out.size().width), out.type());
-    //out.convertTo(outp, CV_32FC1);
-    flip(out, output, 0); // TBD doe away with flip by indexing properly
-
+    cv::Mat output = outA.getMat();
     fitsfile* fptr;
-    int status, ii, jj, bitpix;
+    int status, ii, jj;
     long fpixel, nelements;
 
     int naxis = 2;
-    long naxes[2] = {output.size().width,
-                     output.size().height
-                    };
+    long naxes[2] = {output.size().height, output.size().width};
 
-    float* farray[output.size().height];
-    double* darray[output.size().height];
-    unsigned short* usarray[output.size().height];
-    short* sarray[output.size().height];
-    int* iarray[output.size().height];
-    unsigned char* ucarray[output.size().height];
-    char* carray[output.size().height];
-
-    std::cout << out.channels() << std::endl;
+    T* array[output.size().height];
 
     remove(ofile); /* Delete old file if it already exists */
-
     status = 0; /* initialize status before calling fitsio routines */
 
     if (fits_create_file(&fptr, ofile, &status)) /* create new FITS file */
         printerror(status); /* call printerror if error occurs */
 
-    /* write the required keywords for the primary array image.     */
-    /* Since bitpix = USHORT_IMG, this will cause cfitsio to create */
-    /* a FITS image with BITPIX = 16 (signed short integers) with   */
-    /* BSCALE = 1.0 and BZERO = 32768.  This is the convention that */
-    /* FITS uses to store unsigned integers.  Note that the BSCALE  */
-    /* and BZERO keywords will be automatically written by cfitsio  */
-    /* in this case.                                                */
+    std::cout << output.channels() << std::endl;
 
-    //int na3 = 3;
     std::vector<cv::Mat> planes;
-    if(out.channels() > 1)
+    if(output.channels() > 1)
     {
         if (fits_create_img(fptr, 8, 0, 0, &status))
             printerror(status);
-        cv::split(out, planes);
+        cv::split(output, planes);
     }
     else
     {
-        planes.push_back(out);
+        planes.push_back(output);
     }
+    array[0] = (T*)malloc(naxes[0] * naxes[1] * sizeof(T));
     for(int c = planes.size() - 1; c >= 0; c--)
     {
+        if (fits_create_img(fptr, bitpix, naxis, naxes, &status))
+            printerror(status);
 
-        switch (out.type() & CV_MAT_DEPTH_MASK)
+        /* initialize pointers to the start of each row of the image */
+        for (ii = 1; ii < naxes[1]; ii++)
+            array[ii] = array[ii - 1] + naxes[0];
+        for (ii = 0; ii < naxes[0]; ii++)
         {
-            case CV_64F:
-                std::cout << "CV_64F" << std::endl;
-                if (fits_create_img(fptr, DOUBLE_IMG, naxis, naxes, &status))
-                    printerror(status);
-                darray[0] = (double*)malloc(naxes[0] * naxes[1] * sizeof(double));
-                /* initialize pointers to the start of each row of the image */
-                for (ii = 1; ii < naxes[1]; ii++)
-                    darray[ii] = darray[ii - 1] + naxes[0];
-                for (ii = 0; ii < naxes[0]; ii++)
-                {
-                    for (jj = 0; jj < naxes[1]; jj++)
-                    {
-                        darray[jj][ii] = *planes[c].ptr<double>(jj, ii);
-                    }
-                }
-                fpixel = 1;                      /* first pixel to write      */
-                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
-
-                /* write the array of unsigned integers to the FITS file */
-                if (fits_write_img(fptr, TDOUBLE, fpixel, nelements, darray[0], &status))
-                    printerror(status);
-                //free(darray[0]); /* free previously allocated memory */
-                break;
-            case CV_32F:
-                std::cout << "CV_32F" << std::endl;
-                if (fits_create_img(fptr, FLOAT_IMG, naxis, naxes, &status))
-                    printerror(status);
-                farray[0] = (float*)malloc(naxes[0] * naxes[1] * sizeof(float));
-                /* initialize pointers to the start of each row of the image */
-                for (ii = 1; ii < naxes[1]; ii++)
-                    farray[ii] = farray[ii - 1] + naxes[0];
-                for (ii = 0; ii < naxes[0]; ii++)
-                {
-                    for (jj = 0; jj < naxes[1]; jj++)
-                    {
-                        farray[jj][ii] = *planes[c].ptr<float>(jj, ii);
-                    }
-                }
-                fpixel = 1;                      /* first pixel to write      */
-                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
-
-                /* write the array of unsigned integers to the FITS file */
-                if (fits_write_img(fptr, TFLOAT, fpixel, nelements, farray[0], &status))
-                    printerror(status);
-                //free(farray[0]); /* free previously allocated memory */
-                break;
-            case CV_32S:
-                std::cout << "CV_32S" << std::endl;
-                if (fits_create_img(fptr, LONG_IMG, naxis, naxes, &status))
-                    printerror(status);
-                iarray[0] = (int*)malloc(naxes[0] * naxes[1] * sizeof(int));
-                /* initialize pointers to the start of each row of the image */
-                for (ii = 1; ii < naxes[1]; ii++)
-                    iarray[ii] = iarray[ii - 1] + naxes[0];
-
-                for (ii = 0; ii < naxes[0]; ii++)
-                {
-                    for (jj = 0; jj < naxes[1]; jj++)
-                    {
-                        iarray[jj][ii] = *planes[c].ptr<int>(jj, ii);
-                    }
-                }
-                fpixel = 1;                      /* first pixel to write      */
-                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
-
-                /* write the array of unsigned integers to the FITS file */
-                if (fits_write_img(fptr, TLONG, fpixel, nelements, iarray[0], &status))
-                    printerror(status);
-                //free(iarray[0]); /* free previously allocated memory */
-                break;
-            case CV_16U:
-                std::cout << "CV_16U" << std::endl;
-                if (fits_create_img(fptr, USHORT_IMG, naxis, naxes, &status))
-                    printerror(status);
-                usarray[0] = (unsigned short*)malloc(naxes[0] * naxes[1] * sizeof(unsigned short));
-                /* initialize pointers to the start of each row of the image */
-                for (ii = 1; ii < naxes[1]; ii++)
-                    usarray[ii] = usarray[ii - 1] + naxes[0];
-                for (ii = 0; ii < naxes[0]; ii++)
-                {
-                    for (jj = 0; jj < naxes[1]; jj++)
-                    {
-                        usarray[jj][ii] = *planes[c].ptr<unsigned short>(jj, ii);
-                    }
-                }
-                fpixel = 1;                      /* first pixel to write      */
-                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
-
-                /* write the array of unsigned integers to the FITS file */
-
-                std::cout << "T" << std::endl;
-                if (fits_write_img(fptr, TUSHORT, fpixel, nelements, usarray[0], &status))
-                    printerror(status);
-                std::cout << "T" << std::endl;
-                break;
-            case CV_16S:
-                std::cout << "CV_16S" << std::endl;
-                if (fits_create_img(fptr, SHORT_IMG, naxis, naxes, &status))
-                    printerror(status);
-                sarray[0] = (short*)malloc(naxes[0] * naxes[1] * sizeof(short));
-                /* initialize pointers to the start of each row of the image */
-                for (ii = 1; ii < naxes[1]; ii++)
-                    sarray[ii] = sarray[ii - 1] + naxes[0];
-                for (ii = 0; ii < naxes[0]; ii++)
-                {
-                    for (jj = 0; jj < naxes[1]; jj++)
-                    {
-                        sarray[jj][ii] = *planes[c].ptr<short>(jj, ii);
-                    }
-                }
-                fpixel = 1;                      /* first pixel to write      */
-                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
-
-                /* write the array of unsigned integers to the FITS file */
-                if (fits_write_img(fptr, TSHORT, fpixel, nelements, sarray[0], &status))
-                    printerror(status);
-                break;
-            case CV_8S:
-                std::cout << "CV_8S" << std::endl;
-                if (fits_create_img(fptr, SBYTE_IMG, naxis, naxes, &status))
-                    printerror(status);
-                carray[0] = (char*)malloc(naxes[0] * naxes[1] * sizeof(char));
-                /* initialize pointers to the start of each row of the image */
-                for (ii = 1; ii < naxes[1]; ii++)
-                    carray[ii] = carray[ii - 1] + naxes[0];
-
-                for (ii = 0; ii < naxes[0]; ii++)
-                {
-                    for (jj = 0; jj < naxes[1]; jj++)
-                    {
-                        carray[jj][ii] = *planes[c].ptr<char>(jj, ii);
-                    }
-                }
-                fpixel = 1;                      /* first pixel to write      */
-                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
-
-                /* write the array of unsigned integers to the FITS file */
-                if (fits_write_img(fptr, TSBYTE, fpixel, nelements, carray[0], &status))
-                    printerror(status);
-                break;
-            case CV_8U:
-
-                std::cout << "CV_8U" << std::endl;
-                if (fits_create_img(fptr, BYTE_IMG, naxis, naxes, &status))
-                    printerror(status);
-                ucarray[0] = (unsigned char*)malloc(naxes[0] * naxes[1] * sizeof(unsigned char));
-                /* initialize pointers to the start of each row of the image */
-                for (ii = 1; ii < naxes[1]; ii++)
-                    ucarray[ii] = ucarray[ii - 1] + naxes[0];
-                for (ii = 0; ii < naxes[0]; ii++)
-                {
-                    for (jj = 0; jj < naxes[1]; jj++)
-                    {
-                        ucarray[jj][ii] = *planes[c].ptr<unsigned char>(jj, ii);
-                    }
-                }
-                fpixel = 1;                      /* first pixel to write      */
-                nelements = naxes[0] * naxes[1]; /* number of pixels to write */
-
-                /* write the array of unsigned integers to the FITS file */
-                if (fits_write_img(fptr, TBYTE, fpixel, nelements, ucarray[0], &status))
-                    printerror(status);
-                break;
-            default:
-                return 1;
+            for (jj = 0; jj < naxes[1]; jj++)
+            {
+                array[jj][ii] = *planes[c].ptr<T>(ii, jj);
+            }
         }
+        fpixel = 1;                      /* first pixel to write      */
+        nelements = naxes[0] * naxes[1]; /* number of pixels to write */
+
+        /* write the array of unsigned integers to the FITS file */
+        if (fits_write_img(fptr, datatype, fpixel, nelements, array[0], &status))
+            printerror(status);
     }
-
-    /* write another optional keyword to the header */
-    /* Note that the ADDRESS of the value is passed in the routine */
-
-    /*fits_open_file(&fptr, "WFPC2ASSNu5780205bx.fits", READONLY, &status);
-    long naxes[2];
-    fits_get_img_size(fptr, 3, naxes, &status);
-
-    fitsfile *ofptr;
-    fits_create_file(&ofptr, "o_nasa.fits", &status);
-    fits_copy_header(fptr, ofptr, &status);
-    */
-
-    //  exposure = 1500;
-
-    //            fptr, TLONG, "EXPOSURE", &exposure, "Total Exposure Time", &status))
     printerror(status);
 
     if (fits_close_file(fptr, &status)) /* close the file */
         printerror(status);
+    return status;
 
-    return 0;
+}
+
+int writeFits(const char* ofile, cv::InputArray outA)
+{
+    int status;
+
+    switch (outA.type() & CV_MAT_DEPTH_MASK)
+    {
+        case CV_64F:
+            std::cout << "CV_64F" << std::endl;
+            status = wrtFts<double>(ofile, outA, DOUBLE_IMG, TDOUBLE);
+            break;
+
+        case CV_32F:
+            std::cout << "CV_32F" << std::endl;
+            status = wrtFts<float>(ofile, outA, FLOAT_IMG, TFLOAT);
+            break;
+
+        case CV_32S:
+            std::cout << "CV_32S" << std::endl;
+            status = wrtFts<int>(ofile, outA, LONG_IMG, TLONG);
+            break;
+
+        case CV_16U:
+            std::cout << "CV_16U" << std::endl;
+            status = wrtFts<unsigned short>(ofile, outA, USHORT_IMG, TUSHORT);
+            break;
+
+        case CV_16S:
+            std::cout << "CV_16S" << std::endl;
+            status = wrtFts<short>(ofile, outA, SHORT_IMG, TSHORT);
+            break;
+
+        case CV_8S:
+            std::cout << "CV_8S" << std::endl;
+            status = wrtFts<char>(ofile, outA, SBYTE_IMG, TSBYTE);
+            break;
+
+        case CV_8U:
+            std::cout << "CV_8U" << std::endl;
+            status = wrtFts<unsigned char>(ofile, outA, BYTE_IMG, TBYTE);
+            break;
+
+        default:
+            return 1;
+    }
+    return status;
 }
 
 
@@ -333,14 +185,13 @@ int writeFile(char* ofile, cv::InputArray output)
 {
     char* ext;
     ext = std::strrchr(ofile, '.');
-    if (std::strcmp(ext, ".fits") == 0 || std::strcmp(ext, ".fit") == 0)
+    if (strcasecmp(ext, ".fits") == 0 || strcasecmp(ext, ".fit") == 0)
     {
         writeFits(ofile, output);
     }
     else
-        //if (strcmp(ext, ".tiff") == 0 || strcmp(ext, ".tif") == 0)
     {
-        writeTif(ofile, output);
+        write_opencv(ofile, output);
     }
     return 0;
 }
