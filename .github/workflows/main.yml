@@ -80,12 +80,11 @@ jobs:
       # (eigen?), matrix build, checkout CMakeList.txt in .../static
       - name: Build exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
-#-DEXIV2_ENABLE_XMP=OFF
         run: |
           cd exiv2
           mkdir -p build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF  .. 
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF  -DEXIV2_ENABLE_XMP=OFF .. 
           make
           sudo make install
         
