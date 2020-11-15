@@ -38,9 +38,9 @@ target_include_directories(j3AstroIO PRIVATE ${libraw_INCLUDE_DIRS} ${OpenCV_INC
 
 #${Iconv_LIBRARIES}
 IF (APPLE)  
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic )
-ELSE()
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic iconv)
+ELSE()
+  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic)
 ENDIF()
 
 install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
