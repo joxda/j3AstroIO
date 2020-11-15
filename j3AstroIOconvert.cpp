@@ -39,8 +39,8 @@ int main(int argc, char** argv)
         std::cout << "  Usage: j3AstroIOconvert inputFile outputFile" << std::endl;
         return 1;
     }
-    cv::Mat in;
-    open(argv[1], in);
-    write_opencv(argv[2], in);
+    cv::Mat im;
+    open(argv[1], im);
+    write_opencv(argv[2], im);
     return 0;
 }

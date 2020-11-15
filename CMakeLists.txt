@@ -41,7 +41,7 @@ install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable( j3AstroIOconvert  j3AstroIOconvert.cpp )
-target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO exiv2)
+target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO)
 install(TARGETS j3AstroIOconvert DESTINATION bin)
 
 set(CPACK_GENERATOR "TGZ")
