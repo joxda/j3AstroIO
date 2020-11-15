@@ -35,7 +35,7 @@ target_include_directories(j3AstroIO PRIVATE ${libraw_INCLUDE_DIRS} ${OpenCV_INC
 
 #set(MY_OpenCV_LIBS "opencv_core;opencv_highgui;")
 
-target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic)
+target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic libiconv)
 
 install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
