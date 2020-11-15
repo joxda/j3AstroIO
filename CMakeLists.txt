@@ -13,6 +13,7 @@ set (OpenCV_DIR "/usr/local/Cellar/opencv/*/lib/cmake/opencv4/")
 FIND_PACKAGE( OpenCV REQUIRED )
 find_package (Threads REQUIRED) #threading
 find_package(exiv2 REQUIRED CONFIG NAMES exiv2) 
+find_package( FindIconv ) 
 
 #set(libraw_DIR "${CMAKE_SOURCE_DIR}/../j3stacker/lib/librawcmake/cmake/modules")
 #find_package( libraw REQUIRED)
@@ -35,7 +36,7 @@ target_include_directories(j3AstroIO PRIVATE ${libraw_INCLUDE_DIRS} ${OpenCV_INC
 
 #set(MY_OpenCV_LIBS "opencv_core;opencv_highgui;")
 
-target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic iconv)
+target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic ${Iconv_LIBRARIES})
 
 install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
