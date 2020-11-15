@@ -114,7 +114,10 @@ jobs:
           sudo make install
           
       - name: list
-        run: ls /usr/local/lib/
+        run: |
+          ls /usr/local/lib/
+          ls /usr/lib/
+          ls /lib/
 
       - name: j3AstroIO
         run: |
