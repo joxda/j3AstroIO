@@ -27,7 +27,7 @@ jobs:
 #        run: sudo apt-get install -y libgtk2.0-dev libgtkglext1-dev
       - name: autoconf
         if: runner.os !='Linux'
-        run: brew install autoconf automake libtool cfitsio libmagic
+        run: brew install autoconf automake libtool cfitsio libmagic libiconv expat
 
       - name: Get opencv
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
@@ -80,11 +80,12 @@ jobs:
       # (eigen?), matrix build, checkout CMakeList.txt in .../static
       - name: Build exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
+#-DEXIV2_ENABLE_XMP=OFF
         run: |
           cd exiv2
           mkdir -p build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DEXIV2_ENABLE_XMP=OFF ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF  .. 
           make
           sudo make install
         
