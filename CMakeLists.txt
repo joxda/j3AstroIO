@@ -10,6 +10,13 @@ link_directories(/usr/local/lib/)
 
 set (OpenCV_DIR "/usr/local/Cellar/opencv/*/lib/cmake/opencv4/")
 
+if(DEFINED $ENV{CI})
+  set(CMAKE_FIND_STATIC FIRST) 
+  set(BUILD_SHARED_LIBS=OFF)
+  SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
+endif()
+
+
 FIND_PACKAGE( OpenCV REQUIRED )
 find_package (Threads REQUIRED) #threading
 find_package(exiv2 REQUIRED CONFIG NAMES exiv2) 
@@ -24,10 +31,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 
 add_compile_options(-std=c++11)
 
-if(DEFINED $ENV{CI})
-  set(BUILD_SHARED_LIBS=OFF)
-  SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
-endif()
 
 add_library( j3AstroIO  j3AstroIO.cpp )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
@@ -38,9 +41,9 @@ target_include_directories(j3AstroIO PRIVATE ${libraw_INCLUDE_DIRS} ${OpenCV_INC
 
 #${Iconv_LIBRARIES}
 IF (APPLE)  
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic iconv)
+  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/cfitsio.a /usr/local/lib/libexiv2.a libmagic.a iconv)
 ELSE()
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic)
+  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/cfitsio.a /usr/local/lib/libexiv2.a libmagic.a)
 ENDIF()
 
 install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
