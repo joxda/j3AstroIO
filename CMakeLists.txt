@@ -41,9 +41,9 @@ target_include_directories(j3AstroIO PRIVATE ${libraw_INCLUDE_DIRS} ${OpenCV_INC
 
 #${Iconv_LIBRARIES}
 IF (APPLE)  
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a iconv jpeg curl bzip2)
+  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a iconv jpeg curl libzip2)
 ELSE()
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a magic gomp)
+  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a magic gomp)
 ENDIF()
 
 install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
