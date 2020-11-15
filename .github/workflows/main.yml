@@ -64,7 +64,7 @@ jobs:
         run: |
           cd libraw
           autoreconf --install
-          ./configure --enable-static=yes
+          ./configure --enable-static=yes --disable-lcms --disable-examples
           make
           sudo make install
 
