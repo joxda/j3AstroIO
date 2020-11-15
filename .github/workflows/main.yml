@@ -27,7 +27,7 @@ jobs:
 #        run: sudo apt-get install -y libgtk2.0-dev libgtkglext1-dev
       - name: autoconf
         if: runner.os !='Linux'
-        run: brew install autoconf automake libtool cfitsio
+        run: brew install autoconf automake libtool cfitsio libmagic
 
       - name: Get opencv
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
