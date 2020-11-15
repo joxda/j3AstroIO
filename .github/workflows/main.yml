@@ -64,7 +64,7 @@ jobs:
         run: |
           cd libraw
           autoreconf --install
-          ./configure
+          ./configure --enable-static=yes
           make
           sudo make install
 
