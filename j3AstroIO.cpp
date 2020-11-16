@@ -64,10 +64,17 @@ void printerror(int status)
 
 int write_opencv(const char* ofile, cv::InputArray output, float factor, int depth)
 {
+    int success = 0;
+    if(cv::haveImageWriter(ofile)) {    // TBD opencv_v3 compatibility?
     cv::Mat out;
     output.getMat().convertTo(out, depth, factor);
-    cv::imwrite(ofile, out);
-    return 0;
+    success = cv::imwrite(ofile, out);
+    } else {
+            success = 1;
+            const char* ext = std::strrchr(ofile, '.');;
+            std::cout << "OpenCV has no writer for " << ext << " files." << std::endl;
+    }
+    return success;
 }
 
 template <typename T>
@@ -79,7 +86,7 @@ int wrtFts(const char* ofile, cv::InputArray outA, int bitpix, int datatype)
     long fpixel, nelements;
 
     int naxis = 2;
-    long naxes[2] = {output.size().height, output.size().width};
+    long naxes[2] = {output.size().width, output.size().height};
 
     T* array[output.size().height];
 
@@ -103,19 +110,25 @@ int wrtFts(const char* ofile, cv::InputArray outA, int bitpix, int datatype)
         planes.push_back(output);
     }
     array[0] = (T*)malloc(naxes[0] * naxes[1] * sizeof(T));
+
     for(int c = planes.size() - 1; c >= 0; c--)
     {
+        std::cout << "PLANE: " << c << std::endl;
         if (fits_create_img(fptr, bitpix, naxis, naxes, &status))
             printerror(status);
 
         /* initialize pointers to the start of each row of the image */
-        for (ii = 1; ii < naxes[1]; ii++)
+        for (ii = 1; ii < naxes[1]; ii++) {
+            //std::cout << ii << std::endl;
             array[ii] = array[ii - 1] + naxes[0];
+        }
+        
         for (ii = 0; ii < naxes[0]; ii++)
         {
             for (jj = 0; jj < naxes[1]; jj++)
             {
-                array[jj][ii] = *planes[c].ptr<T>(ii, jj);
+                //std::cout << ii << " " << jj << std::endl;
+                array[jj][ii] = *planes[c].ptr<T>(jj, ii);
             }
         }
         fpixel = 1;                      /* first pixel to write      */
@@ -150,27 +163,27 @@ int writeFits(const char* ofile, cv::InputArray outA)
 
         case CV_32S:
             std::cout << "CV_32S" << std::endl;
-            status = wrtFts<int>(ofile, outA, LONG_IMG, TLONG);
+            status = wrtFts<int32_t>(ofile, outA, LONG_IMG, TLONG);
             break;
 
         case CV_16U:
             std::cout << "CV_16U" << std::endl;
-            status = wrtFts<unsigned short>(ofile, outA, USHORT_IMG, TUSHORT);
+            status = wrtFts<uint16_t>(ofile, outA, USHORT_IMG, TUSHORT);
             break;
 
         case CV_16S:
             std::cout << "CV_16S" << std::endl;
-            status = wrtFts<short>(ofile, outA, SHORT_IMG, TSHORT);
+            status = wrtFts<int16_t>(ofile, outA, SHORT_IMG, TSHORT);
             break;
 
         case CV_8S:
             std::cout << "CV_8S" << std::endl;
-            status = wrtFts<char>(ofile, outA, SBYTE_IMG, TSBYTE);
+            status = wrtFts<int8_t>(ofile, outA, SBYTE_IMG, TSBYTE);
             break;
 
         case CV_8U:
             std::cout << "CV_8U" << std::endl;
-            status = wrtFts<unsigned char>(ofile, outA, BYTE_IMG, TBYTE);
+            status = wrtFts<uint8_t>(ofile, outA, BYTE_IMG, TBYTE);
             break;
 
         default:
@@ -185,6 +198,7 @@ int writeFile(char* ofile, cv::InputArray output)
     char* ext;
     int success;
     ext = std::strrchr(ofile, '.');
+    std::cout << "EXT: " << ext << std::endl;
     if (strcasecmp(ext, ".fits") == 0 || strcasecmp(ext, ".fit") == 0)
     {
         success = writeFits(ofile, output);
@@ -211,7 +225,7 @@ int open(const char* file, cv::OutputArray image)
         std::cout << "raw" << std::endl;
         success = open_raw(file, image);
     }
-    else if (cv::haveImageReader(file)) // TBD!! not in v3
+    else 
     {
         success = open_opencv(file, image);
     }
@@ -226,10 +240,10 @@ LensPars getPars(const char* file)
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
 
-       /* #ifdef __APPLE__
+       // #ifdef __APPLE__
         Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
-        #else*/
-        Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
+       /* #else*/
+        //Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
        // #endif
         assert(EXimage.get() != 0);
         EXimage->readMetadata();
@@ -316,6 +330,7 @@ int open_raw(const char* file, cv::OutputArray image)
     iProcessor.recycle();
     return ret;
 }
+
 
 int open_fits(const char* file, cv::OutputArray image)
 {
@@ -423,13 +438,21 @@ int open_fits(const char* file, cv::OutputArray image)
 
 int open_opencv(const char* file, cv::OutputArray image)
 {
+    int success = 0;
+    if(cv::haveImageReader(file)){ // TBD opencv_v3 compatibility?
     cv::Mat im = image.getMat();
     im = cv::imread(file, cv::IMREAD_COLOR | cv::IMREAD_ANYDEPTH);
     if (image.empty())
-        return -1;
+        success = -1;
     // Read the file
     // open some other formates with opencv
-    return 0;
+    } else {
+            success = 1;
+            const char*  ext = std::strrchr(file, '.');;
+            std::cout << "OpenCV cannot read " << ext << " files." << std::endl;
+    }
+
+    return success;
 }
 
 std::string mime(const char* file)

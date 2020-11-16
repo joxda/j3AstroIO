@@ -41,6 +41,6 @@ int main(int argc, char** argv)
     }
     cv::Mat im;
     open(argv[1], im);
-    write_opencv(argv[2], im);
+    writeFile(argv[2], im);
     return 0;
 }
