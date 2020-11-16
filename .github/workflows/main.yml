@@ -29,11 +29,11 @@ jobs:
         if: runner.os !='Linux'
         run: brew install autoconf automake libtool cfitsio libmagic  #expat  bzip2 iconv
 
-        - name: iconv
+      - name: iconv
         if: runner.os !='Linux'
         run: sudo find / -name iconv
 
-        - name: Get opencv
+      - name: Get opencv
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
