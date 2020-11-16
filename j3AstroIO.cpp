@@ -30,7 +30,7 @@
 #include "fitsio.h"
 #include "libraw/libraw.h"
 #include <exiv2/exiv2.hpp>
-
+#include <exiv2/exv_conf.h>
 #ifdef EXIV2_VERSION
 # ifndef EXIV2_TEST_VERSION
 # define EXIV2_TEST_VERSION(major,minor,patch) \
@@ -263,10 +263,10 @@ LensPars getPars(const char* file)
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
         
-        #if EXIV2_TEST_VERSION(0, 27, 3)
-            Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
-        #else
+        #if EXIV2_TEST_VERSION(0, 27, 1)
             Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
+        #else
+            Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
         #endif
         assert(EXimage.get() != 0);
         EXimage->readMetadata();
