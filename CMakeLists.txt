@@ -40,7 +40,7 @@ target_include_directories(j3AstroIO PRIVATE ${libraw_INCLUDE_DIRS} ${OpenCV_INC
 #set(MY_OpenCV_LIBS "opencv_core;opencv_highgui;")
 
 
-if( (DEFINED $ENV{CI}) AND (APPLE) )
+IF( (DEFINED $ENV{CI}) AND (APPLE) )
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a iconv jpeg curl z bz2)
 ELSEIF( (DEFINED $ENV{CI}) )
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a magic gomp)
@@ -52,7 +52,12 @@ install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable( j3AstroIOconvert  j3AstroIOconvert.cpp )
-target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO)
+if( (DEFINED $ENV{CI}) AND (APPLE) )
+  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO iconv)
+ELSE()
+  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO)
+ENDIF()
+
 install(TARGETS j3AstroIOconvert DESTINATION bin)
 
 set(CPACK_GENERATOR "TGZ")
