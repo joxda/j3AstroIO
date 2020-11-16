@@ -31,7 +31,7 @@ jobs:
 
       - name: iconv
         if: runner.os !='Linux'
-        run: sudo find / -name iconv
+        run: sudo find / -name *iconv*
 
       - name: Get opencv
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
