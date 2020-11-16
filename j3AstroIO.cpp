@@ -31,6 +31,15 @@
 #include "libraw/libraw.h"
 #include <exiv2/exiv2.hpp>
 
+#ifdef EXIV2_VERSION
+# ifndef EXIV2_TEST_VERSION
+# define EXIV2_TEST_VERSION(major,minor,patch) \
+    ( EXIV2_VERSION >= EXIV2_MAKE_VERSION(major,minor,patch) )
+# endif
+#else
+# define EXIV2_TEST_VERSION(major,minor,patch) (false)
+#endif
+
 #include <magic.h>
 #include <iostream>
 #include <stdio.h>
@@ -254,8 +263,7 @@ LensPars getPars(const char* file)
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
         
-        #include <exiv2/version.hpp>
-        #if(EXIV2_VERSION >= EXIV2_MAKE_VERSION(0, 27, 0))
+        #if EXIV2_TEST_VERSION(0, 27, 0)
             Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
         #else
             Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
