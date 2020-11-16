@@ -20,7 +20,10 @@ endif()
 FIND_PACKAGE( OpenCV REQUIRED )
 find_package (Threads REQUIRED) #threading
 find_package(exiv2 REQUIRED CONFIG NAMES exiv2) 
-#find_package( FindIconv ) 
+
+IF( (DEFINED $ENV{CI}) AND (APPLE) )
+  find_package( FindIconv ) 
+ENDIF()
 
 #set(libraw_DIR "${CMAKE_SOURCE_DIR}/../j3stacker/lib/librawcmake/cmake/modules")
 #find_package( libraw REQUIRED)
