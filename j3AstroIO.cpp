@@ -30,12 +30,14 @@
 #include "fitsio.h"
 #include "libraw/libraw.h"
 #include <exiv2/exiv2.hpp>
+#include <exiv2/version.hpp>
 
 #include <magic.h>
 #include <iostream>
 #include <stdio.h>
 #include <strings.h>
 
+#include <opencv2/core/version.hpp>
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
@@ -65,15 +67,20 @@ void printerror(int status)
 int write_opencv(const char* ofile, cv::InputArray output, float factor, int depth)
 {
     int success = 0;
+#if CV_MAJOR_VERSION > 3
+    std::cout << "YES" << std::endl;
     if(cv::haveImageWriter(ofile)) {    // TBD opencv_v3 compatibility?
+#endif
     cv::Mat out;
     output.getMat().convertTo(out, depth, factor);
     success = cv::imwrite(ofile, out);
+#if CV_MAJOR_VERSION > 3
     } else {
             success = 1;
             const char* ext = std::strrchr(ofile, '.');;
             std::cout << "OpenCV has no writer for " << ext << " files." << std::endl;
     }
+#endif
     return success;
 }
 
@@ -240,11 +247,13 @@ LensPars getPars(const char* file)
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
 
-       // #ifdef __APPLE__
+#if EXIV2_VERSION <= EXIV2_MAKE_VERSION(0,27,0)
+        Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
+#else 
         Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
+#endif
        /* #else*/
-        //Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
-       // #endif
+        //       // #endif
         assert(EXimage.get() != 0);
         EXimage->readMetadata();
         Exiv2::ExifData &ed = EXimage->exifData();
