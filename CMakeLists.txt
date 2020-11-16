@@ -53,7 +53,7 @@ install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable( j3AstroIOconvert  j3AstroIOconvert.cpp )
 if( (DEFINED $ENV{CI}) AND (APPLE) )
-  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO iconv)
+  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO ${Iconv_LIBRARIES})
 ELSE()
   target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO)
 ENDIF()
