@@ -30,14 +30,13 @@
 #include "fitsio.h"
 #include "libraw/libraw.h"
 #include <exiv2/exiv2.hpp>
-#include <exiv2/version.hpp>
 
 #include <magic.h>
 #include <iostream>
 #include <stdio.h>
 #include <strings.h>
 
-#include <opencv2/core/version.hpp>
+#include "opencv2/core/version.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
@@ -67,20 +66,27 @@ void printerror(int status)
 int write_opencv(const char* ofile, cv::InputArray output, float factor, int depth)
 {
     int success = 0;
-#if CV_MAJOR_VERSION > 3
-    std::cout << "YES" << std::endl;
-    if(cv::haveImageWriter(ofile)) {    // TBD opencv_v3 compatibility?
-#endif
-    cv::Mat out;
-    output.getMat().convertTo(out, depth, factor);
-    success = cv::imwrite(ofile, out);
-#if CV_MAJOR_VERSION > 3
-    } else {
+    if(CV_MAJOR_VERSION > 3)
+    {
+        if(cv::haveImageWriter(ofile))      // TBD opencv_v3 compatibility?
+        {
+            cv::Mat out;
+            output.getMat().convertTo(out, depth, factor);
+            success = cv::imwrite(ofile, out);
+        }
+        else
+        {
             success = 1;
             const char* ext = std::strrchr(ofile, '.');;
             std::cout << "OpenCV has no writer for " << ext << " files." << std::endl;
+        }
     }
-#endif
+    else
+    {
+        cv::Mat out;
+        output.getMat().convertTo(out, depth, factor);
+        success = cv::imwrite(ofile, out);
+    }
     return success;
 }
 
@@ -125,11 +131,12 @@ int wrtFts(const char* ofile, cv::InputArray outA, int bitpix, int datatype)
             printerror(status);
 
         /* initialize pointers to the start of each row of the image */
-        for (ii = 1; ii < naxes[1]; ii++) {
+        for (ii = 1; ii < naxes[1]; ii++)
+        {
             //std::cout << ii << std::endl;
             array[ii] = array[ii - 1] + naxes[0];
         }
-        
+
         for (ii = 0; ii < naxes[0]; ii++)
         {
             for (jj = 0; jj < naxes[1]; jj++)
@@ -232,7 +239,7 @@ int open(const char* file, cv::OutputArray image)
         std::cout << "raw" << std::endl;
         success = open_raw(file, image);
     }
-    else 
+    else
     {
         success = open_opencv(file, image);
     }
@@ -246,14 +253,13 @@ LensPars getPars(const char* file)
     {
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
-
-#if EXIV2_VERSION <= EXIV2_MAKE_VERSION(0,27,0)
-        Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
-#else 
-        Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
-#endif
-       /* #else*/
-        //       // #endif
+        
+        #include <exiv2/version.hpp>
+        #if(EXIV2_VERSION >= EXIV2_MAKE_VERSION(0, 27, 0))
+            Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
+        #else
+            Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
+        #endif
         assert(EXimage.get() != 0);
         EXimage->readMetadata();
         Exiv2::ExifData &ed = EXimage->exifData();
@@ -448,17 +454,20 @@ int open_fits(const char* file, cv::OutputArray image)
 int open_opencv(const char* file, cv::OutputArray image)
 {
     int success = 0;
-    if(cv::haveImageReader(file)){ // TBD opencv_v3 compatibility?
-    cv::Mat im = image.getMat();
-    im = cv::imread(file, cv::IMREAD_COLOR | cv::IMREAD_ANYDEPTH);
-    if (image.empty())
-        success = -1;
-    // Read the file
-    // open some other formates with opencv
-    } else {
-            success = 1;
-            const char*  ext = std::strrchr(file, '.');;
-            std::cout << "OpenCV cannot read " << ext << " files." << std::endl;
+    if(cv::haveImageReader(file))  // TBD opencv_v3 compatibility?
+    {
+        cv::Mat im = image.getMat();
+        im = cv::imread(file, cv::IMREAD_COLOR | cv::IMREAD_ANYDEPTH);
+        if (image.empty())
+            success = -1;
+        // Read the file
+        // open some other formates with opencv
+    }
+    else
+    {
+        success = 1;
+        const char*  ext = std::strrchr(file, '.');;
+        std::cout << "OpenCV cannot read " << ext << " files." << std::endl;
     }
 
     return success;
