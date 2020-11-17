@@ -113,8 +113,8 @@ jobs:
           
       - name: list
         run: |
-          ls /usr/local/lib/
-          ls /usr/lib/
+          ls -altrh /usr/local/lib/
+          ls -altrh /usr/lib/
 
       - name: j3AstroIO
         run: |
