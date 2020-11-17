@@ -29,10 +29,6 @@ jobs:
         if: runner.os !='Linux'
         run: brew install automake cfitsio libmagic  #expat  bzip2 iconv autoconf libtool 
 
-      - name: iconv
-        if: runner.os !='Linux'
-        run: sudo port -f deactivate libiconv
-
       - name: Get opencv
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
