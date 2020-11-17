@@ -37,7 +37,7 @@ target_include_directories(j3AstroIO PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURR
 IF( (DEFINED $ENV{CI}) AND (APPLE) )
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a /usr/local/lib/libiconv.dylib )
 ELSEIF( DEFINED $ENV{CI} )
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a magic )
+  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/lib/x86_64-linux-gnu/libexiv2-xmp.a magic )
 ELSE()
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic)
 ENDIF()
