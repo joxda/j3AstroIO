@@ -9,20 +9,19 @@ endif()
 link_directories(/usr/local/lib/)
 
 if(DEFINED $ENV{CI})
+  message(STATUS "THIS IS A CI RUN")
   set(CMAKE_FIND_STATIC FIRST) 
   set(BUILD_SHARED_LIBS=OFF)
   SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
 endif()
 
-
 FIND_PACKAGE( OpenCV REQUIRED )
 find_package (Threads REQUIRED) #threading
 find_package(exiv2 REQUIRED CONFIG NAMES exiv2) 
 
-IF( (DEFINED $ENV{CI}) AND (APPLE) )
-  find_package( FindIconv ) 
-ENDIF()
-
+#IF( (DEFINED $ENV{CI}) AND (APPLE) )
+# find_package( FindIconv ) 
+#ENDIF()
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
@@ -33,11 +32,11 @@ add_compile_options(-std=c++11)
 add_library( j3AstroIO  j3AstroIO.cpp )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER j3AstroIO.hpp)
-target_include_directories(j3AstroIO PRIVATE ${libraw_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
+target_include_directories(j3AstroIO PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 IF( (DEFINED $ENV{CI}) AND (APPLE) )
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a /Applications/Xcode_12.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libiconv.tbd )
-ELSEIF( (DEFINED $ENV{CI}) )
+ELSEIF( DEFINED $ENV{CI} )
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a magic gomp)
 ELSE()
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic)

@@ -68,11 +68,6 @@ jobs:
           make
           sudo make install
 
-      - name: autoconf
-        if: runner.os !='Linux'
-        run: brew unlink libiconv  #expat  bzip2 iconv autoconf libtool 
-
-
       - name: Get exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
@@ -92,8 +87,6 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF  -DEXIV2_ENABLE_XMP=OFF -DEXIV2_BUILD_SAMPLES=OFF -DEXIV2_ENABLE_PRINTUCS2=OFF .. 
           make
           sudo make install
-        
-        
         
       - name: Get cfitsio
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
@@ -130,36 +123,23 @@ jobs:
           cmake ..
           make
           make package
-      - name: runnos
-        run: echo ${{runner.os}}
-          
-          
-      - name: j3AstroIO
-        run: |
-          mkdir -p build
-          cd build
-          cmake ..
-          make
-          make package
-      - name: runnos
-        run: echo ${{runner.os}}
-
-      - name: unpack
+ 
+      - name: unpack mac
         if: runner.os !='Linux'
         run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
 
-      - name: unpack
+      - name: unpack linux
         if: runner.os =='Linux' 
         run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
 
-      - name: archive results
+      - name: archive results max
         if: runner.os !='Linux' 
         uses: actions/upload-artifact@v1
         with:
           name: j3AstroIO-1.0.0-${{ matrix.os }}
           path: j3AstroIO-1.0.0-Darwin
 
-      - name: archive results
+      - name: archive results linux
         if:  runner.os =='Linux' 
         uses: actions/upload-artifact@v1
         with:
