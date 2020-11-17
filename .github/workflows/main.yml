@@ -68,6 +68,10 @@ jobs:
           make
           sudo make install
 
+      - name: remove so
+        if: runner.os =='Linux' 
+        run: sudo rm -f /usr/local/lib/libraw*so
+          
       - name: Get exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
