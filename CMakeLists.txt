@@ -8,12 +8,12 @@ endif()
 
 link_directories(/usr/local/lib/)
 
-if(DEFINED $ENV{CI})
+#if(DEFINED $ENV{CI})
   message(STATUS "THIS IS A CI RUN")
   set(CMAKE_FIND_STATIC FIRST) 
   set(BUILD_SHARED_LIBS=OFF)
   SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
-endif()
+#endif()
 
 FIND_PACKAGE( OpenCV REQUIRED )
 find_package (Threads REQUIRED) #threading
@@ -37,7 +37,7 @@ target_include_directories(j3AstroIO PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURR
 IF( (DEFINED $ENV{CI}) AND (APPLE) )
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a /usr/local/lib/libiconv.dylib )
 ELSEIF( DEFINED $ENV{CI} )
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a magic gomp)
+  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} gomp /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a magic )
 ELSE()
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic)
 ENDIF()
