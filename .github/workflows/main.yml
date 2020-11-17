@@ -28,6 +28,10 @@ jobs:
       - name: autoconf
         if: runner.os !='Linux'
         run: brew install automake cfitsio libmagic  #expat  bzip2 iconv autoconf libtool 
+ 
+      - name: apt
+        if: runner.os =='Linux'
+        run: sudo apt-get install libraw-dev libexiv2-dev
 
       - name: Get opencv
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
@@ -49,31 +53,32 @@ jobs:
           make
           sudo make install
           
-      - name: Get libraw
+#      - name: Get libraw
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
-        uses: actions/checkout@v2
-        with:
-          repository: LibRaw/LibRaw
-          path: libraw
-          token: ${{ github.token }}
-          ref: ${{secrets.LIBRAW_VERSION}}
+#        uses: actions/checkout@v2
+#        with:
+#          repository: LibRaw/LibRaw
+#          path: libraw
+#          token: ${{ github.token }}
+#          ref: ${{secrets.LIBRAW_VERSION}}
 
       # (eigen?), matrix build, checkout CMakeList.txt in .../static
-      - name: Build libraw
+#      - name: Build libraw
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
-        run: |
-          cd libraw
-          autoreconf --install
-          ./configure --enable-static=yes --disable-openmp  --disable-examples --disable-jasper
-          make
-          sudo make install
-
-      - name: remove so
-        if: runner.os =='Linux' 
-        run: sudo rm -f /usr/local/lib/libraw*so
+#       run: |
+#          cd libraw
+ #         autoreconf --install
+ #         ./configure --enable-static=yes --disable-openmp  --disable-examples --disable-jasper
+ #         make
+ #         sudo make install
+#
+#      - name: remove so
+#        if: runner.os =='Linux' 
+#        run: sudo rm -f /usr/local/lib/libraw*so
           
       - name: Get exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
+        if: runner.os !='Linux'       
         uses: actions/checkout@v2
         with:
           repository: Exiv2/exiv2
@@ -83,6 +88,7 @@ jobs:
 
       # (eigen?), matrix build, checkout CMakeList.txt in .../static
       - name: Build exiv2
+        if: runner.os !='Linux'
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
         run: |
           cd exiv2
