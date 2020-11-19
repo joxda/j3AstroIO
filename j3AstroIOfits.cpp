@@ -28,6 +28,7 @@
 //
 
 #include "fitsio.h"
+#include <magic.h>
 #include <iostream>
 #include <stdio.h>
 #include <strings.h>

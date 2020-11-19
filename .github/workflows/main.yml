@@ -25,7 +25,7 @@ jobs:
 
       - name: cfitsio
         if: runner.os !='Linux'
-        run: brew install  cfitsio  magic
+        run: brew install  cfitsio  libmagic
  
       - name: Get opencv
         uses: actions/checkout@v2
