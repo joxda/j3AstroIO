@@ -1,4 +1,4 @@
-project(j3AstroIO)
+project(j3AstroIOfits)
 
 cmake_minimum_required(VERSION 2.8.12)
 
