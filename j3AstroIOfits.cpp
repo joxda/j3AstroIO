@@ -124,14 +124,15 @@ int wrtFts(const char* ofile, cv::InputArray outA, int bitpix, int datatype)
             array[ii] = array[ii - 1] + naxes[0];
         }
 
-        for (ii = 0; ii < naxes[0]; ii++)
+        for (jj = 0; jj < naxes[1]; jj++)
         {
-            for (jj = 0; jj < naxes[1]; jj++)
+            for (ii = 0; ii < naxes[0]; ii++)
             {
                 //std::cout << ii << " " << jj << std::endl;
-                array[jj][ii] = *planes[c].ptr<T>(jj, ii);
+                array[jj][ii] = *planes[c].ptr<T>(naxes[1]-1-jj, ii);
             }
         }
+
         fpixel = 1;                      /* first pixel to write      */
         nelements = naxes[0] * naxes[1]; /* number of pixels to write */
 
