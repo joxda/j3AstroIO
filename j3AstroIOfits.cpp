@@ -28,19 +28,6 @@
 //
 
 #include "fitsio.h"
-#include "libraw/libraw.h"
-#include <exiv2/exiv2.hpp>
-#include <exiv2/exv_conf.h>
-#ifdef EXIV2_VERSION
-# ifndef EXIV2_TEST_VERSION
-# define EXIV2_TEST_VERSION(major,minor,patch) \
-    ( EXIV2_VERSION >= EXIV2_MAKE_VERSION(major,minor,patch) )
-# endif
-#else
-# define EXIV2_TEST_VERSION(major,minor,patch) (false)
-#endif
-
-#include <magic.h>
 #include <iostream>
 #include <stdio.h>
 #include <strings.h>
@@ -49,16 +36,8 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#include "j3AstroIO.hpp"
+#include "j3AstroIOfits.hpp"
 
-typedef Exiv2::ExifData::const_iterator (*EasyAccessFct)(
-    const Exiv2::ExifData &ed);
-
-struct EasyAccess
-{
-    const char* label_;
-    EasyAccessFct findFct_;
-};
 
 void printerror(int status)
 {
@@ -243,11 +222,11 @@ int open(const char* file, cv::OutputArray image)
     {
         success = open_fits(file, image);
     }
-    else if (str.find("image/x") == 0)
+    /*else if (str.find("image/x") == 0)
     {
         std::cout << "raw" << std::endl;
         success = open_raw(file, image);
-    }
+    }*/
     else
     {
         success = open_opencv(file, image);
@@ -255,104 +234,6 @@ int open(const char* file, cv::OutputArray image)
     return success;
 }
 
-LensPars getPars(const char* file)
-{
-    LensPars par;
-    try
-    {
-        Exiv2::XmpParser::initialize();
-        ::atexit(Exiv2::XmpParser::terminate);
-        
-        #if EXIV2_TEST_VERSION(0, 27, 1)
-            Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
-        #else
-            Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
-        #endif
-        assert(EXimage.get() != 0);
-        EXimage->readMetadata();
-        Exiv2::ExifData &ed = EXimage->exifData();
-
-        Exiv2::ExifData::const_iterator pos = lensName(ed);
-        Exiv2::ExifData::const_iterator posFN = fNumber(ed);
-        Exiv2::ExifData::const_iterator posFL = focalLength(ed);
-
-        Exiv2::ExifKey key("Exif.Photo.FocalPlaneXResolution");
-        Exiv2::ExifData::iterator CRpos = ed.findKey(key);
-        if (CRpos == ed.end())
-            std::cout << "Did not find key" << std::endl;
-        float xres = std::stof(CRpos->print(&ed));
-        key = Exiv2::ExifKey("Exif.Photo.FocalPlaneYResolution");
-        CRpos = ed.findKey(key);
-        float yres = std::stof(CRpos->print(&ed));
-        key = Exiv2::ExifKey("Exif.Photo.FocalPlaneResolutionUnit");
-        CRpos = ed.findKey(key);
-        float fac = CRpos->print(&ed) == "inch" ? 25.4 : 10.;
-        xres /= fac;
-        yres /= fac;
-        float xmm, ymm;
-        key = Exiv2::ExifKey("Exif.Photo.PixelXDimension");
-        CRpos = ed.findKey(key);
-        xmm = std::stof(CRpos->print(&ed)) / xres;
-        key = Exiv2::ExifKey("Exif.Photo.PixelYDimension");
-        CRpos = ed.findKey(key);
-        ymm = std::stof(CRpos->print(&ed)) / yres;
-        par.cropFactor = sqrt(xmm * xmm + ymm * ymm) / 43.267;
-
-        par.name = std::string(pos->print(&ed));
-        par.apertureN = std::stof((std::string(posFN->print(&ed))).substr(1, 10));
-        par.focalLength = std::stof(posFL->print(&ed));
-    }
-    catch (Exiv2::AnyError &e)
-    {
-        std::cout << "Caught Exiv2 exception '" << e << "'\n";
-    }
-    return par;
-}
-
-
-int open_raw(const char* file, cv::OutputArray image)
-{
-    LibRaw iProcessor;
-    int ret;
-    iProcessor.imgdata.params.use_camera_wb = 1;
-    iProcessor.imgdata.params.output_tiff = 1;
-    iProcessor.imgdata.params.output_bps = 16; // WHY NOT -4?
-    iProcessor.imgdata.params.no_auto_bright = 1;
-    iProcessor.imgdata.params.output_color = 3; // 0 = raw
-    iProcessor.imgdata.params.user_qual = 3;    // 3 = AHD
-    iProcessor.imgdata.params.gamm[0] = 1.0;
-    iProcessor.imgdata.params.gamm[1] = 1.0;
-
-    if ((ret = iProcessor.open_file(file)) != LIBRAW_SUCCESS)
-    {
-        fprintf(
-            stderr, "Cannot open_file %s: %s\n", file, libraw_strerror(ret));
-    };
-
-    if ((ret = iProcessor.unpack()) != LIBRAW_SUCCESS)
-    {
-        fprintf(stderr, "Cannot unpack %s: %s\n", file, libraw_strerror(ret));
-    }
-
-    ret = iProcessor.dcraw_process();
-    if (LIBRAW_SUCCESS != ret)
-    {
-        fprintf(stderr, "Cannot do postpocessing on %s: %s\n", file,
-                libraw_strerror(ret));
-    }
-
-    libraw_processed_image_t* imag = iProcessor.dcraw_make_mem_image(&ret);
-
-    cv::Mat im =
-        cv::Mat(cv::Size(imag->width, imag->height), CV_16UC3, imag->data, cv::Mat::AUTO_STEP)
-        .clone();
-
-    LibRaw::dcraw_clear_mem(imag);
-    cvtColor(im, image, cv::COLOR_RGB2BGR);
-
-    iProcessor.recycle();
-    return ret;
-}
 
 
 int open_fits(const char* file, cv::OutputArray image)
