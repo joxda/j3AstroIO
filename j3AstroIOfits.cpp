@@ -98,8 +98,6 @@ int wrtFts(const char* ofile, cv::InputArray outA, int bitpix, int datatype)
     if (fits_create_file(&fptr, ofile, &status)) /* create new FITS file */
         printerror(status); /* call printerror if error occurs */
 
-    std::cout << output.channels() << std::endl;
-
     std::vector<cv::Mat> planes;
     if(output.channels() > 1)
     {
@@ -204,7 +202,7 @@ int writeFile(char* ofile, cv::InputArray output)
     std::cout << "EXT: " << ext << std::endl;
     if (strcasecmp(ext, ".fits") == 0 || strcasecmp(ext, ".fit") == 0)
     {
-        success = writeFits(ofile, output);
+        success = writeFits(ofile, output.getMat());
     }
     else
     {
@@ -213,7 +211,7 @@ int writeFile(char* ofile, cv::InputArray output)
     return success;
 }
 
-int open(const char* file, cv::OutputArray image)
+int open(const char* file, cv::Mat& image)
 {
     std::string str = mime(file);
 
@@ -229,7 +227,7 @@ int open(const char* file, cv::OutputArray image)
         success = open_raw(file, image);
     }*/
     else
-    {
+    {   
         success = open_opencv(file, image);
     }
     return success;
@@ -237,7 +235,7 @@ int open(const char* file, cv::OutputArray image)
 
 
 
-int open_fits(const char* file, cv::OutputArray image)
+int open_fits(const char* file, cv::Mat& image)
 {
     fitsfile* fptr;
 
@@ -341,13 +339,12 @@ int open_fits(const char* file, cv::OutputArray image)
 }
 
 
-int open_opencv(const char* file, cv::OutputArray image)
+int open_opencv(const char* file, cv::Mat& image)
 {
     int success = 0;
     if(cv::haveImageReader(file))  // TBD opencv_v3 compatibility?
     {
-        cv::Mat im = image.getMat();
-        im = cv::imread(file, cv::IMREAD_COLOR | cv::IMREAD_ANYDEPTH);
+        image = cv::imread(file, cv::IMREAD_COLOR | cv::IMREAD_ANYDEPTH);
         if (image.empty())
             success = -1;
         // Read the file

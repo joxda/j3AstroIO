@@ -36,10 +36,10 @@
 
 void printerror(int status);
 
-int open(const char* file, cv::OutputArray output);
+int open(const char* file, cv::Mat &output);
 
-int open_fits(const char* file, cv::OutputArray output);
-int open_opencv(const char* file, cv::OutputArray output);
+int open_fits(const char* file, cv::Mat &output);
+int open_opencv(const char* file, cv::Mat &output);
 
 int writeFile(char* ofile, cv::InputArray output);
 
