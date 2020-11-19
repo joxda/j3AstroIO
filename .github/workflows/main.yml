@@ -62,7 +62,7 @@ jobs:
           make
           sudo make install
           
-       - name: j3AstroIOfits
+      - name: j3AstroIOfits
         run: |
           mkdir -p build
           cd build
