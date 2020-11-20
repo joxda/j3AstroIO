@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ raw ]
+    branches: [ libraw ]
   pull_request:
-    branches: [ raw ]
+    branches: [ libraw ]
 
 jobs:
   build:
