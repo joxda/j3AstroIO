@@ -58,7 +58,7 @@ jobs:
         if: runner.os =='Linux'
         run: |
           cd cfitsio
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -Wno-error=dev -Wno-error=implicit-function-declaration .
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -Wno-error=dev -Wno-error=implicit-function-declaration -DCURL_FOUND=NO .
           make
           sudo make install
           
