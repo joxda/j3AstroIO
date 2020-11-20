@@ -134,25 +134,25 @@ jobs:
           make
           make package
  
-      - name: unpack mac
-        if: runner.os !='Linux'
-        run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
+#      - name: unpack mac
+#        if: runner.os !='Linux'
+#        run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
 
-      - name: unpack linux
-        if: runner.os =='Linux' 
-        run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
+#      - name: unpack linux
+#        if: runner.os =='Linux' 
+#        run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
 
       - name: archive results max
         if: runner.os !='Linux' 
         uses: actions/upload-artifact@v1
         with:
-          name: j3AstroIO-1.0.0-${{ matrix.os }}
-          path: j3AstroIO-1.0.0-Darwin
+          name: j3AstroIOraw-1.0.0-${{ matrix.os }}
+          path: j3AstroIOraw-1.0.0-Darwin.tar.gz
 
       - name: archive results linux
         if:  runner.os =='Linux' 
         uses: actions/upload-artifact@v1
         with:
-          name: j3AstroIO-1.0.0-${{ matrix.os }}
-          path: j3AstroIO-1.0.0-${{ runner.os }}
+          name: j3AstroIOraw-1.0.0-${{ matrix.os }}
+          path: j3AstroIOraw-1.0.0-${{ runner.os }}.tar.gz
  
