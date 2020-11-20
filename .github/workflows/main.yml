@@ -147,12 +147,12 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: j3AstroIOraw-1.0.0-${{ matrix.os }}
-          path: j3AstroIOraw-1.0.0-Darwin.tar.gz
+          path: build/j3AstroIOraw-1.0.0-Darwin.tar.gz
 
       - name: archive results linux
         if:  runner.os =='Linux' 
         uses: actions/upload-artifact@v1
         with:
           name: j3AstroIOraw-1.0.0-${{ matrix.os }}
-          path: j3AstroIOraw-1.0.0-${{ runner.os }}.tar.gz
+          path: build/j3AstroIOraw-1.0.0-${{ runner.os }}.tar.gz
  
