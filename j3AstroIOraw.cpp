@@ -78,7 +78,7 @@ int writeFile(char* ofile, cv::InputArray output)
     success = write_opencv(ofile, output);
 }
 
-int open(const char* file, cv::OutputArray image)
+int open(const char* file, cv::Mat &image)
 {
     std::string str = mime(file);
 
@@ -93,7 +93,7 @@ int open(const char* file, cv::OutputArray image)
 }
 
 
-int open_raw(const char* file, cv::OutputArray image)
+int open_raw(const char* file, cv::Mat &image)
 {
     LibRaw iProcessor;
     int ret;

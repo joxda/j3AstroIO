@@ -34,9 +34,9 @@
 #include <stdio.h>
 
 
-int open(const char* file, cv::OutputArray output);
+int open(const char* file, cv::Mat &output);
 
-int open_raw(const char* file, cv::OutputArray output);
+int open_raw(const char* file, cv::Mat &output);
 
 int writeFile(char* ofile, cv::InputArray output);
 
