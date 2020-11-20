@@ -21,39 +21,27 @@
 
 *******************************************************************************/
 //
-//  j3AstroIO.hpp
+//  j3AstroIOraw.hpp
 //
 //  Created by Joachim Janz on 12/11/2020.
 //  Copyright © 2020 Joachim Janz. All rights reserved.
 //
 
-#ifndef j3AstroIO_hpp
-#define j3AstroIO_hpp
+#ifndef j3AstroIOraw_hpp
+#define j3AstroIOraw_hpp
 
 #include "opencv2/core.hpp"
 #include <stdio.h>
 
-struct LensPars
-{
-    std::string name;
-    float focalLength;
-    float apertureN;
-    float cropFactor;
-};
-void printerror(int status);
 
 int open(const char* file, cv::OutputArray output);
 
 int open_raw(const char* file, cv::OutputArray output);
-int open_fits(const char* file, cv::OutputArray output);
-int open_opencv(const char* file, cv::OutputArray output);
 
 int writeFile(char* ofile, cv::InputArray output);
 
 int write_opencv(const char* ofile, cv::InputArray output, float factor = 1., int depth = CV_16U);
-int writeFits(const char* ofile, cv::InputArray output);
 
 std::string mime(const char* file);
-LensPars getPars(const char* file);
 
-#endif /* j3AstroIO_hpp */
+#endif /* j3AstroIOraw_hpp */
