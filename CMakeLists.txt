@@ -31,7 +31,7 @@ add_compile_options(-std=c++11)
 
 add_library( j3AstroIOraw  j3AstroIOraw.cpp )
 set_property(TARGET j3AstroIOraw PROPERTY CXX_STANDARD 11)
-set_property(TARGET j3AstroIOraw PROPERTY PUBLIC_HEADER j3AstroIO.hpp)
+set_property(TARGET j3AstroIOraw PROPERTY PUBLIC_HEADER j3AstroIOraw.hpp)
 target_include_directories(j3AstroIOraw PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 IF( (DEFINED $ENV{CI}) AND (APPLE) )
@@ -51,7 +51,7 @@ install(TARGETS j3AstroIOraw
 
 add_executable( j3AstroIOconvert  j3AstroIOconvert.cpp )
 if( (DEFINED $ENV{CI}) AND (APPLE) )
-  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIOraw /usr/local/lib/libiconv.dylib)
+  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIOraw )
 ELSE()
   target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIOraw )
 ENDIF()
