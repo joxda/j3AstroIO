@@ -39,7 +39,7 @@ IF( (DEFINED $ENV{CI}) AND (APPLE) )
   message("APPLE CI")   
   target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libmagic.a )
 ELSEIF( DEFINED $ENV{CI} )
-  message("LINUX CI"=
+  message("LINUX CI")
   target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a magic )
 #ELSEIF( TARGET Eigen3::Eigen )
 #  target_link_libraries( j3AstroIOraw  ${OpenCV_LIBS} raw magic Eigen3::Eigen )
