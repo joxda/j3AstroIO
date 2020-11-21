@@ -25,7 +25,7 @@ add_compile_options(-std=c++11)
 
 add_library( j3AstroIOexiv  ../j3AstroIOexiv.cpp )
 set_property(TARGET j3AstroIOexiv PROPERTY CXX_STANDARD 11)
-set_property(TARGET j3AstroIOexiv PROPERTY PUBLIC_HEADER j3AstroIOexiv.hpp)
+set_property(TARGET j3AstroIOexiv PROPERTY PUBLIC_HEADER ../j3AstroIOexiv.hpp)
 target_include_directories(j3AstroIOexiv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 IF( (APPLE) )
