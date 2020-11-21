@@ -34,7 +34,7 @@ set_property(TARGET j3AstroIOexiv PROPERTY PUBLIC_HEADER j3AstroIOexiv.hpp)
 target_include_directories(j3AstroIOexiv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 IF( (DEFINED $ENV{CI}) AND (APPLE) )
-  target_link_libraries( j3AstroIOexiv  /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a  )
+  target_link_libraries( j3AstroIOexiv  /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a iconv )
 ELSEIF( DEFINED $ENV{CI} )
   target_link_libraries( j3AstroIOexiv  /usr/lib/x86_64-linux-gnu/libexiv2-xmp.a  )
 ELSE()
