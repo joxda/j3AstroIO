@@ -10,6 +10,9 @@ on:
   pull_request:
     branches: [ libraw ]
 
+env:
+  CI: true
+
 jobs:
   build:
     
@@ -54,7 +57,7 @@ jobs:
           sudo make install
           
       - name: Get libraw
-        if: steps.cache-opencv.outputs.cache-hit != 'true'
+        #if: steps.cache-opencv.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           repository: LibRaw/LibRaw
@@ -62,13 +65,26 @@ jobs:
           token: ${{ github.token }}
           ref: ${{secrets.LIBRAW_VERSION}}
 
+      - name: Get libraw cmake                                                                                                                                           
+        #if: steps.cache-opencv.outputs.cache-hit != 'true'                                                                                                              
+        uses: actions/checkout@v2                                                                                                                                        
+        with:                                                                                                                                                            
+          repository: LibRaw/LibRaw-cmake                                                                                                             
+          path: libraw-cmake                                                                                                                                            
+          token: ${{ github.token }}                                                                                                                                     
+          ref: 'master'                                                                                                                   
+
+      - name: list
+        run: |
+	  pwd
+	  ls -altrh
+	  
       # (eigen?), matrix build, checkout CMakeList.txt in .../static
       - name: Build libraw
-        if: steps.cache-opencv.outputs.cache-hit != 'true'
+        #if: steps.cache-opencv.outputs.cache-hit != 'true'
         run: |
-          cd libraw
-          autoreconf --install
-          ./configure --enable-static=yes --disable-openmp  --disable-examples --disable-jasper
+          cd libraw-cmake
+          cmake  -DLIBRAW_PATH=$HOME/libraw/ -DBUILD_SHARED_LIBS=OFF .
           make
           sudo make install
 
