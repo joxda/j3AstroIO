@@ -20,6 +20,7 @@ jobs:
         os: [ubuntu-16.04,ubuntu-latest, ubuntu-20.04, macos-latest, macos-11.0]
 
     steps:
+      - uses: actions/checkout@v2
 
       - name: apt
         if: runner.os =='Linux'
