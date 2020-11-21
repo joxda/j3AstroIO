@@ -28,9 +28,9 @@ jobs:
 #      - name: gtk
 #        if: runner.os == 'Linux'
 #        run: sudo apt-get install -y libgtk2.0-dev libgtkglext1-dev
-      - name: autoconf
-        if: runner.os !='Linux'
-        run: brew install automake  libmagic #libraw #expat  bzip2 iconv autoconf libtool 
+#      - name: autoconf
+#        if: runner.os !='Linux'
+#        run: brew install automake  libmagic #libraw #expat  bzip2 iconv autoconf libtool 
  
 #      - name: apt
 #        if: runner.os =='Linux'
@@ -84,7 +84,7 @@ jobs:
         #if: steps.cache-opencv.outputs.cache-hit != 'true'
         run: |
           cd libraw-cmake
-          cmake  -DLIBRAW_PATH=$HOME/libraw/ -DBUILD_SHARED_LIBS=OFF .
+          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DBUILD_SHARED_LIBS=OFF .
           make
           sudo make install
 
