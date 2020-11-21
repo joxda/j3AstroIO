@@ -63,7 +63,7 @@ jobs:
         run: |
           mkdir -p build
           cd build
-          cmake ../pi
+          cmake ../ci
           make
           make package
  
