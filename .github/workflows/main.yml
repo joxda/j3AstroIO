@@ -45,8 +45,8 @@ jobs:
           cd exiv2
           mkdir -p build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF  F -DEXIV2_BUILD_SAMPLES=OFF  .. 
-          make
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF  F -DDEXIV2_ENABLE_NLS=OFF -DEXIV2_BUILD_SAMPLES=OFF  -DEXIV2_ENABLE_XMP=OFF .. 
+          cmake --build .
           sudo make install
           
       - name: list
