@@ -27,11 +27,11 @@ jobs:
 #        run: sudo apt-get install -y libgtk2.0-dev libgtkglext1-dev
       - name: autoconf
         if: runner.os !='Linux'
-        run: brew install automake cfitsio libmagic libraw #expat  bzip2 iconv autoconf libtool 
+        run: brew install automake  libmagic #libraw #expat  bzip2 iconv autoconf libtool 
  
-      - name: apt
-        if: runner.os =='Linux'
-        run: sudo apt-get install libraw-dev libexiv2-dev
+#      - name: apt
+#        if: runner.os =='Linux'
+#        run: sudo apt-get install libraw-dev libexiv2-dev
 
       - name: Get opencv
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
@@ -53,74 +53,25 @@ jobs:
           make
           sudo make install
           
-#      - name: Get libraw
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-#        uses: actions/checkout@v2
-#        with:
-#          repository: LibRaw/LibRaw
-#          path: libraw
-#          token: ${{ github.token }}
-#          ref: ${{secrets.LIBRAW_VERSION}}
-
-      # (eigen?), matrix build, checkout CMakeList.txt in .../static
-#      - name: Build libraw
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-#       run: |
-#          cd libraw
- #         autoreconf --install
- #         ./configure --enable-static=yes --disable-openmp  --disable-examples --disable-jasper
- #         make
- #         sudo make install
-#
-#      - name: remove so
-#        if: runner.os =='Linux' 
-#        run: sudo rm -f /usr/local/lib/libraw*so
-          
-      - name: Get exiv2
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-        if: runner.os !='Linux'       
+      - name: Get libraw
+        if: steps.cache-opencv.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
-          repository: Exiv2/exiv2
-          path: exiv2
+          repository: LibRaw/LibRaw
+          path: libraw
           token: ${{ github.token }}
-          ref: ${{secrets.EXIV2_VERSION}}
+          ref: ${{secrets.LIBRAW_VERSION}}
 
       # (eigen?), matrix build, checkout CMakeList.txt in .../static
-      - name: Build exiv2
-        if: runner.os !='Linux'
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
+      - name: Build libraw
+        if: steps.cache-opencv.outputs.cache-hit != 'true'
         run: |
-          cd exiv2
-          mkdir -p build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF  F -DEXIV2_BUILD_SAMPLES=OFF  .. 
+          cd libraw
+          autoreconf --install
+          ./configure --enable-static=yes --disable-openmp  --disable-examples --disable-jasper
           make
           sudo make install
-        
-      - name: Get cfitsio
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-        if: runner.os =='Linux'
-        uses: actions/checkout@v2
-        with:
-          repository: healpy/cfitsio
-          path: cfitsio
-          token: ${{ github.token }}
-          ref: 'master' #${{secrets.CFITSIO_VERSION}}
-        
-      - name: Build cfitsio
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-#         mkdir -p build
-#          cd build
- #         ./configure --prefix=/usr/
-#          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ..
-        if: runner.os =='Linux'
-        run: |
-          cd cfitsio
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -Wno-error=dev -Wno-error=implicit-function-declaration .
-          make
-          sudo make install
-          
+
       - name: list
         run: |
           ls -altrh /usr/local/lib/
