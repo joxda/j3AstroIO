@@ -28,19 +28,18 @@
 //
 
 
-#include "j3AstroIO.hpp"
-#include "opencv2/core.hpp"
+#include "j3AstroIOexiv.hpp"
 #include <iostream>
 
 int main(int argc, char** argv)
 {
-    if(argc != 3)
+    if(argc != 2)
     {
-        std::cout << "  Usage: j3AstroIOconvert inputFile outputFile" << std::endl;
+        std::cout << "  Usage: j3AstroIOconvert inputFile" << std::endl;
         return 1;
     }
-    cv::Mat im;
-    open(argv[1], im);
-    writeFile(argv[2], im);
+    LensPars p = getPars(argv[1]);
+    std::cout << p.name << "  focal length: " << p.focalLength << " f: " << p.apertureN << " crop: " << p.cropFactor << std::endl;
+
     return 0;
 }

@@ -20,62 +20,12 @@ jobs:
         os: [ubuntu-16.04,ubuntu-latest, ubuntu-20.04, macos-latest, macos-11.0]
 
     steps:
-      - uses: actions/checkout@v2
-      
-#      - name: gtk
-#        if: runner.os == 'Linux'
-#        run: sudo apt-get install -y libgtk2.0-dev libgtkglext1-dev
-      - name: autoconf
-        if: runner.os !='Linux'
-        run: brew install automake cfitsio libmagic libraw #expat  bzip2 iconv autoconf libtool 
- 
+
       - name: apt
         if: runner.os =='Linux'
-        run: sudo apt-get install libraw-dev libexiv2-dev
+        run: sudo apt-get install  libexiv2-dev
 
-      - name: Get opencv
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-        uses: actions/checkout@v2
-        with:
-          repository: opencv/opencv
-          path: opencv
-          token: ${{ github.token }}
-          ref: ${{secrets.OPENCV_VERSION}}
-
-      # (eigen?), matrix build, checkout CMakeList.txt in .../static
-      - name: Build opencv
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-        run: |
-          cd opencv
-          mkdir -p build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DWITH_QUIRC=OFF -DBUILD_PROTOBUF=OFF -DWITH_OPENJPEG=OFF -DWITH_OPENEXR=OFF -DWITH_EIGEN=OFF -DBUILD_LIST=core,highgui,improc -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_WEBP=OFF -DWITH_JASPER=OFF -DWITH_V4L=OFF -DWITH_GSTREAMER=OFF -DWITH_MSMF=OFF -DWITH_AVFOUNDATION=OFF -DWITH_DSHOW=OFF -DWITH_WITH_1394=OFF -DVIDEOIO_ENABLE_PLUGINS=OFF -DOPENCV_DNN_OPENCL=OFF -DBUILD_JAVA=OFF -DOPENCV_GENERATE_PKGCONFIG=ON  -DWITH_FFMPEG=OFF ..
-          make
-          sudo make install
-          
-#      - name: Get libraw
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-#        uses: actions/checkout@v2
-#        with:
-#          repository: LibRaw/LibRaw
-#          path: libraw
-#          token: ${{ github.token }}
-#          ref: ${{secrets.LIBRAW_VERSION}}
-
-      # (eigen?), matrix build, checkout CMakeList.txt in .../static
-#      - name: Build libraw
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-#       run: |
-#          cd libraw
- #         autoreconf --install
- #         ./configure --enable-static=yes --disable-openmp  --disable-examples --disable-jasper
- #         make
- #         sudo make install
-#
-#      - name: remove so
-#        if: runner.os =='Linux' 
-#        run: sudo rm -f /usr/local/lib/libraw*so
-          
+ 
       - name: Get exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
         if: runner.os !='Linux'       
@@ -97,36 +47,13 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF  F -DEXIV2_BUILD_SAMPLES=OFF  .. 
           make
           sudo make install
-        
-      - name: Get cfitsio
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-        if: runner.os =='Linux'
-        uses: actions/checkout@v2
-        with:
-          repository: healpy/cfitsio
-          path: cfitsio
-          token: ${{ github.token }}
-          ref: 'master' #${{secrets.CFITSIO_VERSION}}
-        
-      - name: Build cfitsio
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-#         mkdir -p build
-#          cd build
- #         ./configure --prefix=/usr/
-#          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ..
-        if: runner.os =='Linux'
-        run: |
-          cd cfitsio
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -Wno-error=dev -Wno-error=implicit-function-declaration .
-          make
-          sudo make install
           
       - name: list
         run: |
           ls -altrh /usr/local/lib/
           ls -altrh /usr/lib/
 
-      - name: j3AstroIO
+      - name: j3AstroIOexiv
         run: |
           mkdir -p build
           cd build
@@ -136,23 +63,23 @@ jobs:
  
       - name: unpack mac
         if: runner.os !='Linux'
-        run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
+        run: tar xzvf build/j3AstroIOexiv-1.0.0-Darwin.tar.gz
 
       - name: unpack linux
         if: runner.os =='Linux' 
-        run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
+        run: tar xzvf build/j3AstroIOexiv-1.0.0-Linux.tar.gz
 
       - name: archive results max
         if: runner.os !='Linux' 
         uses: actions/upload-artifact@v1
         with:
-          name: j3AstroIO-1.0.0-${{ matrix.os }}
-          path: j3AstroIO-1.0.0-Darwin
+          name: j3AstroIOexiv-1.0.0-${{ matrix.os }}
+          path: j3AstroIOexiv-1.0.0-Darwin
 
       - name: archive results linux
         if:  runner.os =='Linux' 
         uses: actions/upload-artifact@v1
         with:
-          name: j3AstroIO-1.0.0-${{ matrix.os }}
-          path: j3AstroIO-1.0.0-${{ runner.os }}
+          name: j3AstroIOexiv-1.0.0-${{ matrix.os }}
+          path: j3AstroIOexiv-1.0.0-${{ runner.os }}
  

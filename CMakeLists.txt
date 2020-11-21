@@ -1,4 +1,4 @@
-project(j3AstroIO)
+project(j3AstroIOexiv)
 
 cmake_minimum_required(VERSION 2.8.12)
 
@@ -15,7 +15,6 @@ link_directories(/usr/local/lib/)
   SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
 #endif()
 
-FIND_PACKAGE( OpenCV REQUIRED )
 find_package (Threads REQUIRED) #threading
 find_package(exiv2 REQUIRED CONFIG NAMES exiv2) 
 
@@ -29,27 +28,27 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 add_compile_options(-std=c++11)
 
 
-add_library( j3AstroIO  j3AstroIO.cpp )
-set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
-set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER j3AstroIO.hpp)
-target_include_directories(j3AstroIO PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
+add_library( j3AstroIOexiv  j3AstroIOexiv.cpp )
+set_property(TARGET j3AstroIOexiv PROPERTY CXX_STANDARD 11)
+set_property(TARGET j3AstroIOexiv PROPERTY PUBLIC_HEADER j3AstroIOexiv.hpp)
+target_include_directories(j3AstroIOexiv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 IF( (DEFINED $ENV{CI}) AND (APPLE) )
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a /usr/local/lib/libiconv.dylib )
+  target_link_libraries( j3AstroIOexiv  /usr/local/lib/libexiv2.a /usr/local/lib/libmagic.a  )
 ELSEIF( DEFINED $ENV{CI} )
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libcfitsio.a /usr/lib/x86_64-linux-gnu/libexiv2-xmp.a magic )
+  target_link_libraries( j3AstroIOexiv  /usr/lib/x86_64-linux-gnu/libexiv2-xmp.a  )
 ELSE()
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw cfitsio exiv2 magic)
+  target_link_libraries( j3AstroIOexiv  exiv2 )
 ENDIF()
 
-install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS j3AstroIOexiv DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS j3AstroIOexiv PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable( j3AstroIOconvert  j3AstroIOconvert.cpp )
 if( (DEFINED $ENV{CI}) AND (APPLE) )
-  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO /usr/local/lib/libiconv.dylib)
+  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIOexiv )
 ELSE()
-  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO)
+  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIOexiv)
 ENDIF()
 
 install(TARGETS j3AstroIOconvert DESTINATION bin)
