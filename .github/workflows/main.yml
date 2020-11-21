@@ -10,6 +10,9 @@ on:
   pull_request:
     branches: [ exiv ]
 
+env:
+  CI: 'true'
+
 jobs:
   build:
     
