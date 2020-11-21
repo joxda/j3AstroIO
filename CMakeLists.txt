@@ -37,7 +37,7 @@ target_include_directories(j3AstroIOraw PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_C
 
 IF( (APPLE) )
   message("APPLE CI")   
-  target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libmagic.a )
+  target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libmagic.a  ${ZLIB_LIBRARIES})
 ELSE() #( DEFINED $ENV{CI} )
   message("LINUX CI")
   target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a magic )
