@@ -36,9 +36,9 @@ target_include_directories(j3AstroIOraw PRIVATE ${OpenCV_INCLUDE_DIRS} ../${CMAK
 
 IF( APPLE )
   message("APPLE CI")   
-  FIND_PACKAGE(ZLIB)
+ # FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
   FIND_PACKAGE(JPEG)
-  target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libmagic.a bz2 ${ZLIB_LIBRARIES} /usr/local/lib/libjpeg.a)
+  target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libmagic.a bz2 /usr/local/lib/libjpeg.a)
 ELSE() 
   message("LINUX CI")
   target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a magic )
@@ -53,8 +53,7 @@ add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp )
 target_include_directories(j3AstroIOconvert PRIVATE ${OpenCV_INCLUDE_DIRS} ../${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 if( APPLE )
-  FIND_PACKAGE(ZLIB)
-  target_link_libraries( j3AstroIOconvert PRIVATE ${ZLIB_LIBRARIES} ${OpenCV_LIBS} j3AstroIOraw )
+  target_link_libraries( j3AstroIOconvert PRIVATE  ${OpenCV_LIBS} j3AstroIOraw ) #${ZLIB_LIBRARIES}
 ELSE()
   target_link_libraries( j3AstroIOconvert PRIVATE ${OpenCV_LIBS} j3AstroIOraw )
 ENDIF()
