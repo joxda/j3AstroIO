@@ -53,11 +53,13 @@ install(TARGETS j3AstroIOraw
   PUBLIC_HEADER DESTINATION include)
 
 add_executable( j3AstroIOconvert  j3AstroIOconvert.cpp )
-if( (DEFINED $ENV{CI}) AND (APPLE) )
-  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIOraw )
-ELSE()
-  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIOraw )
-ENDIF()
+target_include_directories(j3AstroIOconvert PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
+
+#if( (DEFINED $ENV{CI}) AND (APPLE) )
+#  target_link_libraries( j3AstroIOconvert PRIVATE ${OpenCV_LIBS} j3AstroIOraw )
+#ELSE()
+  target_link_libraries( j3AstroIOconvert PRIVATE ${OpenCV_LIBS} j3AstroIOraw )
+#ENDIF()
 
 install(TARGETS j3AstroIOconvert DESTINATION bin)
 
