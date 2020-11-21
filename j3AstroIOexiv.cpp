@@ -41,7 +41,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <strings.h>
-
+#include <math.h>
 #include "j3AstroIOexiv.hpp"
 
 typedef Exiv2::ExifData::const_iterator (*EasyAccessFct)(
@@ -63,7 +63,7 @@ LensPars getPars(const char* file)
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
         
-        #if EXIV2_TEST_VERSION(0, 27, 1)
+        #if EXIV2_TEST_VERSION(0, 28, 1)
             Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
         #else
             Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
