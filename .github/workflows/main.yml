@@ -89,7 +89,7 @@ jobs:
           sudo make install
 
       - name: Build libraw
-        if: runner.os !='Linux'
+        if: runner.os =='Linux'
         run: |
           cd libraw-cmake
           cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF .
