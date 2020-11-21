@@ -81,10 +81,18 @@ jobs:
 
       # (eigen?), matrix build, checkout CMakeList.txt in .../static
       - name: Build libraw
-        #if: steps.cache-opencv.outputs.cache-hit != 'true'
+        if: runner.os !='Linux'
         run: |
           cd libraw-cmake
-          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DBUILD_SHARED_LIBS=OFF .
+          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_OPENMP=OFF -DENABLE_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF .
+          make
+          sudo make install
+
+      - name: Build libraw
+        if: runner.os !='Linux'
+        run: |
+          cd libraw-cmake
+          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF .
           make
           sudo make install
 
