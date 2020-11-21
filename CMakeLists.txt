@@ -8,12 +8,12 @@ endif()
 
 link_directories(/usr/local/lib/)
 
-#if(DEFINED $ENV{CI})
+if(DEFINED $ENV{CI})
   message(STATUS "THIS IS A CI RUN")
   set(CMAKE_FIND_STATIC FIRST) 
   set(BUILD_SHARED_LIBS=OFF)
   SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
-#endif()
+endif()
 
 find_package (Threads REQUIRED) #threading
 find_package(exiv2 REQUIRED CONFIG NAMES exiv2) 

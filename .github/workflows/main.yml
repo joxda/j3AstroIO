@@ -58,6 +58,8 @@ jobs:
           ls -altrh /usr/lib/
 
       - name: j3AstroIOexiv
+        env:
+          CI: true
         run: |
           mkdir -p build
           cd build
