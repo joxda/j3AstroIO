@@ -3,7 +3,7 @@ project(j3AstroIOraw)
 cmake_minimum_required(VERSION 2.8.12)
 
 # TBD
-message("!!!NEED TO INCLUDE THE MAGIC FILE!!!)
+message("!!!NEED TO INCLUDE THE MAGIC FILE!!!")
 
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -34,7 +34,7 @@ set_property(TARGET j3AstroIOraw PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIOraw PROPERTY PUBLIC_HEADER ../j3AstroIOraw.hpp)
 target_include_directories(j3AstroIOraw PRIVATE ${OpenCV_INCLUDE_DIRS} ../${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
-IF( (APPLE) )
+IF( APPLE )
   message("APPLE CI")   
   FIND_PACKAGE(ZLIB)
   FIND_PACKAGE(JPEG)
