@@ -36,13 +36,15 @@ set_property(TARGET j3AstroIOraw PROPERTY PUBLIC_HEADER j3AstroIOraw.hpp)
 target_include_directories(j3AstroIOraw PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 IF( (DEFINED $ENV{CI}) AND (APPLE) )
+  message("APPLE CI")   
   target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libmagic.a )
 ELSEIF( DEFINED $ENV{CI} )
+  message("LINUX CI"=
   target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a magic )
-ELSEIF( TARGET Eigen3::Eigen )
-  target_link_libraries( j3AstroIOraw  ${OpenCV_LIBS} raw magic Eigen3::Eigen )
-ELSE()
-  target_link_libraries( j3AstroIOraw  ${OpenCV_LIBS} raw magic)
+#ELSEIF( TARGET Eigen3::Eigen )
+#  target_link_libraries( j3AstroIOraw  ${OpenCV_LIBS} raw magic Eigen3::Eigen )
+#ELSE()
+#  target_link_libraries( j3AstroIOraw  ${OpenCV_LIBS} raw magic)
 ENDIF()
 
 install(TARGETS j3AstroIOraw

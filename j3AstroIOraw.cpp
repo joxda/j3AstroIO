@@ -127,8 +127,8 @@ int open_raw(const char* file, cv::Mat &image)
     libraw_processed_image_t* imag = iProcessor.dcraw_make_mem_image(&ret);
 
     cv::Mat im =
-        cv::Mat(cv::Size(imag->width, imag->height), CV_16UC3, imag->data, cv::Mat::AUTO_STEP)
-        .clone();
+        cv::Mat(cv::Size(imag->width, imag->height), CV_16UC3, imag->data, cv::Mat::AUTO_STEP);
+//        .clone();
 
     LibRaw::dcraw_clear_mem(imag);
     cvtColor(im, image, cv::COLOR_RGB2BGR);
