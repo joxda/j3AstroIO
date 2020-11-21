@@ -26,7 +26,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 
 add_compile_options(-std=c++11)
-
+ 
 
 add_library( j3AstroIOexiv  j3AstroIOexiv.cpp )
 set_property(TARGET j3AstroIOexiv PROPERTY CXX_STANDARD 11)
