@@ -147,7 +147,7 @@ std::string mime(const char* file)
     // magic_open(MAGIC_CONTINUE|MAGIC_ERROR/*|MAGIC_DEBUG*/|MAGIC_MIME_TYPE);
     if (myt == NULL)
     {
-        printf("ERROR\n");
+        printf("Magic open ERROR\n");
     }
     // printf("%s\n",magic_version());
 
@@ -157,7 +157,7 @@ std::string mime(const char* file)
     // TBD if not == 0 -> error with magic.mgc...
     if (status != 0)
     {
-        printf("ERROR\n");
+        printf("Magic load ERROR\n");
     }
 
     const char* mm = magic_file(myt, file);
