@@ -57,7 +57,7 @@ struct EasyAccess
 
 PhotoPars getPars(const char* file)
 {
-    LensPars par;
+    PhotoPars par;
     try
     {
         Exiv2::XmpParser::initialize();
