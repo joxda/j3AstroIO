@@ -88,10 +88,33 @@ int open(const char* file, cv::Mat &image)
     {
         std::cout << "raw" << std::endl;
         success = open_raw(file, image);
+    } else {
+        std::cout << "CV" << std::endl;
+        success = open_opencv(file, image);
     }
     return success;
 }
 
+int open_opencv(const char* file, cv::Mat& image)
+{
+    int success = 0;
+    if(cv::haveImageReader(file))  // TBD opencv_v3 compatibility?
+    {
+        image = cv::imread(file, cv::IMREAD_COLOR | cv::IMREAD_ANYDEPTH);
+        if (image.empty())
+            success = -1;
+        // Read the file
+        // open some other formates with opencv
+    }
+    else
+    {
+        success = 1;
+        const char*  ext = std::strrchr(file, '.');;
+        std::cout << "OpenCV cannot read " << ext << " files." << std::endl;
+    }
+
+    return success;
+}
 
 int open_raw(const char* file, cv::Mat &image)
 {

@@ -37,6 +37,7 @@
 int open(const char* file, cv::Mat &output);
 
 int open_raw(const char* file, cv::Mat &output);
+int open_opencv(const char* file, cv::Mat& image);
 
 int writeFile(char* ofile, cv::InputArray output);
 
