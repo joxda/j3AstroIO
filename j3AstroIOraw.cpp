@@ -165,6 +165,7 @@ std::string mime(const char* file)
             std::cin >> mgcfile;
             int status = magic_load(myt,
                             mgcfile.c_str());
+            std::cout << status << std::endl;
         }
     }
 
