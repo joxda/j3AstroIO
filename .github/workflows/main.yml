@@ -29,7 +29,8 @@ jobs:
 #        if: runner.os =='Linux'
 ##        run: sudo apt-get install  libexiv2-dev
 
- 
+       - name: ls
+         run: ls /usr/share/file/
       - name: Get exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
 #        if: runner.os !='Linux'       
