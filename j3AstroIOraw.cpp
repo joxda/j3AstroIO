@@ -163,7 +163,7 @@ std::string mime(const char* file)
             std::string mgcfile;
             std::cout << "Magic load ERROR -please give the path to magic.mgc file: " << std::flush;
             std::cin >> mgcfile;
-            int status = magic_load(myt,
+            status = magic_load(myt,
                             mgcfile.c_str());
             std::cout << status << std::endl;
         }
