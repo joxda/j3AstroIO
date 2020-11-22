@@ -38,8 +38,8 @@ int main(int argc, char** argv)
         std::cout << "  Usage: j3AstroIOconvert inputFile" << std::endl;
         return 1;
     }
-    LensPars p = getPars(argv[1]);
-    std::cout << p.name << "  focal length: " << p.focalLength << " f: " << p.apertureN << " crop: " << p.cropFactor << std::endl;
+    PhotoPars p = getPars(argv[1]);
+    std::cout << p.camMake << " " << p.camName << " " << p.name << "  focal length: " << p.focalLength << " f: " << p.apertureN << " crop: " << p.cropFactor << std::endl;
 
     return 0;
 }

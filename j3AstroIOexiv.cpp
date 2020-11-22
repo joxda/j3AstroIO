@@ -55,7 +55,7 @@ struct EasyAccess
 
 
 
-LensPars getPars(const char* file)
+PhotoPars getPars(const char* file)
 {
     LensPars par;
     try
@@ -75,6 +75,8 @@ LensPars getPars(const char* file)
         Exiv2::ExifData::const_iterator pos = lensName(ed);
         Exiv2::ExifData::const_iterator posFN = fNumber(ed);
         Exiv2::ExifData::const_iterator posFL = focalLength(ed);
+        Exiv2::ExifData::const_iterator posCamMake = make(ed);
+        Exiv2::ExifData::const_iterator posCamModel = model(ed);
 
         Exiv2::ExifKey key("Exif.Photo.FocalPlaneXResolution");
         Exiv2::ExifData::iterator CRpos = ed.findKey(key);
@@ -98,7 +100,9 @@ LensPars getPars(const char* file)
         ymm = std::stof(CRpos->print(&ed)) / yres;
         par.cropFactor = sqrt(xmm * xmm + ymm * ymm) / 43.267;
 
-        par.name = std::string(pos->print(&ed));
+        par.lensName = std::string(pos->print(&ed));
+        par.camName = std::string(posCamModelMake->print(&ed));
+        par.camMake = std::string(posCamMake->print(&ed));
         par.apertureN = std::stof((std::string(posFN->print(&ed))).substr(1, 10));
         par.focalLength = std::stof(posFL->print(&ed));
     }

@@ -33,14 +33,16 @@
 #include <stdio.h>
 #include <iostream>
 
-struct LensPars
+struct PhotoPars
 {
-    std::string name;
+    std::string lensName;
+    std::string camName;
+    std::string camMake;
     float focalLength;
     float apertureN;
     float cropFactor;
 };
 
-LensPars getPars(const char* file);
+PhotoPars getPars(const char* file);
 
 #endif /* j3AstroIOexiv_hpp */
