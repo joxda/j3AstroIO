@@ -39,7 +39,7 @@ int main(int argc, char** argv)
         return 1;
     }
     PhotoPars p = getPars(argv[1]);
-    std::cout << p.camMake << " " << p.camName << " " << p.name << "  focal length: " << p.focalLength << " f: " << p.apertureN << " crop: " << p.cropFactor << std::endl;
+    std::cout << p.camMake << " " << p.camName << " " << p.lensName << "  focal length: " << p.focalLength << " f: " << p.apertureN << " crop: " << p.cropFactor << std::endl;
 
     return 0;
 }
