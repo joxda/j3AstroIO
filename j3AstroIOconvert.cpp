@@ -40,7 +40,7 @@ int main(int argc, char** argv)
         return 1;
     }
     cv::Mat im;
-    open_raw(argv[1], im);
+    open(argv[1], im);
     writeFile(argv[2], im);
     return 0;
 }
