@@ -161,7 +161,7 @@ std::string mime(const char* file)
                             "/usr/share/file/magic.mgc"/*"./magic.mgc"*/);
         while (status != 0) {
             std::string mgcfile;
-            std::cout << "Magic load ERROR -please give the path to magic.mgc file: ") << std::flush;
+            std::cout << "Magic load ERROR -please give the path to magic.mgc file: " << std::flush;
             std::cin >> mgcfile;
             int status = magic_load(myt,
                             mgcfile.c_str());
