@@ -151,13 +151,21 @@ std::string mime(const char* file)
     }
     // printf("%s\n",magic_version());
 
-     int status = magic_load(myt,
+    int status = magic_load(myt,
                             NULL /*"./magic.mgc"*/); // TBD do this copy thing and get the path
     // relative to project...
     // TBD if not == 0 -> error with magic.mgc...
     if (status != 0)
     {
-        printf("Magic load ERROR\n");
+        int status = magic_load(myt,
+                            "/usr/share/file/magic.mgc"/*"./magic.mgc"*/);
+        while (status != 0) {
+            std::string mgcfile;
+            std::cout << "Magic load ERROR -please give the path to magic.mgc file: ") << std::flush;
+            std::cin >> mgcfile;
+            int status = magic_load(myt,
+                            mgcfile.c_str());
+        }
     }
 
     const char* mm = magic_file(myt, file);
