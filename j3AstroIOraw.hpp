@@ -41,7 +41,7 @@ int open_opencv(const char* file, cv::Mat& image);
 
 int writeFile(char* ofile, cv::InputArray output);
 
-int write_opencv(const char* ofile, cv::InputArray output, float factor = 1., int depth = CV_16U);
+int write_opencv(const char* ofile, cv::InputArray output, float factor = 1., int depth = CV_8U);
 
 std::string mime(const char* file);
 

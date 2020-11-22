@@ -34,13 +34,17 @@
 
 int main(int argc, char** argv)
 {
-    if(argc != 3)
+    if(argc < 3)
     {
         std::cout << "  Usage: j3AstroIOconvert inputFile outputFile" << std::endl;
         return 1;
     }
+    float factor = 1.0;
+    if(argc==4) {
+      factor = atof(argv[3]);
+    }
     cv::Mat im;
     open(argv[1], im);
-    writeFile(argv[2], im);
+    writeFile(argv[2], im, factor);
     return 0;
 }
