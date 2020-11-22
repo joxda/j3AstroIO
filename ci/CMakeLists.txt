@@ -39,6 +39,7 @@ IF( APPLE )
  # FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
   FIND_PACKAGE(JPEG)
   target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libmagic.a bz2 /usr/local/lib/libjpeg.a)
+  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
 ELSE() 
   message("LINUX CI")
   target_link_libraries( j3AstroIOraw PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a magic )
