@@ -39,7 +39,7 @@ int open(const char* file, cv::Mat &output);
 int open_raw(const char* file, cv::Mat &output);
 int open_opencv(const char* file, cv::Mat& image);
 
-int writeFile(char* ofile, cv::InputArray output);
+int writeFile(char* ofile, cv::InputArray output, float factor);
 
 int write_opencv(const char* ofile, cv::InputArray output, float factor = 1., int depth = CV_8U);
 

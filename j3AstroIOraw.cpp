@@ -69,13 +69,13 @@ int write_opencv(const char* ofile, cv::InputArray output, float factor, int dep
 }
 
 
-int writeFile(char* ofile, cv::InputArray output)
+int writeFile(char* ofile, cv::InputArray output, float factor)
 {
     char* ext;
     int success;
     ext = std::strrchr(ofile, '.');
     std::cout << "EXT: " << ext << std::endl;
-    success = write_opencv(ofile, output);
+    success = write_opencv(ofile, output, factor);
 }
 
 int open(const char* file, cv::Mat &image)
