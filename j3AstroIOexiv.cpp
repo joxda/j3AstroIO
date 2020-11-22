@@ -101,7 +101,7 @@ PhotoPars getPars(const char* file)
         par.cropFactor = sqrt(xmm * xmm + ymm * ymm) / 43.267;
 
         par.lensName = std::string(pos->print(&ed));
-        par.camName = std::string(posCamModelMake->print(&ed));
+        par.camName = std::string(posCamModel->print(&ed));
         par.camMake = std::string(posCamMake->print(&ed));
         par.apertureN = std::stof((std::string(posFN->print(&ed))).substr(1, 10));
         par.focalLength = std::stof(posFL->print(&ed));
