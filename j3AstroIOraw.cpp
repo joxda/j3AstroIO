@@ -98,19 +98,26 @@ int open(const char* file, cv::Mat &image)
 int open_opencv(const char* file, cv::Mat& image)
 {
     int success = 0;
-    if(cv::haveImageReader(file))  // TBD opencv_v3 compatibility?
+    if(CV_MAJOR_VERSION > 3)
     {
+        if(cv::haveImageReader(file))  // TBD opencv_v3 compatibility?
+        {
+            image = cv::imread(file, cv::IMREAD_COLOR | cv::IMREAD_ANYDEPTH);
+            if (image.empty())
+                success = -1;
+            // Read the file
+            // open some other formates with opencv
+        }
+        else
+        {
+            success = 1;
+            const char*  ext = std::strrchr(file, '.');;
+            std::cout << "OpenCV cannot read " << ext << " files." << std::endl;
+        }
+    } else {
         image = cv::imread(file, cv::IMREAD_COLOR | cv::IMREAD_ANYDEPTH);
-        if (image.empty())
-            success = -1;
-        // Read the file
-        // open some other formates with opencv
-    }
-    else
-    {
-        success = 1;
-        const char*  ext = std::strrchr(file, '.');;
-        std::cout << "OpenCV cannot read " << ext << " files." << std::endl;
+            if (image.empty())
+                success = -1;
     }
 
     return success;
@@ -155,7 +162,10 @@ int open_raw(const char* file, cv::Mat &image)
 
     LibRaw::dcraw_clear_mem(imag);
     cvtColor(im, image, cv::COLOR_RGB2BGR);
-
+    std::cout << image.size().width << "x"  << image.size().height << std::endl;
+    double min, max;
+    cv::minMaxLoc(image, &min, &max);
+    std::cout << min << "..." << max << std::endl;
     iProcessor.recycle();
     return ret;
 }
