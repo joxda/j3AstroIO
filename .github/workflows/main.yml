@@ -10,8 +10,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  CI: true
 
 jobs:
   build:
@@ -90,8 +88,6 @@ jobs:
           
 
       - name: j3AstroIO
-        env:
-          CI: true
         run: |
           mkdir -p build
           cd build
