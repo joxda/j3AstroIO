@@ -21,14 +21,14 @@
 
 *******************************************************************************/
 //
-//  j3AstroIOfits.hpp
+//  j3AstroIO.hpp
 //
 //  Created by Joachim Janz on 12/11/2020.
 //  Copyright © 2020 Joachim Janz. All rights reserved.
 //
 
-#ifndef j3AstroIOfits_hpp
-#define j3AstroIOfits_hpp
+#ifndef j3AstroIO_hpp
+#define j3AstroIO_hpp
 
 #include "opencv2/core.hpp"
 #include <stdio.h>
@@ -48,4 +48,4 @@ int writeFits(const char* ofile, cv::InputArray output);
 
 std::string mime(const char* file);
 
-#endif /* j3AstroIOfits_hpp */
+#endif /* j3AstroIO_hpp */

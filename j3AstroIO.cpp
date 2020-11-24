@@ -37,7 +37,7 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#include "j3AstroIOfits.hpp"
+#include "j3AstroIO.hpp"
 
 
 void printerror(int status)
