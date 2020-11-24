@@ -28,7 +28,7 @@
 //
 
 
-#include "j3AstroIOfits.hpp"
+#include "j3AstroIO.hpp"
 #include "opencv2/core.hpp"
 #include <iostream>
 
