@@ -30,9 +30,22 @@
 #ifndef j3AstroIO_hpp
 #define j3AstroIO_hpp
 
-#include "opencv2/core.hpp"
 #include <stdio.h>
+#include <iostream>
+#include "opencv2/core.hpp"
 
+
+struct PhotoPars
+{
+    std::string lensName;
+    std::string camName;
+    std::string camMake;
+    float focalLength;
+    float apertureN;
+    float cropFactor;
+};
+
+PhotoPars getPars(const char* file);
 
 void printerror(int status);
 
@@ -49,3 +62,4 @@ int writeFits(const char* ofile, cv::InputArray output);
 std::string mime(const char* file);
 
 #endif /* j3AstroIO_hpp */
+

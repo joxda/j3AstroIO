@@ -6,9 +6,12 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ fits ]
+    branches: [ master ]
   pull_request:
-    branches: [ fits ]
+    branches: [ master ]
+
+env:
+  CI: true
 
 jobs:
   build:
@@ -61,34 +64,60 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -Wno-error=dev -Wno-error=implicit-function-declaration -DCURL_FOUND=NO .
           make
           sudo make install
+  
+
+      - name: Get exiv2
+#        if: steps.cache-opencv.outputs.cache-hit != 'true'
+#        if: runner.os !='Linux'       
+        uses: actions/checkout@v2
+        with:
+          repository: Exiv2/exiv2
+          path: exiv2
+          token: ${{ github.token }}
+          ref: ${{secrets.EXIV2_VERSION}}
+
+      # (eigen?), matrix build, checkout CMakeList.txt in .../static
+      - name: Build exiv2
+#        if: runner.os !='Linux'
+#        if: steps.cache-opencv.outputs.cache-hit != 'true'
+        run: |
+          cd exiv2
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DEXIV2_ENABLE_NLS=OFF -DEXIV2_BUILD_SAMPLES=OFF  -DEXIV2_ENABLE_XMP=OFF .. 
+          cmake --build .
+          sudo make install
           
-      - name: j3AstroIOfits
+
+      - name: j3AstroIO
+        env:
+          CI: true
         run: |
           mkdir -p build
           cd build
-          cmake ..
+          cmake ../ci
           make
           make package
  
-#      - name: unpack mac
-#        if: runner.os !='Linux'
-#        run: tar xzvf build/j3AstroIOfits-1.0.0-Darwin.tar.gz
-#
-#      - name: unpack linux
-#        if: runner.os =='Linux' 
-#        run: tar xzvf build/j3AstroIOfits-1.0.0-Linux.tar.gz
-#
+      - name: unpack mac
+        if: runner.os !='Linux'
+        run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
+
+      - name: unpack linux
+        if: runner.os =='Linux' 
+        run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
+
       - name: archive results max
         if: runner.os !='Linux' 
         uses: actions/upload-artifact@v1
         with:
-          name: j3AstroIOfits-1.0.0-${{ matrix.os }}
-          path: build/j3AstroIOfits-1.0.0-Darwin.tar.gz
+          name: j3AstroIO-1.0.0-${{ matrix.os }}
+          path: j3AstroIO-1.0.0-Darwin
 
       - name: archive results linux
         if:  runner.os =='Linux' 
         uses: actions/upload-artifact@v1
         with:
-          name: j3AstroIOfits-1.0.0-${{ matrix.os }}
-          path: build/j3AstroIOfits-1.0.0-${{ runner.os }}.tar.gz
+          name: j3AstroIO-1.0.0-${{ matrix.os }}
+          path: j3AstroIO-1.0.0-${{ runner.os }}
  
