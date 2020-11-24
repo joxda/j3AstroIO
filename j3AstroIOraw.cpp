@@ -51,10 +51,10 @@ int write_opencv(const char* ofile, cv::InputArray output, float factor, int dep
             cv::Mat out;
             cv::Mat image = output.getMat();
             cv::multiply(image, factor, image);
-            double min, max;
-            cv::minMaxLoc(image, &min, &max);
-            std::cout << min << "..." << max << std::endl;
             image.convertTo(out, depth);
+            double min, max;
+            cv::minMaxLoc(out, &min, &max);
+            std::cout << min << "..." << max << std::endl;
             success = cv::imwrite(ofile, out);
         }
         else
@@ -69,11 +69,12 @@ int write_opencv(const char* ofile, cv::InputArray output, float factor, int dep
             cv::Mat out;
             cv::Mat image = output.getMat();
             cv::multiply(image, factor, image);
-            double min, max;
-            cv::minMaxLoc(image, &min, &max);
-            std::cout << min << "..." << max << std::endl;
             image.convertTo(out, depth);
-            success = cv::imwrite(ofile, out);   }
+            double min, max;
+            cv::minMaxLoc(out, &min, &max);
+            std::cout << min << "..." << max << std::endl;
+            success = cv::imwrite(ofile, out);
+    }
     return success;
 }
 
