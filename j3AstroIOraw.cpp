@@ -49,7 +49,12 @@ int write_opencv(const char* ofile, cv::InputArray output, float factor, int dep
         if(cv::haveImageWriter(ofile))      // TBD opencv_v3 compatibility?
         {
             cv::Mat out;
-            output.getMat().convertTo(out, depth, factor);
+            cv::Mat image = output.getMat();
+            cv::multiply(image, factor, image);
+            double min, max;
+            cv::minMaxLoc(image, &min, &max);
+            std::cout << min << "..." << max << std::endl;
+            image.convertTo(out, depth);
             success = cv::imwrite(ofile, out);
         }
         else
@@ -61,10 +66,14 @@ int write_opencv(const char* ofile, cv::InputArray output, float factor, int dep
     }
     else
     {
-        cv::Mat out;
-        output.getMat().convertTo(out, depth, factor);
-        success = cv::imwrite(ofile, out);
-    }
+            cv::Mat out;
+            cv::Mat image = output.getMat();
+            cv::multiply(image, factor, image);
+            double min, max;
+            cv::minMaxLoc(image, &min, &max);
+            std::cout << min << "..." << max << std::endl;
+            image.convertTo(out, depth);
+            success = cv::imwrite(ofile, out);   }
     return success;
 }
 
