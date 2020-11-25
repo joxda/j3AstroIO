@@ -10,6 +10,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  CI: true
+
 
 jobs:
   build:
@@ -23,6 +26,31 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      - name: Get libraw
+        uses: actions/checkout@v2
+        with:
+          repository: LibRaw/LibRaw
+          path: libraw
+          token: ${{ github.token }}
+          ref: ${{secrets.LIBRAW_VERSION}}
+
+      - name: Get libraw cmake                                                                                                                                           
+        #if: steps.cache-opencv.outputs.cache-hit != 'true'                                                                                                              
+        uses: actions/checkout@v2                                                                                                                                        
+        with:                                                                                                                                                            
+          repository: LibRaw/LibRaw-cmake                                                                                                             
+          path: libraw-cmake                                                                                                                                            
+          token: ${{ github.token }}                                                                                                                                     
+          ref: 'master'                                                                                                                   
+
+      - name: Build libraw
+        if: runner.os =='Linux'
+        run: |
+          cd libraw-cmake
+          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_OPENMP=OFF -DENABLE_JASPER=OFF  -DENABLE_JASPER=OFF -DENABLE_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_LCMS=OFF -DUSE_JASPER=OFF .
+          make
+          sudo make install
+
       - name: Get exiv2
         uses: actions/checkout@v2
         with:
@@ -30,7 +58,7 @@ jobs:
           path: exiv2
           token: ${{ github.token }}
           ref: ${{secrets.EXIV2_VERSION}}
-
+          
       - name: Build exiv2
         run: |
           cd exiv2
@@ -68,6 +96,7 @@ jobs:
           path: opencv
           token: ${{ github.token }}
           ref: ${{secrets.OPENCV_VERSION}}
+      # (eigen?), matrix build, checkout CMakeList.txt in .../static
 
       - name: Build opencv
         run: |
@@ -82,7 +111,7 @@ jobs:
         run: |
           mkdir -p build
           cd build
-          cmake ../ci
+          cmake ../ci/
           make
           make package
  

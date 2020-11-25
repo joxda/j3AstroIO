@@ -2,6 +2,10 @@ project(j3AstroIO)
 
 cmake_minimum_required(VERSION 2.8.12)
 
+# TBD
+message("!!!NEED TO INCLUDE THE MAGIC FILE!!!")
+
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -12,11 +16,14 @@ message(STATUS "THIS IS A CI RUN")
 set(CMAKE_FIND_STATIC FIRST) 
 set(BUILD_SHARED_LIBS=OFF)
 SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
+SET(LINK_DEPENDS_NO_SHARED=ON)
 
 find_package (Threads REQUIRED) #threading
 find_package(exiv2 REQUIRED CONFIG NAMES exiv2) 
 FIND_PACKAGE( OpenCV REQUIRED )
 FIND_PACKAGE( Eigen3 3.3 NO_MODULE )
+
+link_directories(/usr/lib/)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
@@ -27,12 +34,17 @@ add_compile_options(-std=c++11)
 add_library( j3AstroIO  ../j3AstroIO.cpp )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
-target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include ${OpenCV_INCLUDE_DIRS} )
+target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include ${OpenCV_INCLUDE_DIRS} )
 
 IF( (APPLE) )
-  target_link_libraries( j3AstroIO  /usr/local/lib/libexiv2.a iconv /usr/local/lib/libpng.a bz2 curl cfitsio  /usr/local/lib/libmagic.a ${OpenCV_LIBS})
+  message("APPLE CI")   
+ # FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
+  FIND_PACKAGE(JPEG)
+  target_link_libraries( j3AstroIO  PRIVATE /usr/local/lib/libexiv2.a iconv /usr/local/lib/libpng.a bz2 curl cfitsio  /usr/local/lib/libmagic.a ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libjpeg.a )
+  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
 ELSE() 
-  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} cfitsio  magic /usr/local/lib/libexiv2.a pthread )
+  message("LINUX CI")
+  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a cfitsio  magic /usr/local/lib/libexiv2.a pthread )
 ENDIF()
 
 install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -41,6 +53,21 @@ install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp )
 
 target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO )
+
+
+#install(TARGETS j3AstroIOraw
+#  ARCHIVE DESTINATION lib
+#  LIBRARY DESTINATION lib
+#  PUBLIC_HEADER DESTINATION include)
+
+add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp )
+target_include_directories(j3AstroIOconvert PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include )
+
+if( APPLE )
+  target_link_libraries( j3AstroIOconvert PRIVATE  ${OpenCV_LIBS} j3AstroIO ) #${ZLIB_LIBRARIES}
+ELSE()
+  target_link_libraries( j3AstroIOconvert PRIVATE ${OpenCV_LIBS} j3AstroIO )
+ENDIF()
 
 install(TARGETS j3AstroIOconvert DESTINATION bin)
 

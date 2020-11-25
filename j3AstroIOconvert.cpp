@@ -29,11 +29,12 @@
 
 
 #include "j3AstroIO.hpp"
+#include "opencv2/core.hpp"
 #include <iostream>
 
 int main(int argc, char** argv)
 {
-    if(argc != 2)
+    if(argc < 3)
     {
         std::cout << "  Usage: j3AstroIOconvert inputFile" << std::endl;
         return 1;
@@ -41,5 +42,12 @@ int main(int argc, char** argv)
     PhotoPars p = getPars(argv[1]);
     std::cout << p.camMake << " " << p.camName << " " << p.lensName << "  focal length: " << p.focalLength << " f: " << p.apertureN << " crop: " << p.cropFactor << std::endl;
 
+    float factor = 1.0;
+    if(argc==4) {
+      factor = atof(argv[3]);
+    }
+    cv::Mat im;
+    open(argv[1], im);
+    writeFile(argv[2], im, factor);
     return 0;
 }
