@@ -27,7 +27,7 @@ set_property(TARGET j3AstroIOfits  PROPERTY PUBLIC_HEADER ../j3AstroIOfits.hpp)
 target_include_directories(j3AstroIOfits  PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include )
 
 IF( (APPLE) )
-  target_link_libraries( j3AstroIOfits   ${OpenCV_LIBS}  /usr/local/lib/libcfitsio.a /usr/local/lib/libmagic.a z curl)
+  target_link_libraries( j3AstroIOfits   ${OpenCV_LIBS}  /usr/local/lib/libcfitsio.a /usr/local/lib/libmagic.a bz2 curl)
 ELSE( )
   target_link_libraries( j3AstroIOfits   ${OpenCV_LIBS}  /usr/local/lib/libcfitsio.a  magic )
 ENDIF()
