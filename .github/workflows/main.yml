@@ -44,6 +44,14 @@ jobs:
           ref: 'master'                                                                                                                   
 
       - name: Build libraw
+        if: runner.os !='Linux'
+        run: |
+          cd libraw-cmake
+          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_OPENMP=OFF -DENABLE_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_LCMS=OFF -DENABLE_JASPER=OFF  -DENABLE_JASPER=OFF -DZLIB_FOUND=OFF .
+          make
+          sudo make install
+
+      - name: Build libraw
         if: runner.os =='Linux'
         run: |
           cd libraw-cmake

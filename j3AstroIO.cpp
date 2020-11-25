@@ -559,49 +559,6 @@ std::string mime(const char* file)
 
 
 
-std::string mime(const char* file)
-{
-    struct magic_set* myt = magic_open(MAGIC_CONTINUE |
-                                       MAGIC_ERROR /*|MAGIC_DEBUG*/ | MAGIC_PRESERVE_ATIME | MAGIC_MIME);
-    // magic_t myt =
-    // magic_open(MAGIC_CONTINUE|MAGIC_ERROR/*|MAGIC_DEBUG*/|MAGIC_MIME_TYPE);
-    if (myt == NULL)
-    {
-        printf("ERROR\n");
-    }
-    // printf("%s\n",magic_version());
-
-    int status = magic_load(myt,
-                            NULL /*"./magic.mgc"*/); // TBD do this copy thing and get the path
-    // relative to project...
-    // TBD if not == 0 -> error with magic.mgc...
-    if (status != 0)
-    {
-        printf("ERROR\n");
-    }
-
-    const char* mm = magic_file(myt, file);
-    if (mm != NULL)
-    {
-        std::cout << mm << std::endl;
-    }
-
-    const unsigned long len = std::strlen(mm);
-
-    if (mm == NULL)
-    {
-        (void)printf("ERROR: %s\n", magic_error(myt));
-    }
-    char* mimeret = new char[len + 1];
-
-    std::strncpy(mimeret, mm, len);
-
-    magic_close(myt);
-    std::string mimereturn(mimeret);
-
-    delete[] mimeret;
-    return mimereturn;
-}
 
 
 
