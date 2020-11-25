@@ -30,7 +30,7 @@ set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
 target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${OpenCV_INCLUDE_DIRS} /usr/local/include )
 
 IF( (APPLE) )
-  target_link_libraries( j3AstroIO  /usr/local/lib/libexiv2.a ${OpenCV_LIBS} cfitsio  /usr/local/lib/libmagic.a)
+  target_link_libraries( j3AstroIO  /usr/local/lib/libexiv2.a iconv /usr/local/lib/libpng.a z ${OpenCV_LIBS} cfitsio  /usr/local/lib/libmagic.a)
 ELSE() 
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} cfitsio  magic /usr/local/lib/libexiv2.a pthread )
 ENDIF()
@@ -40,11 +40,7 @@ install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp )
 
-IF( (APPLE) )
-  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO )
-ELSE()
-  target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO )
-ENDIF()
+target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO )
 
 install(TARGETS j3AstroIOconvert DESTINATION bin)
 

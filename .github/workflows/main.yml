@@ -24,8 +24,6 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Get exiv2
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
-#        if: runner.os !='Linux'       
         uses: actions/checkout@v2
         with:
           repository: Exiv2/exiv2
@@ -33,10 +31,7 @@ jobs:
           token: ${{ github.token }}
           ref: ${{secrets.EXIV2_VERSION}}
 
-      # (eigen?), matrix build, checkout CMakeList.txt in .../static
       - name: Build exiv2
-#        if: runner.os !='Linux'
-#        if: steps.cache-opencv.outputs.cache-hit != 'true'
         run: |
           cd exiv2
           mkdir -p build
@@ -49,24 +44,6 @@ jobs:
         if: runner.os !='Linux'
         run: brew install  cfitsio  libmagic
  
-      - name: Get opencv
-        uses: actions/checkout@v2
-        with:
-          repository: opencv/opencv
-          path: opencv
-          token: ${{ github.token }}
-          ref: ${{secrets.OPENCV_VERSION}}
-
-      # (eigen?), matrix build, checkout CMakeList.txt in .../static
-      - name: Build opencv
-        run: |
-          cd opencv
-          mkdir -p build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DWITH_QUIRC=OFF -DBUILD_PROTOBUF=OFF -DWITH_OPENJPEG=OFF -DWITH_OPENEXR=OFF -DWITH_EIGEN=OFF -DBUILD_LIST=core,highgui,improc -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_WEBP=OFF -DWITH_JASPER=OFF -DWITH_V4L=OFF -DWITH_GSTREAMER=OFF -DWITH_MSMF=OFF -DWITH_AVFOUNDATION=OFF -DWITH_DSHOW=OFF -DWITH_WITH_1394=OFF -DVIDEOIO_ENABLE_PLUGINS=OFF -DOPENCV_DNN_OPENCL=OFF -DBUILD_JAVA=OFF -DOPENCV_GENERATE_PKGCONFIG=ON  -DWITH_FFMPEG=OFF ..
-          make
-          sudo make install
-        
       - name: Get cfitsio
         if: runner.os =='Linux'
         uses: actions/checkout@v2
@@ -84,6 +61,23 @@ jobs:
           make
           sudo make install          
 
+      - name: Get opencv
+        uses: actions/checkout@v2
+        with:
+          repository: opencv/opencv
+          path: opencv
+          token: ${{ github.token }}
+          ref: ${{secrets.OPENCV_VERSION}}
+
+      - name: Build opencv
+        run: |
+          cd opencv
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DWITH_QUIRC=OFF -DBUILD_PROTOBUF=OFF -DWITH_OPENJPEG=OFF -DWITH_OPENEXR=OFF -DWITH_EIGEN=OFF -DBUILD_LIST=core,highgui,improc -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_WEBP=OFF -DWITH_JASPER=OFF -DWITH_V4L=OFF -DWITH_GSTREAMER=OFF -DWITH_MSMF=OFF -DWITH_AVFOUNDATION=OFF -DWITH_DSHOW=OFF -DWITH_WITH_1394=OFF -DVIDEOIO_ENABLE_PLUGINS=OFF -DOPENCV_DNN_OPENCL=OFF -DBUILD_JAVA=OFF -DOPENCV_GENERATE_PKGCONFIG=ON  -DWITH_FFMPEG=OFF ..
+          make
+          sudo make install
+        
       - name: j3AstroIO
         run: |
           mkdir -p build
@@ -92,25 +86,25 @@ jobs:
           make
           make package
  
-      - name: unpack mac
-        if: runner.os !='Linux'
-        run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
+#      - name: unpack mac
+#        if: runner.os !='Linux'
+#        run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
+#
+#      - name: unpack linux
+#        if: runner.os =='Linux' 
+#        run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
 
-      - name: unpack linux
-        if: runner.os =='Linux' 
-        run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
-
-      - name: archive results max
+      - name: archive results mac
         if: runner.os !='Linux' 
         uses: actions/upload-artifact@v1
         with:
           name: j3AstroIO-1.0.0-${{ matrix.os }}
-          path: j3AstroIO-1.0.0-Darwin
+          path: build/j3AstroIO-1.0.0-Darwin.tar.gz
 
       - name: archive results linux
         if:  runner.os =='Linux' 
         uses: actions/upload-artifact@v1
         with:
           name: j3AstroIO-1.0.0-${{ matrix.os }}
-          path: j3AstroIO-1.0.0-${{ runner.os }}
+          path: build/j3AstroIO-1.0.0-${{ runner.os }}.tar.gz
  
