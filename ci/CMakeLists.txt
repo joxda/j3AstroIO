@@ -51,7 +51,7 @@ install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp )
-
+target_include_directories(j3AstroIOconvert PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include )
 target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO )
 
 
@@ -59,15 +59,6 @@ target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO )
 #  ARCHIVE DESTINATION lib
 #  LIBRARY DESTINATION lib
 #  PUBLIC_HEADER DESTINATION include)
-
-add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp )
-target_include_directories(j3AstroIOconvert PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include )
-
-if( APPLE )
-  target_link_libraries( j3AstroIOconvert PRIVATE  ${OpenCV_LIBS} j3AstroIO ) #${ZLIB_LIBRARIES}
-ELSE()
-  target_link_libraries( j3AstroIOconvert PRIVATE ${OpenCV_LIBS} j3AstroIO )
-ENDIF()
 
 install(TARGETS j3AstroIOconvert DESTINATION bin)
 
