@@ -13,9 +13,9 @@ set(CMAKE_FIND_STATIC FIRST)
 set(BUILD_SHARED_LIBS=OFF)
 SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
 
-FIND_PACKAGE( OpenCV REQUIRED )
 find_package (Threads REQUIRED) #threading
 find_package(exiv2 REQUIRED CONFIG NAMES exiv2) 
+FIND_PACKAGE( OpenCV REQUIRED )
 FIND_PACKAGE( Eigen3 3.3 NO_MODULE )
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
@@ -27,10 +27,10 @@ add_compile_options(-std=c++11)
 add_library( j3AstroIO  ../j3AstroIO.cpp )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
-target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${OpenCV_INCLUDE_DIRS} /usr/local/include )
+target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include ${OpenCV_INCLUDE_DIRS} )
 
 IF( (APPLE) )
-  target_link_libraries( j3AstroIO  /usr/local/lib/libexiv2.a ${OpenCV_LIBS} cfitsio  /usr/local/lib/libmagic.a)
+  target_link_libraries( j3AstroIO  /usr/local/lib/libexiv2.a iconv /usr/local/lib/libpng.a z cfitsio  /usr/local/lib/libmagic.a ${OpenCV_LIBS})
 ELSE() 
   target_link_libraries( j3AstroIO  ${OpenCV_LIBS} cfitsio  magic /usr/local/lib/libexiv2.a pthread )
 ENDIF()
