@@ -74,7 +74,7 @@ PhotoPars getPars(const char* file)
             Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
         #else
             Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
-        #endif
+	#endif
         assert(EXimage.get() != 0);
         EXimage->readMetadata();
         Exiv2::ExifData &ed = EXimage->exifData();
@@ -305,7 +305,7 @@ int writeFile(char* ofile, cv::InputArray output, float factor)
 int open(const char* file, cv::Mat &image)
 {
     std::string str = mime(file);
-
+    std::cout << "MIME: " << file << " " << str.c_str() << std::endl;
     int success = -1;
 
     if (str.find("image/fits") == 0)
