@@ -22,7 +22,7 @@ FIND_PACKAGE( Eigen3 3.3 NO_MODULE )
 
 link_directories(/usr/lib/)
 
-add_compile_definitions(CIRUN)
+add_compile_definitions(-DCIRUN)
 
 include_directories(embed)
 add_subdirectory(embed)

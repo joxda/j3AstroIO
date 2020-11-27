@@ -38,7 +38,7 @@ IF( TARGET Eigen3::Eigen )
 ELSE()
  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw magic cfitsio  magic exiv2)
 ENDIF()
-install(TARGETS j3AstroIO  ARCHIVE  DESTINATION lib  PUBLIC_HEADER DESTINATION include)
+#install(TARGETS j3AstroIO  ARCHIVE  DESTINATION lib  PUBLIC_HEADER DESTINATION include)
 #install(TARGETS j3AstroIO  DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #install(TARGETS j3AstroIO  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
