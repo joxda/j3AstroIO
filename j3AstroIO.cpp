@@ -21,7 +21,7 @@
 
 *******************************************************************************/
 //
-//  j3AstroIOraw.cpp
+//  j3AstroIO.cpp
 //
 //  Created by Joachim Janz on 12/11/2020.
 //  Copyright © 2020 Joachim Janz. All rights reserved.
@@ -29,6 +29,10 @@
 
 #include "fitsio.h"
 #include <magic.h>
+
+#ifdef CIRUN
+  #include "resource.h"
+#endif
 
 #include <exiv2/exiv2.hpp>
 #include <exiv2/exv_conf.h>
@@ -69,12 +73,12 @@ PhotoPars getPars(const char* file)
     {
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
-        
-        #if EXIV2_TEST_VERSION(0, 27, 1)
+      
+	//        #if EXIV2_TEST_VERSION(0, 27, 1)
             Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
-        #else
-            Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
-	#endif
+	    //#else
+            //Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
+	    //#endif
         assert(EXimage.get() != 0);
         EXimage->readMetadata();
         Exiv2::ExifData &ed = EXimage->exifData();
@@ -514,9 +518,13 @@ std::string mime(const char* file)
         printf("Magic open ERROR\n");
     }
     // printf("%s\n",magic_version());
-
+#ifdef CIRUN
+    Resource text = LOAD_RESOURCE(magic_mgc);
+    int status = magic_load_buffers(myt, (void**)&text.data(), (size_t*)&text.size(), 1);
+#else
     int status = magic_load(myt,
                             NULL /*"./magic.mgc"*/); // TBD do this copy thing and get the path
+#endif
     // relative to project...
     // TBD if not == 0 -> error with magic.mgc...
     if (status != 0)

@@ -1,6 +1,6 @@
 project(j3AstroIO)
 
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.11.99)
 
 # TBD
 message("!!!NEED TO INCLUDE THE MAGIC FILE!!!")
@@ -25,13 +25,34 @@ FIND_PACKAGE( Eigen3 3.3 NO_MODULE )
 
 link_directories(/usr/lib/)
 
+add_compile_definitions(-DCIRUN)
+
+FUNCTION(ADD_RESOURCES out_var)
+  SET(result)
+  FOREACH(in_f ${ARGN})
+    FILE(RELATIVE_PATH src_f ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/${in_f})
+    SET(out_f "${PROJECT_BINARY_DIR}/${in_f}.o")
+    ADD_CUSTOM_COMMAND(OUTPUT ${out_f}
+      COMMAND ld -r -b binary -o ${out_f} ${src_f}
+      DEPENDS ${in_f}
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+      COMMENT "Building GLSL object ${out_f}"
+      VERBATIM
+      )
+    LIST(APPEND result ${out_f})
+  ENDFOREACH()
+  SET(${out_var} "${result}" PARENT_SCOPE)
+ENDFUNCTION()
+
+ADD_RESOURCES(someResources magic.mgc)
+
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 
 add_compile_options(-std=c++11)
  
 
-add_library( j3AstroIO  ../j3AstroIO.cpp )
+add_library( j3AstroIO  ../j3AstroIO.cpp ${someResources} )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
 target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include ${OpenCV_INCLUDE_DIRS} )
