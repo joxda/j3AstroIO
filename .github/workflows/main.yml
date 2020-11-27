@@ -27,9 +27,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: checkthis
-      	run: |
-	  cmake --version
-	  find / -iname magic.mgc
+        run: |
+          cmake --version
+          find / -iname magic.mgc
 	  
       - name: Get libraw
         uses: actions/checkout@v2
