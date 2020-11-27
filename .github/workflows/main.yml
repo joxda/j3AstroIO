@@ -30,7 +30,7 @@ jobs:
         run: |
           cmake --version
           find / -iname magic.mgc
-	  
+  
       - name: Get libraw
         uses: actions/checkout@v2
         with:
