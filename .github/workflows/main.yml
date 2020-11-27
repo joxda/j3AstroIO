@@ -26,10 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: checkthis
-        run: |
-          cmake --version
-          find / -iname magic.mgc
+      - name: update ubuntu
+        if: runner.os =='Linux'
+        run: sudo apt-get update
   
       - name: Get libraw
         uses: actions/checkout@v2
@@ -124,6 +123,7 @@ jobs:
         run: |
           mkdir -p build
           cd build
+	  cp /usr/share/file/magic.mgc .
           cmake ../ci/
           make
           make package
