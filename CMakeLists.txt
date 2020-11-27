@@ -1,13 +1,6 @@
 project(j3AstroIO)
 
 
-#try_compile(COMPILE_SUCCEEDED ${CMAKE_BINARY_DIR}/compile_tests my_test_src.cpp)
-#
-#if(COMPILE_SUCCEEDED)
-#  message("Success!")
-#endif()
-
-
 cmake_minimum_required(VERSION 2.8.12)
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -24,8 +17,16 @@ FIND_PACKAGE( Eigen3 3.3 NO_MODULE )
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 
-add_compile_options(-std=c++11)
- 
+set(CMAKE_CXX_STANDARD 11)
+
+file(WRITE   ${CMAKE_BINARY_DIR}/CMakeFiles/test.cpp "#include <exiv2/exiv2.hpp>\nint main(){Exiv2::Image::UniquePtr EXimage;\nreturn 0;}")
+try_compile(COMPILE_SUCCEEDED ${CMAKE_BINARY_DIR}/CMakeFiles/compile_tests  ${CMAKE_BINARY_DIR}/CMakeFiles/test.cpp CXX_STANDARD 11)
+
+if(COMPILE_SUCCEEDED)
+  add_compile_definitions(UNIQ)
+endif()
+
+
 add_library( j3AstroIO  j3AstroIO.cpp )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER j3AstroIO.hpp)

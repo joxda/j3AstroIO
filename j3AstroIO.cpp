@@ -35,15 +35,6 @@
 #endif
 
 #include <exiv2/exiv2.hpp>
-#include <exiv2/exv_conf.h>
-#ifdef EXIV2_VERSION
-# ifndef EXIV2_TEST_VERSION
-# define EXIV2_TEST_VERSION(major,minor,patch) \
-    ( EXIV2_VERSION >= EXIV2_MAKE_VERSION(major,minor,patch) )
-# endif
-#else
-# define EXIV2_TEST_VERSION(major,minor,patch) (false)
-#endif
 
 #include "libraw/libraw.h"
 
@@ -73,10 +64,10 @@ PhotoPars getPars(const char* file)
     {
         Exiv2::XmpParser::initialize();
         ::atexit(Exiv2::XmpParser::terminate);
-        #if EXIV2_TEST_VERSION(0, 28, 1)
-            Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
-	    #else
+        #ifdef UNIQ
             Exiv2::Image::UniquePtr EXimage = Exiv2::ImageFactory::open(file);
+	    #else
+            Exiv2::Image::AutoPtr EXimage = Exiv2::ImageFactory::open(file);
 	    #endif
         assert(EXimage.get() != 0);
         EXimage->readMetadata();

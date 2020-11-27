@@ -32,7 +32,6 @@ embed_resources( someResources magic.mgc )
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 
-
 add_library( j3AstroIO  ../j3AstroIO.cpp ${someResources} )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
