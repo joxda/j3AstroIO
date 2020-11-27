@@ -509,6 +509,7 @@ std::string mime(const char* file)
     }
     // printf("%s\n",magic_version());
 #ifdef CIRUN
+    #pragma message("USE EMBEDDED MAGIC")
     Resource text = LOAD_RESOURCE(magic_mgc);
     int status = magic_load_buffers(myt, (void**)&text.data(), (size_t*)&text.size(), 1);
 #else

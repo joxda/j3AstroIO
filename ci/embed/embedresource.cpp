@@ -12,8 +12,6 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    std::cout << "OUT: " << argv[1] << std::endl;
-    std::cout << "IN:  " << argv[2] << std::endl;
     std::string sym(argv[2]);
      std::replace(sym.begin(), sym.end(), '.', '_');
      std::replace(sym.begin(), sym.end(), '-', '_');
@@ -30,10 +28,12 @@ int main(int argc, char** argv)
      ofs << "const char _resource_" << sym << "[] = {" << std::endl;
 
     size_t lineCount = 0;
-    while (!ifs.eof())
+    while (true)
     {
         char c;
         ifs.get(c);
+        if (ifs.eof())
+             break;
         ofs << "0x" << std::hex << (c & 0xff) << ", ";
         if (++lineCount == 10) {
             ofs << std::endl;
