@@ -92,7 +92,7 @@ PhotoPars getPars(const char* file)
             xres /= fac;
             key = Exiv2::ExifKey("Exif.Photo.PixelXDimension");
             CRpos = ed.findKey(key);
-            if (CRpos != ed.end()) 
+            if (CRpos != ed.end())
                 xmm = std::stof(CRpos->print(&ed)) / xres;
         }
         key = Exiv2::ExifKey("Exif.Photo.FocalPlaneYResolution");
@@ -102,7 +102,7 @@ PhotoPars getPars(const char* file)
             yres /= fac;
             key = Exiv2::ExifKey("Exif.Photo.PixelYDimension");
             CRpos = ed.findKey(key);
-            if (CRpos != ed.end()) 
+            if (CRpos != ed.end())
                 ymm = std::stof(CRpos->print(&ed)) / yres;
         }
         }
