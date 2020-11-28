@@ -58,9 +58,9 @@ jobs:
           cmake --build .
           sudo make install
           
-      - name: list
-        run: |
-          ls -altrh /usr/lib/x86_64-linux-gnu/
+#      - name: list
+#        run: |
+#          ls -altrh /usr/lib/x86_64-linux-gnu/
 #          /usr/local/lib/
 #          ls -altrh /usr/lib/
 
