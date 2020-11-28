@@ -29,12 +29,12 @@ jobs:
         if: runner.os =='Linux'
         run: sudo apt-get install expat
 
-      - name: brew
-        if: runner.os !='Linux'
-        run: brew install expat
+#      - name: brew
+#        if: runner.os !='Linux'
+#        run: brew install expat
      
-      - name: ls
-        run: ls /usr/lib/
+#      - name: ls
+#        run: ls /usr/lib/
 
       - name: Get exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
@@ -58,10 +58,10 @@ jobs:
           cmake --build .
           sudo make install
           
-      - name: list
-        run: |
-          ls -altrh /usr/local/lib/
-          ls -altrh /usr/lib/
+#      - name: list
+#        run: |
+#          ls -altrh /usr/local/lib/
+#          ls -altrh /usr/lib/
 
       - name: j3AstroIOexiv
         env:
