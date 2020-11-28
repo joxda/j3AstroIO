@@ -25,12 +25,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-#      - name: apt
-#        if: runner.os =='Linux'
-##        run: sudo apt-get install  libexiv2-dev
+      - name: apt
+        if: runner.os =='Linux'
+        run: sudo apt-get install expat
 
-      - name: ls
-        run: ls /usr/share/file/
+      - name: brew
+        if: runner.os !='Linux'
+        run: brew install expat
+     
       - name: Get exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
 #        if: runner.os !='Linux'       
