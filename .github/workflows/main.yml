@@ -54,7 +54,7 @@ jobs:
           cd exiv2
           mkdir -p build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DEXIV2_BUILD_SAMPLES=OFF  .. 
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DEXIV2_BUILD_SAMPLES=OFF -DEXPAT_LIBRARY:FILEPATH=/usr/local/Cellar/expat/2.2.10/lib/libexpat.a  -Dpkgcfg_lib_PC_EXPAT_expat:FILEPATH=/usr/local/Cellar/expat/2.2.10/lib/libexpat.a .. 
           cmake --build .
           sudo make install
           
