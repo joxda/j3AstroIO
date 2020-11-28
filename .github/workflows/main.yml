@@ -34,8 +34,8 @@ jobs:
         run: brew install expat
      
       - name: ls
-        run: ls /usr/local/lib/
-        
+        run: ls /usr/lib/
+
       - name: Get exiv2
 #        if: steps.cache-opencv.outputs.cache-hit != 'true'
 #        if: runner.os !='Linux'       
