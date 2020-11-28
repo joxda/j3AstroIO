@@ -83,11 +83,11 @@ PhotoPars getPars(const char* file)
 
         Exiv2::ExifKey key("Exif.Photo.FocalPlaneResolutionUnit");
         Exiv2::ExifData::iterator CRpos = ed.findKey(key);
-        if (CRpos != ed.end()) {
+        if (CRpos != ed.end()) {
             fac = CRpos->print(&ed) == "inch" ? 25.4 : 10.;
             key = Exiv2::ExifKey("Exif.Photo.FocalPlaneXResolution");
             CRpos = ed.findKey(key);
-        if (CRpos != ed.end()) {
+        if (CRpos != ed.end()) {
             xres = std::stof(CRpos->print(&ed));
             xres /= fac;
             key = Exiv2::ExifKey("Exif.Photo.PixelXDimension");
@@ -97,7 +97,7 @@ PhotoPars getPars(const char* file)
         }
         key = Exiv2::ExifKey("Exif.Photo.FocalPlaneYResolution");
         CRpos = ed.findKey(key);
-        if (CRpos != ed.end()) {
+        if (CRpos != ed.end()) {
             yres = std::stof(CRpos->print(&ed));
             yres /= fac;
             key = Exiv2::ExifKey("Exif.Photo.PixelYDimension");
