@@ -59,7 +59,7 @@ struct EasyAccess
 
 PhotoPars getPars(const char* file)
 {
-    PhotoPars par;
+    PhotoPars par = {"","","",0,0,0};
     try
     {
         Exiv2::XmpParser::initialize();
@@ -79,37 +79,51 @@ PhotoPars getPars(const char* file)
         Exiv2::ExifData::const_iterator posCamMake = make(ed);
         Exiv2::ExifData::const_iterator posCamModel = model(ed);
 
-        Exiv2::ExifKey key("Exif.Photo.FocalPlaneXResolution");
+        float xres, yres, fac, xmm, ymm;
+
+        Exiv2::ExifKey key("Exif.Photo.FocalPlaneResolutionUnit");
         Exiv2::ExifData::iterator CRpos = ed.findKey(key);
-        if (CRpos == ed.end())
-            std::cout << "Did not find key" << std::endl;
-        float xres = std::stof(CRpos->print(&ed));
+        if (CRpos != ed.end()) {
+            fac = CRpos->print(&ed) == "inch" ? 25.4 : 10.;
+            key = Exiv2::ExifKey("Exif.Photo.FocalPlaneXResolution");
+            CRpos = ed.findKey(key);
+        if (CRpos != ed.end()) {
+            xres = std::stof(CRpos->print(&ed));
+            xres /= fac;
+            key = Exiv2::ExifKey("Exif.Photo.PixelXDimension");
+            CRpos = ed.findKey(key);
+            if (CRpos != ed.end()) 
+                xmm = std::stof(CRpos->print(&ed)) / xres;
+        }
         key = Exiv2::ExifKey("Exif.Photo.FocalPlaneYResolution");
         CRpos = ed.findKey(key);
-        float yres = std::stof(CRpos->print(&ed));
-        key = Exiv2::ExifKey("Exif.Photo.FocalPlaneResolutionUnit");
-        CRpos = ed.findKey(key);
-        float fac = CRpos->print(&ed) == "inch" ? 25.4 : 10.;
-        xres /= fac;
-        yres /= fac;
-        float xmm, ymm;
-        key = Exiv2::ExifKey("Exif.Photo.PixelXDimension");
-        CRpos = ed.findKey(key);
-        xmm = std::stof(CRpos->print(&ed)) / xres;
-        key = Exiv2::ExifKey("Exif.Photo.PixelYDimension");
-        CRpos = ed.findKey(key);
-        ymm = std::stof(CRpos->print(&ed)) / yres;
-        par.cropFactor = sqrt(xmm * xmm + ymm * ymm) / 43.267;
-
-        par.lensName = std::string(pos->print(&ed));
-        par.camName = std::string(posCamModel->print(&ed));
-        par.camMake = std::string(posCamMake->print(&ed));
-        par.apertureN = std::stof((std::string(posFN->print(&ed))).substr(1, 10));
-        par.focalLength = std::stof(posFL->print(&ed));
+        if (CRpos != ed.end()) {
+            yres = std::stof(CRpos->print(&ed));
+            yres /= fac;
+            key = Exiv2::ExifKey("Exif.Photo.PixelYDimension");
+            CRpos = ed.findKey(key);
+            if (CRpos != ed.end()) 
+                ymm = std::stof(CRpos->print(&ed)) / yres;
+        }
+        }
+        
+        if( xmm && ymm )
+            par.cropFactor = sqrt(xmm * xmm + ymm * ymm) / 43.267;
+  
+        if (pos != ed.end())
+            par.lensName = std::string(pos->print(&ed));
+        if (posCamModel != ed.end())
+            par.camName = std::string(posCamModel->print(&ed));
+        if (posCamMake != ed.end())
+            par.camMake = std::string(posCamMake->print(&ed));
+        if (posFN != ed.end())
+            par.apertureN = std::stof((std::string(posFN->print(&ed))).substr(1, 10));
+        if (posFL != ed.end())
+            par.focalLength = std::stof(posFL->print(&ed));
     }
     catch (Exiv2::AnyError &e)
     {
-        std::cout << "Caught Exiv2 exception '" << e << "'\n";
+        std::cout << "Caught Exiv2 exception '" << e << std::endl;
     }
     return par;
 }
