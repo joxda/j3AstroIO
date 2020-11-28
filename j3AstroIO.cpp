@@ -525,7 +525,9 @@ std::string mime(const char* file)
 #ifdef CIRUN
     #pragma message("USE EMBEDDED MAGIC")
     Resource text = LOAD_RESOURCE(magic_mgc);
+    std::cout << "LOADING BINARY MAGIC" << std::endl;
     int status = magic_load_buffers(myt, (void**)&text.data(), (size_t*)&text.size(), 1);
+    std::cout << status << std::endl;
 #else
     int status = magic_load(myt,
                             NULL /*"./magic.mgc"*/); // TBD do this copy thing and get the path
