@@ -584,7 +584,13 @@ try {
     //Exiv2::BasicIo::UniquePtr memIo(new Exiv2::MemIo);
     //memIo->transfer(*fileIo);
  
+    #ifdef UNIQ
     Exiv2::Image::UniquePtr readImg = Exiv2::ImageFactory::open(inFile);
+    Exiv2::Image::UniquePtr writeImg = Exiv2::ImageFactory::open(outFile);
+    #else
+    Exiv2::Image::AutoPtr readImg = Exiv2::ImageFactory::open(inFile);
+    Exiv2::Image::AutoPtr writeImg = Exiv2::ImageFactory::open(outFile);
+    #endif
     assert(readImg.get() != 0);
     readImg->readMetadata();
  
