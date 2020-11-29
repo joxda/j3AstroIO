@@ -59,6 +59,7 @@ int writeFile(char* ofile, cv::InputArray output, float factor);
 int write_opencv(const char* ofile, cv::InputArray output, float factor = 1., int depth = CV_8U);
 
 std::string mime(const char* file);
+int copyMeta(const char* inFile, const char* outFile);
 
 #endif /* j3AstroIO_hpp */
 

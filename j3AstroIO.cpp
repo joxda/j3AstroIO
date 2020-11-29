@@ -29,6 +29,7 @@
 
 #include "fitsio.h"
 #include <magic.h>
+#include <exiv2/exiv2.hpp>
 
 #ifdef CIRUN
   #include "resource.h"
@@ -571,7 +572,46 @@ std::string mime(const char* file)
     return mimereturn;
 }
 
-
+// NEEDS TO WORK DIFFERENTLY FOR FITS DATA!!
+int copyMeta(const char* inFile, const char* outFile)
+{
+try {
+    Exiv2::XmpParser::initialize();
+    ::atexit(Exiv2::XmpParser::terminate);
+ 
+    // Use MemIo to increase test coverage.
+    //Exiv2::BasicIo::UniquePtr fileIo(new Exiv2::FileIo(inFile));
+    //Exiv2::BasicIo::UniquePtr memIo(new Exiv2::MemIo);
+    //memIo->transfer(*fileIo);
+ 
+    Exiv2::Image::UniquePtr readImg = Exiv2::ImageFactory::open(inFile);
+    assert(readImg.get() != 0);
+    readImg->readMetadata();
+ 
+    Exiv2::Image::UniquePtr writeImg = Exiv2::ImageFactory::open(outFile);
+    assert(writeImg.get() != 0);
+    writeImg->readMetadata();
+    writeImg->setIptcData(readImg->iptcData());
+    writeImg->setExifData(readImg->exifData());
+    //writeImg->setComment(readImg->comment());
+    writeImg->setXmpData(readImg->xmpData());
+ 
+    try {
+        writeImg->writeMetadata();
+    }
+    catch (const Exiv2::AnyError&) {
+        std::cerr << 
+            ": Could not write metadata to (" << outFile << ")\n";
+        return 8;
+    }
+ 
+    return 0;
+}
+catch (Exiv2::AnyError& e) {
+    std::cerr << "Caught Exiv2 exception '" << e << "'\n";
+    return 10;
+}
+}
 
 
 

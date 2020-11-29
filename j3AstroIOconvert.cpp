@@ -52,6 +52,9 @@ int main(int argc, char** argv)
         cv::Mat im;
         open(argv[1], im);
         writeFile(argv[2], im, factor);
+        
+        copyMeta(argv[1], argv[2]); 
+
     }
     return 0;
 }
