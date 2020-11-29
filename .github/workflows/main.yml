@@ -28,8 +28,10 @@ jobs:
 
       - name: update ubuntu
         if: runner.os =='Linux'
-        run: sudo apt-get update
-  
+        run: |
+          sudo apt-get update
+          sudo apt-get install expat
+ 
       - name: Get libraw
         uses: actions/checkout@v2
         with:
@@ -63,6 +65,13 @@ jobs:
           make
           sudo make install
 
+#      - name: brew
+#        if: runner.os !='Linux'
+#        run: brew install expat
+     
+#      - name: ls
+#        run: ls /usr/lib/
+
       - name: Get exiv2
         uses: actions/checkout@v2
         with:
@@ -76,7 +85,7 @@ jobs:
           cd exiv2
           mkdir -p build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DEXIV2_ENABLE_NLS=OFF -DEXIV2_BUILD_SAMPLES=OFF  -DEXIV2_ENABLE_XMP=OFF .. 
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DEXIV2_BUILD_SAMPLES=OFF  .. 
           cmake --build .
           sudo make install
 
