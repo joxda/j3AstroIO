@@ -594,7 +594,6 @@ try {
     assert(readImg.get() != 0);
     readImg->readMetadata();
  
-    Exiv2::Image::UniquePtr writeImg = Exiv2::ImageFactory::open(outFile);
     assert(writeImg.get() != 0);
     writeImg->readMetadata();
     writeImg->setIptcData(readImg->iptcData());
