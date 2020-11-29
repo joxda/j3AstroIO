@@ -29,9 +29,9 @@ set_property(TARGET j3AstroIOexiv PROPERTY PUBLIC_HEADER ../j3AstroIOexiv.hpp)
 target_include_directories(j3AstroIOexiv PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 IF( (APPLE) )
-  target_link_libraries( j3AstroIOexiv  expat /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a z)
+  target_link_libraries( j3AstroIOexiv  expat  /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a z)
 ELSE() 
-  target_link_libraries( j3AstroIOexiv   /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a pthread png z /usr/lib/x86_64-linux-gnu/libexpat.a )
+  target_link_libraries( j3AstroIOexiv   /usr/local/lib/libexiv2-xmp.a pthread png z /usr/lib/x86_64-linux-gnu/libexpat.a )
 ENDIF()
 
 install(TARGETS j3AstroIOexiv DESTINATION ${CMAKE_INSTALL_LIBDIR})
