@@ -37,7 +37,7 @@ IF( (APPLE) )
   message("APPLE CI")   
  # FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
   FIND_PACKAGE(JPEG)
-  target_link_libraries( j3AstroIO  PRIVATE /usr/local/lib/libmagic.a bz2 )
+  target_link_libraries( j3AstroIO  PRIVATE /usr/local/lib/libmagic.a bz2 z )
 #  target_link_libraries( j3AstroIO  PRIVATE  magic  )
 #  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
 ELSE() 
