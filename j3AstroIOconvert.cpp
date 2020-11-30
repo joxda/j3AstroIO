@@ -42,16 +42,7 @@ int main(int argc, char** argv)
 
     if(argc==2)
     {
-        PhotoPars p = getPars(argv[1]);
-        std::cout << p.camMake << " " << p.camName << " " << p.lensName << "  focal length: " << p.focalLength << " f: " << p.apertureN << " crop: " << p.cropFactor << std::endl;
-    } else {
-        float factor = 1.0;
-        if(argc==4) {
-          factor = atof(argv[3]);
-        }
-        cv::Mat im;
-        open(argv[1], im);
-        writeFile(argv[2], im, factor);
+        open(argv[1]);
     }
     return 0;
 }

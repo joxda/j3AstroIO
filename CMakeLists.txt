@@ -10,9 +10,6 @@ endif()
 link_directories(/usr/local/lib/)
 link_directories(/usr/lib/)
 
-FIND_PACKAGE( OpenCV REQUIRED )
-find_package (Threads REQUIRED) #threading
-FIND_PACKAGE( Eigen3 3.3 NO_MODULE )
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
@@ -31,12 +28,12 @@ add_library( j3AstroIO  j3AstroIO.cpp )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER j3AstroIO.hpp)
 
-target_include_directories(j3AstroIO  PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
+target_include_directories(j3AstroIO  PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
 
 IF( TARGET Eigen3::Eigen )
- target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw magic Eigen3::Eigen cfitsio  magic exiv2)
+ target_link_libraries( j3AstroIO  ${OpenCV_LIBS} magic )
 ELSE()
- target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw magic cfitsio  magic exiv2)
+ target_link_libraries( j3AstroIO  ${OpenCV_LIBS} magic )
 ENDIF()
 #install(TARGETS j3AstroIO  ARCHIVE  DESTINATION lib  PUBLIC_HEADER DESTINATION include)
 #install(TARGETS j3AstroIO  DESTINATION ${CMAKE_INSTALL_LIBDIR})

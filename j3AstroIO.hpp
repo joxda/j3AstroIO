@@ -32,31 +32,10 @@
 
 #include <stdio.h>
 #include <iostream>
-#include "opencv2/core.hpp"
 
 
-struct PhotoPars
-{
-    std::string lensName;
-    std::string camName;
-    std::string camMake;
-    float focalLength;
-    float apertureN;
-    float cropFactor;
-};
+int open(const char* file);
 
-PhotoPars getPars(const char* file);
-
-void printerror(int status);
-
-int open(const char* file, cv::Mat &output);
-
-int open_fits(const char* file, cv::Mat &output);
-int open_opencv(const char* file, cv::Mat &output);
-int open_raw(const char* file, cv::Mat &output);
-
-int writeFile(char* ofile, cv::InputArray output, float factor);
-int write_opencv(const char* ofile, cv::InputArray output, float factor = 1., int depth = CV_8U);
 
 std::string mime(const char* file);
 
