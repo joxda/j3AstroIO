@@ -31,7 +31,7 @@ add_library( j3AstroIO  ../j3AstroIO.cpp ${someResources} )
 target_compile_definitions( j3AstroIO PRIVATE CIRUN=1 )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
-target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include  )
+target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include/ /usr/include/  )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11) 
 
 IF( (APPLE) )
@@ -52,7 +52,7 @@ install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp )
 set_property(TARGET j3AstroIOconvert PROPERTY CXX_STANDARD 11) 
 
-target_include_directories(j3AstroIOconvert PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include )
+target_include_directories(j3AstroIOconvert PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include/  /usr/include/)
 target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO )
 
 
