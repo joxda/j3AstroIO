@@ -29,7 +29,6 @@
 
 
 #include "j3AstroIO.hpp"
-#include "opencv2/core.hpp"
 #include <iostream>
 
 int main(int argc, char** argv)

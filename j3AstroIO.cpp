@@ -27,7 +27,6 @@
 //  Copyright © 2020 Joachim Janz. All rights reserved.
 //
 
-#include "fitsio.h"
 #include <magic.h>
 
 #ifdef CIRUN

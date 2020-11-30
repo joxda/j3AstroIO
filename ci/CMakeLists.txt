@@ -43,7 +43,7 @@ IF( (APPLE) )
 #  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
 ELSE() 
   message("LINUX CI")
-  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} magic / )
+  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} magic )
 ENDIF()
 
 install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
