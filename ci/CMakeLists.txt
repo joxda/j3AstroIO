@@ -2,28 +2,6 @@ project(j3AstroIO)
 
 cmake_minimum_required(VERSION 3.11.99)
 
-FIND_PATH(LIBMAGIC_INCLUDE_DIR magic.h)
-
-FIND_LIBRARY(LIBMAGIC_LIBRARY NAMES magic)
-
-IF (LIBMAGIC_INCLUDE_DIR AND LIBMAGIC_LIBRARY)
-    SET(LIBMAGIC_FOUND TRUE)
-ENDIF (LIBMAGIC_INCLUDE_DIR AND LIBMAGIC_LIBRARY)
-
-IF (LIBMAGIC_FOUND)
-    IF (NOT LibMagic_FIND_QUIETLY)
-        MESSAGE(STATUS "Found libmagic library:  ${LIBMAGIC_LIBRARY}")
-        MESSAGE(STATUS "Found libmagic includes: ${LIBMAGIC_INCLUDE_DIR}")
-    ENDIF (NOT LibMagic_FIND_QUIETLY)
-ELSE (LIBMAGIC_FOUND)
-    IF (LibMagic_FIND_REQUIRED)
-        MESSAGE(STATUS "libmagic development package cannot be found.")
-        MESSAGE(STATUS "In Debian/Ubuntu, it may be called: libmagic-dev")
-        MESSAGE(FATAL_ERROR "Could not find libmagic")
-    ENDIF (LibMagic_FIND_REQUIRED)
-ENDIF (LIBMAGIC_FOUND)
-
-
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -52,14 +30,14 @@ add_library( j3AstroIO  ../j3AstroIO.cpp ${someResources} )
 target_compile_definitions( j3AstroIO PRIVATE CIRUN=1 )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
-target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include/ /usr/include/ ${LIBMAGIC_INCLUDE_DIR} )
+target_include_directories(j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include/ /usr/include/  )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11) 
 
 IF( (APPLE) )
   message("APPLE CI")   
  # FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
   FIND_PACKAGE(JPEG)
-  target_link_libraries( j3AstroIO  PRIVATE /usr/local/lib/libmagic.a  )
+  target_link_libraries( j3AstroIO  PRIVATE /usr/local/lib/libmagic.a bz2 )
 #  target_link_libraries( j3AstroIO  PRIVATE  magic  )
 #  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
 ELSE() 
