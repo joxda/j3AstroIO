@@ -48,7 +48,7 @@ ENDIF()
 install(TARGETS j3AstroIO DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(TARGETS j3AstroIO PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp )
+add_executable( j3AstroIOconvert  ../j3AstroIOconvert.cpp  ${someResources} )
 set_property(TARGET j3AstroIOconvert PROPERTY CXX_STANDARD 11) 
 
 target_include_directories(j3AstroIOconvert PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include/  /usr/include/)
