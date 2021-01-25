@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Documentation for j3AstroIO &mdash; j3AstroIO 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> j3AstroIO
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Documentation for j3AstroIO</a><ul>
+<li><a class="reference internal" href="#preliminary-api">Preliminary API</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">j3AstroIO</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Documentation for j3AstroIO</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="documentation-for-j3astroio">
+<h1>Documentation for j3AstroIO<a class="headerlink" href="#documentation-for-j3astroio" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>In addition to the library a simple command line tool for testing is provided in j3AstroIOconvert.cpp</p>
+<div class="section" id="preliminary-api">
+<h2>Preliminary API<a class="headerlink" href="#preliminary-api" title="Permalink to this headline">¶</a></h2>
+<p>API of the j3AstroIO library </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv47getParsPKc">
+<span id="_CPPv37getParsPKc"></span><span id="_CPPv27getParsPKc"></span><span id="getPars__cCP"></span><span class="target" id="j3_astro_i_o_8hpp_1ad8c55360df304ec96574eb0b5e13dae5"></span><a class="reference internal" href="#_CPPv49PhotoPars" title="PhotoPars">PhotoPars</a> <code class="sig-name descname">getPars</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47getParsPKc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read the lens and camera parameters from the EXIF data. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><a class="reference internal" href="#struct_photo_pars"><span class="std std-ref">PhotoPars</span></a> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">file</span></code>: File name </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv410printerrori">
+<span id="_CPPv310printerrori"></span><span id="_CPPv210printerrori"></span><span id="printerror__i"></span><span class="target" id="j3_astro_i_o_8hpp_1aca57f410eb9f3d6ec61c1c17d4aea3da"></span>void <code class="sig-name descname">printerror</code><span class="sig-paren">(</span>int <em>status</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410printerrori" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Print error code for FITS IO from cfitsio. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">status</span></code>: </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv44openPKcRN2cv3MatE">
+<span id="_CPPv34openPKcRN2cv3MatE"></span><span id="_CPPv24openPKcRN2cv3MatE"></span><span id="open__cCP.cv::MatR"></span><span class="target" id="j3_astro_i_o_8hpp_1aa71bdd389f24f5d332de7d3e990b6cc8"></span>int <code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>file</em>, cv::Mat &amp;<em>output</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv44openPKcRN2cv3MatE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Open image convenience function with magic to decide file format. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>int Status (0=Success) </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">file</span></code>: File name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">output</span></code>: cv::Mat which the image is read to </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv49open_fitsPKcRN2cv3MatE">
+<span id="_CPPv39open_fitsPKcRN2cv3MatE"></span><span id="_CPPv29open_fitsPKcRN2cv3MatE"></span><span id="open_fits__cCP.cv::MatR"></span><span class="target" id="j3_astro_i_o_8hpp_1a2734048aba83fbd43eb811808d4666d6"></span>int <code class="sig-name descname">open_fits</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>file</em>, cv::Mat &amp;<em>output</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49open_fitsPKcRN2cv3MatE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read image from FITS file. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>int Status (0=Success) </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">file</span></code>: File name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">output</span></code>: cv::Mat which the image is read to </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv411open_opencvPKcRN2cv3MatE">
+<span id="_CPPv311open_opencvPKcRN2cv3MatE"></span><span id="_CPPv211open_opencvPKcRN2cv3MatE"></span><span id="open_opencv__cCP.cv::MatR"></span><span class="target" id="j3_astro_i_o_8hpp_1acda48d5e33cc21bc3a4823993344d3cb"></span>int <code class="sig-name descname">open_opencv</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>file</em>, cv::Mat &amp;<em>output</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411open_opencvPKcRN2cv3MatE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read image from a file with a format that can be read by OpenCV. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>int Status (0=Success) </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">file</span></code>: File name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">output</span></code>: cv::Mat which the image is read to </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv48open_rawPKcRN2cv3MatE">
+<span id="_CPPv38open_rawPKcRN2cv3MatE"></span><span id="_CPPv28open_rawPKcRN2cv3MatE"></span><span id="open_raw__cCP.cv::MatR"></span><span class="target" id="j3_astro_i_o_8hpp_1ae937ee263a66ab5bd91f0dac5b814a24"></span>int <code class="sig-name descname">open_raw</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>file</em>, cv::Mat &amp;<em>output</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48open_rawPKcRN2cv3MatE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Read image from file in camera raw data format. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>int Status (0=Success) </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">file</span></code>: File name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">output</span></code>: cv::Mat which the image is read to </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv49writeFilePcN2cv10InputArrayEf">
+<span id="_CPPv39writeFilePcN2cv10InputArrayEf"></span><span id="_CPPv29writeFilePcN2cv10InputArrayEf"></span><span id="writeFile__cP.cv::InputArray.float"></span><span class="target" id="j3_astro_i_o_8hpp_1a087f088d9df5a3b4310a3968dcebbaad"></span>int <code class="sig-name descname">writeFile</code><span class="sig-paren">(</span>char *<em>ofile</em>, cv::InputArray <em>output</em>, float <em>factor</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49writeFilePcN2cv10InputArrayEf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convenience function for writing image. </p>
+<p>For extensions fit/fits the cfitsio library is used to write a fits file, and otherwise OpenCV handles the extension and attempts to write a file in the corresponding format</p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>int Status (0=Success) </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ofile</span></code>: File name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">output</span></code>: cv::Mat which should be written </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv412write_opencvPKcN2cv10InputArrayEfi">
+<span id="_CPPv312write_opencvPKcN2cv10InputArrayEfi"></span><span id="_CPPv212write_opencvPKcN2cv10InputArrayEfi"></span><span id="write_opencv__cCP.cv::InputArray.float.i"></span><span class="target" id="j3_astro_i_o_8hpp_1ab14ef1aa792792ef27bdb7730c835a2a"></span>int <code class="sig-name descname">write_opencv</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>ofile</em>, cv::InputArray <em>output</em>, float <em>factor</em> = 1., int <em>depth</em> = CV_8U<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412write_opencvPKcN2cv10InputArrayEfi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write image to file using OpenCV IO. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>int </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">ofile</span></code>: File Name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">output</span></code>: Image to be written to the file </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">factor</span></code>: The image is multiplied with this number before it is written to the file </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">depth</span></code>: Depth of the output image </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv44mimePKc">
+<span id="_CPPv34mimePKc"></span><span id="_CPPv24mimePKc"></span><span id="mime__cCP"></span><span class="target" id="j3_astro_i_o_8hpp_1ab2e463561e6ca2b97cf9d892bfc432ec"></span>std::string <code class="sig-name descname">mime</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv44mimePKc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the MIME type of a file (using libmagic) </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>std::string MIME type </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">file</span></code>: File Name </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv48copyMetaPKcPKc">
+<span id="_CPPv38copyMetaPKcPKc"></span><span id="_CPPv28copyMetaPKcPKc"></span><span id="copyMeta__cCP.cCP"></span><span class="target" id="j3_astro_i_o_8hpp_1aab78e7d070727663a0a3d9e672cf1f0f"></span>int <code class="sig-name descname">copyMeta</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>inFile</em>, <em class="property">const</em> char *<em>outFile</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48copyMetaPKcPKc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Copy the meta data (EXIF etc) from one file to another. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>int Status (0=Success) </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">inFile</span></code>: File name of the input image </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outFile[in]</span></code>: ile name of the output image </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt id="_CPPv49PhotoPars">
+<span id="_CPPv39PhotoPars"></span><span id="_CPPv29PhotoPars"></span><span id="PhotoPars"></span><span class="target" id="struct_photo_pars"></span><em class="property">struct </em><code class="sig-name descname">PhotoPars</code><a class="headerlink" href="#_CPPv49PhotoPars" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;j3AstroIO.hpp&gt;</em><p>Stucture to hold the lens and camera parameters that are read out from the EXIF data. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="cpp var">
+<dt id="_CPPv4N9PhotoPars8lensNameE">
+<span id="_CPPv3N9PhotoPars8lensNameE"></span><span id="_CPPv2N9PhotoPars8lensNameE"></span><span id="PhotoPars::lensName__ss"></span><span class="target" id="struct_photo_pars_1a5623b5ee688c3021bc9d17de61c3364f"></span>std::string <code class="sig-name descname">lensName</code><a class="headerlink" href="#_CPPv4N9PhotoPars8lensNameE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N9PhotoPars7camNameE">
+<span id="_CPPv3N9PhotoPars7camNameE"></span><span id="_CPPv2N9PhotoPars7camNameE"></span><span id="PhotoPars::camName__ss"></span><span class="target" id="struct_photo_pars_1a3b1083aa49c093a6005203c73583402e"></span>std::string <code class="sig-name descname">camName</code><a class="headerlink" href="#_CPPv4N9PhotoPars7camNameE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N9PhotoPars7camMakeE">
+<span id="_CPPv3N9PhotoPars7camMakeE"></span><span id="_CPPv2N9PhotoPars7camMakeE"></span><span id="PhotoPars::camMake__ss"></span><span class="target" id="struct_photo_pars_1a79565017147a9f6326c44a8e45c9114e"></span>std::string <code class="sig-name descname">camMake</code><a class="headerlink" href="#_CPPv4N9PhotoPars7camMakeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N9PhotoPars11focalLengthE">
+<span id="_CPPv3N9PhotoPars11focalLengthE"></span><span id="_CPPv2N9PhotoPars11focalLengthE"></span><span id="PhotoPars::focalLength__float"></span><span class="target" id="struct_photo_pars_1a4089597e35f50fa1bbbd7a0b0ca589e3"></span>float <code class="sig-name descname">focalLength</code><a class="headerlink" href="#_CPPv4N9PhotoPars11focalLengthE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N9PhotoPars9apertureNE">
+<span id="_CPPv3N9PhotoPars9apertureNE"></span><span id="_CPPv2N9PhotoPars9apertureNE"></span><span id="PhotoPars::apertureN__float"></span><span class="target" id="struct_photo_pars_1a390f8c49e985619fb17ca80c7a2724ab"></span>float <code class="sig-name descname">apertureN</code><a class="headerlink" href="#_CPPv4N9PhotoPars9apertureNE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt id="_CPPv4N9PhotoPars10cropFactorE">
+<span id="_CPPv3N9PhotoPars10cropFactorE"></span><span id="_CPPv2N9PhotoPars10cropFactorE"></span><span id="PhotoPars::cropFactor__float"></span><span class="target" id="struct_photo_pars_1a71c277527c53517ad81636b0357f6548"></span>float <code class="sig-name descname">cropFactor</code><a class="headerlink" href="#_CPPv4N9PhotoPars10cropFactorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Joachim Janz.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
