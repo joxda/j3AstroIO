@@ -141,6 +141,7 @@ void printerror(int status)
     }
     return;
 }
+
 int write_opencv(const char* ofile, cv::InputArray output, float factor, int depth)
 {
     int success = 0;
@@ -178,6 +179,17 @@ int write_opencv(const char* ofile, cv::InputArray output, float factor, int dep
     return success;
 }
 
+
+/**
+ * @brief Template function to write OpenCV image of various types to FITS file
+ * 
+ * @tparam T Data type of the image to be written
+ * @param ofile File name
+ * @param outA Image to be written
+ * @param bitpix FITS bitpix
+ * @param datatype FITS datatype
+ * @return int 
+ */
 template <typename T>
 int wrtFts(const char* ofile, cv::InputArray outA, int bitpix, int datatype)
 {
