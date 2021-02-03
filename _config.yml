@@ -3,3 +3,5 @@ theme: jekyll-theme-cayman
 include: 
  - _static
  - _source
+
+google_analytics: G-QK3JYQ44VY
