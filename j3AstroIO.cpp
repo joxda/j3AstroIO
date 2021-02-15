@@ -426,7 +426,7 @@ int open_fits(const char* file, cv::Mat& image)
             return (0);
         }
 
-        fits_set_bscale(fptr, bscale, bzero, &status);
+        //fits_set_bscale(fptr, bscale, bzero, &status);
 
         long first = 1;
         //        while (totpix > 0 && !status)
