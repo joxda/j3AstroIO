@@ -6,17 +6,15 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 env:
   CI: true
 
-
 jobs:
   build:
-    
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -31,7 +29,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install expat
- 
+
       - name: Get libraw
         uses: actions/checkout@v2
         with:
@@ -40,14 +38,14 @@ jobs:
           token: ${{ github.token }}
           ref: ${{secrets.LIBRAW_VERSION}}
 
-      - name: Get libraw cmake                                                                                                                                           
-        #if: steps.cache-opencv.outputs.cache-hit != 'true'                                                                                                              
-        uses: actions/checkout@v2                                                                                                                                        
-        with:                                                                                                                                                            
-          repository: LibRaw/LibRaw-cmake                                                                                                             
-          path: libraw-cmake                                                                                                                                            
-          token: ${{ github.token }}                                                                                                                                     
-          ref: 'master'                                                                                                                   
+      - name: Get libraw cmake
+        #if: steps.cache-opencv.outputs.cache-hit != 'true'
+        uses: actions/checkout@v2
+        with:
+          repository: LibRaw/LibRaw-cmake
+          path: libraw-cmake
+          token: ${{ github.token }}
+          ref: "master"
 
       - name: Build libraw
         if: runner.os !='Linux'
@@ -65,12 +63,12 @@ jobs:
           make
           sudo make install
 
-#      - name: brew
-#        if: runner.os !='Linux'
-#        run: brew install expat
-     
-#      - name: ls
-#        run: ls /usr/lib/
+      #      - name: brew
+      #        if: runner.os !='Linux'
+      #        run: brew install expat
+
+      #      - name: ls
+      #        run: ls /usr/lib/
 
       - name: Get exiv2
         uses: actions/checkout@v2
@@ -79,7 +77,7 @@ jobs:
           path: exiv2
           token: ${{ github.token }}
           ref: ${{secrets.EXIV2_VERSION}}
-          
+
       - name: Build exiv2
         run: |
           cd exiv2
@@ -92,7 +90,7 @@ jobs:
       - name: cfitsio
         if: runner.os !='Linux'
         run: brew install  cfitsio  libmagic
- 
+
       - name: Get cfitsio
         if: runner.os =='Linux'
         uses: actions/checkout@v2
@@ -100,15 +98,15 @@ jobs:
           repository: healpy/cfitsio
           path: cfitsio
           token: ${{ github.token }}
-          ref: 'master' #${{secrets.CFITSIO_VERSION}}
-        
+          ref: "master" #${{secrets.CFITSIO_VERSION}}
+
       - name: Build cfitsio
         if: runner.os =='Linux'
         run: |
           cd cfitsio
           cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -Wno-error=dev -Wno-error=implicit-function-declaration -DCURL_FOUND=NO .
           make
-          sudo make install          
+          sudo make install
 
       - name: Get opencv
         uses: actions/checkout@v2
@@ -127,7 +125,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DWITH_QUIRC=OFF -DBUILD_PROTOBUF=OFF -DWITH_OPENJPEG=OFF -DWITH_OPENEXR=OFF -DWITH_EIGEN=OFF -DBUILD_LIST=core,highgui,improc -DOPENCV_GENERATE_PKGCONFIG=ON -DWITH_WEBP=OFF -DWITH_JASPER=OFF -DWITH_V4L=OFF -DWITH_GSTREAMER=OFF -DWITH_MSMF=OFF -DWITH_AVFOUNDATION=OFF -DWITH_DSHOW=OFF -DWITH_WITH_1394=OFF -DVIDEOIO_ENABLE_PLUGINS=OFF -DOPENCV_DNN_OPENCL=OFF -DBUILD_JAVA=OFF -DOPENCV_GENERATE_PKGCONFIG=ON  -DWITH_FFMPEG=OFF ..
           make
           sudo make install
-        
+
       - name: j3AstroIO
         run: |
           mkdir -p build
@@ -136,26 +134,25 @@ jobs:
           cmake ../ci/
           make
           make package
- 
-#      - name: unpack mac
-#        if: runner.os !='Linux'
-#        run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
-#
-#      - name: unpack linux
-#        if: runner.os =='Linux' 
-#        run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
+
+      #      - name: unpack mac
+      #        if: runner.os !='Linux'
+      #        run: tar xzvf build/j3AstroIO-1.0.0-Darwin.tar.gz
+      #
+      #      - name: unpack linux
+      #        if: runner.os =='Linux'
+      #        run: tar xzvf build/j3AstroIO-1.0.0-Linux.tar.gz
 
       - name: archive results mac
-        if: runner.os !='Linux' 
+        if: runner.os !='Linux'
         uses: actions/upload-artifact@v1
         with:
           name: j3AstroIO-1.0.0-${{ matrix.os }}
           path: build/j3AstroIO-1.0.0-Darwin.tar.gz
 
       - name: archive results linux
-        if:  runner.os =='Linux' 
+        if: runner.os =='Linux'
         uses: actions/upload-artifact@v1
         with:
           name: j3AstroIO-1.0.0-${{ matrix.os }}
           path: build/j3AstroIO-1.0.0-${{ runner.os }}.tar.gz
- 
