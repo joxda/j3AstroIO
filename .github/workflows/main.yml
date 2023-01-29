@@ -87,12 +87,12 @@ jobs:
           cmake --build .
           sudo make install
 
-      - name: cfitsio
-        if: runner.os !='Linux'
-        run: brew install  cfitsio  libmagic
+      #- name: cfitsio
+      #  if: runner.os !='Linux'
+      #  run: brew install  cfitsio  libmagic
 
       - name: Get cfitsio
-        if: runner.os =='Linux'
+        #  if: runner.os =='Linux'
         uses: actions/checkout@v2
         with:
           repository: healpy/cfitsio
@@ -101,7 +101,7 @@ jobs:
           ref: "master" #${{secrets.CFITSIO_VERSION}}
 
       - name: Build cfitsio
-        if: runner.os =='Linux'
+        #  if: runner.os =='Linux'
         run: |
           cd cfitsio
           mkdir build
