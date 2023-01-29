@@ -87,9 +87,9 @@ jobs:
           cmake --build .
           sudo make install
 
-      #- name: cfitsio
-      #  if: runner.os !='Linux'
-      #  run: brew install  cfitsio  libmagic
+      - name: cfitsio
+        if: runner.os !='Linux'
+        run: brew install libmagic # cfitsio
 
       - name: Get cfitsio
         #  if: runner.os =='Linux'
