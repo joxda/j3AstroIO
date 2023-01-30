@@ -10,8 +10,8 @@ link_directories(/usr/local/lib/)
 link_directories(/usr/lib/)
 
 FIND_PACKAGE( OpenCV REQUIRED )
-find_package (Threads REQUIRED) #threading
-FIND_PACKAGE( Eigen3 3.3 NO_MODULE )
+#find_package (Threads REQUIRED) #threading
+#FIND_PACKAGE( Eigen3 3.3 NO_MODULE )
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
@@ -21,32 +21,28 @@ file(WRITE   ${CMAKE_BINARY_DIR}/CMakeFiles/test.cpp "#include <exiv2/exiv2.hpp>
 try_compile(COMPILE_SUCCEEDED ${CMAKE_BINARY_DIR}/CMakeFiles/compile_tests  ${CMAKE_BINARY_DIR}/CMakeFiles/test.cpp CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=/usr/local/include" CXX_STANDARD 11 OUTPUT_VARIABLE OUTPUT)
 
 if(COMPILE_SUCCEEDED)
-  message("UNIQUE")
   add_compile_definitions(UNIQ)
-else()
-  message("AUTO")
-  message(${OUTPUT})
 endif()
 
-
-add_library( j3AstroIO  j3AstroIO.cpp )
+find_library(cfitsio libcfitsio.a)
+add_library( j3AstroIO j3AstroIO.cpp )
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER j3AstroIO.hpp)
 
-target_include_directories(j3AstroIO  PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} /usr/local/include )
-
-IF( TARGET Eigen3::Eigen )
- target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw magic Eigen3::Eigen cfitsio  magic exiv2)
-ELSE()
- target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw magic cfitsio  magic exiv2)
-ENDIF()
+target_include_directories( j3AstroIO SYSTEM PRIVATE ${OpenCV_INCLUDE_DIRS} /usr/local/include )
+target_include_directories( j3AstroIO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} )
+#IF( TARGET Eigen3::Eigen )
+# target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw magic Eigen3::Eigen ${cfitsio}  magic exiv2)
+#ELSE()
+ target_link_libraries( j3AstroIO  ${OpenCV_LIBS} raw magic ${cfitsio} exiv2)
+#ENDIF()
 #install(TARGETS j3AstroIO  ARCHIVE  DESTINATION lib  PUBLIC_HEADER DESTINATION include)
 #install(TARGETS j3AstroIO  DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #install(TARGETS j3AstroIO  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable( j3AstroIOconvert  j3AstroIOconvert.cpp )
-target_include_directories(j3AstroIOconvert PRIVATE ${OpenCV_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../ /usr/local/include )
-target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO  )
+target_include_directories(j3AstroIOconvert SYSTEM PRIVATE ${OpenCV_INCLUDE_DIRS}  /usr/local/include )
+target_link_libraries( j3AstroIOconvert PRIVATE j3AstroIO curl z)
 
 install(TARGETS j3AstroIOconvert DESTINATION bin)
 
