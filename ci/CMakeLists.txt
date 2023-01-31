@@ -52,7 +52,7 @@ IF( (APPLE) )
   message("APPLE CI")   
  # FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
   FIND_PACKAGE(JPEG)
-  target_link_libraries( j3AstroIO  PRIVATE expat /usr/local/lib/libexiv2.a iconv /usr/local/lib/libpng.a bz2 curl cfitsio  /usr/local/lib/libmagic.a ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libjpeg.a )
+  target_link_libraries( j3AstroIO  PRIVATE expat /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a bz2 curl cfitsio  /usr/local/lib/libmagic.a ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libjpeg.a )
 #  target_link_libraries( j3AstroIO  PRIVATE exiv2 cfitsio  magic ${OpenCV_LIBS} raw )
 #  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
 ELSE() 
