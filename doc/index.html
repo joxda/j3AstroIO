@@ -81,209 +81,63 @@
 <section id="preliminary-api">
 <h2>Preliminary API<a class="headerlink" href="#preliminary-api" title="Permalink to this heading"></a></h2>
 <p>API of the j3AstroIO library </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv47getParsPKc">
-<span id="_CPPv37getParsPKc"></span><span id="_CPPv27getParsPKc"></span><span id="getPars__cCP"></span><span class="target" id="j3_astro_i_o_8hpp_1ad8c55360df304ec96574eb0b5e13dae5"></span><a class="reference internal" href="#_CPPv49PhotoPars" title="PhotoPars"><span class="n"><span class="pre">PhotoPars</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPars</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">file</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47getParsPKc" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Read the lens and camera parameters from the EXIF data. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> – <strong>[in]</strong> File name </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#struct_photo_pars"><span class="std std-ref">PhotoPars</span></a> </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv410printerrori">
-<span id="_CPPv310printerrori"></span><span id="_CPPv210printerrori"></span><span id="printerror__i"></span><span class="target" id="j3_astro_i_o_8hpp_1aca57f410eb9f3d6ec61c1c17d4aea3da"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">printerror</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">status</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410printerrori" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Print error code for FITS IO from cfitsio. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>status</strong> – <strong>[in]</strong> </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv44openPKcRN2cv3MatE">
-<span id="_CPPv34openPKcRN2cv3MatE"></span><span id="_CPPv24openPKcRN2cv3MatE"></span><span id="open__cCP.cv::MatR"></span><span class="target" id="j3_astro_i_o_8hpp_1aa71bdd389f24f5d332de7d3e990b6cc8"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">open</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">file</span></span>, <span class="n"><span class="pre">cv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Mat</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv44openPKcRN2cv3MatE" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Open image convenience function with magic to decide file format. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file</strong> – <strong>[in]</strong> File name </p></li>
-<li><p><strong>output</strong> – <strong>[out]</strong> cv::Mat which the image is read to </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>int Status (0=Success) </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv49open_fitsPKcRN2cv3MatE">
-<span id="_CPPv39open_fitsPKcRN2cv3MatE"></span><span id="_CPPv29open_fitsPKcRN2cv3MatE"></span><span id="open_fits__cCP.cv::MatR"></span><span class="target" id="j3_astro_i_o_8hpp_1a2734048aba83fbd43eb811808d4666d6"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">open_fits</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">file</span></span>, <span class="n"><span class="pre">cv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Mat</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49open_fitsPKcRN2cv3MatE" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Read image from FITS file. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file</strong> – <strong>[in]</strong> File name </p></li>
-<li><p><strong>output</strong> – <strong>[out]</strong> cv::Mat which the image is read to </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>int Status (0=Success) </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv411open_opencvPKcRN2cv3MatE">
-<span id="_CPPv311open_opencvPKcRN2cv3MatE"></span><span id="_CPPv211open_opencvPKcRN2cv3MatE"></span><span id="open_opencv__cCP.cv::MatR"></span><span class="target" id="j3_astro_i_o_8hpp_1acda48d5e33cc21bc3a4823993344d3cb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">open_opencv</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">file</span></span>, <span class="n"><span class="pre">cv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Mat</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411open_opencvPKcRN2cv3MatE" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Read image from a file with a format that can be read by OpenCV. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file</strong> – <strong>[in]</strong> File name </p></li>
-<li><p><strong>output</strong> – <strong>[out]</strong> cv::Mat which the image is read to </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>int Status (0=Success) </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv48open_rawPKcRN2cv3MatE">
-<span id="_CPPv38open_rawPKcRN2cv3MatE"></span><span id="_CPPv28open_rawPKcRN2cv3MatE"></span><span id="open_raw__cCP.cv::MatR"></span><span class="target" id="j3_astro_i_o_8hpp_1ae937ee263a66ab5bd91f0dac5b814a24"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">open_raw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">file</span></span>, <span class="n"><span class="pre">cv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Mat</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48open_rawPKcRN2cv3MatE" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Read image from file in camera raw data format. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file</strong> – <strong>[in]</strong> File name </p></li>
-<li><p><strong>output</strong> – <strong>[out]</strong> cv::Mat which the image is read to </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>int Status (0=Success) </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv49writeFilePcN2cv10InputArrayEf">
-<span id="_CPPv39writeFilePcN2cv10InputArrayEf"></span><span id="_CPPv29writeFilePcN2cv10InputArrayEf"></span><span id="writeFile__cP.cv::InputArray.float"></span><span class="target" id="j3_astro_i_o_8hpp_1a087f088d9df5a3b4310a3968dcebbaad"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">writeFile</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ofile</span></span>, <span class="n"><span class="pre">cv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">InputArray</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">factor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49writeFilePcN2cv10InputArrayEf" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Convenience function for writing image. </p>
-<p>For extensions fit/fits the cfitsio library is used to write a fits file, and otherwise OpenCV handles the extension and attempts to write a file in the corresponding format</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ofile</strong> – <strong>[in]</strong> File name </p></li>
-<li><p><strong>output</strong> – <strong>[in]</strong> cv::Mat which should be written </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>int Status (0=Success) </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv412write_opencvPKcN2cv10InputArrayEfi">
-<span id="_CPPv312write_opencvPKcN2cv10InputArrayEfi"></span><span id="_CPPv212write_opencvPKcN2cv10InputArrayEfi"></span><span id="write_opencv__cCP.cv::InputArray.float.i"></span><span class="target" id="j3_astro_i_o_8hpp_1ab14ef1aa792792ef27bdb7730c835a2a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">write_opencv</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ofile</span></span>, <span class="n"><span class="pre">cv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">InputArray</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">factor</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">depth</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">CV_8U</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412write_opencvPKcN2cv10InputArrayEfi" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Write image to file using OpenCV IO. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ofile</strong> – <strong>[in]</strong> File Name </p></li>
-<li><p><strong>output</strong> – <strong>[in]</strong> Image to be written to the file </p></li>
-<li><p><strong>factor</strong> – <strong>[in]</strong> The image is multiplied with this number before it is written to the file </p></li>
-<li><p><strong>depth</strong> – <strong>[in]</strong> Depth of the output image </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>int </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv44mimePKc">
-<span id="_CPPv34mimePKc"></span><span id="_CPPv24mimePKc"></span><span id="mime__cCP"></span><span class="target" id="j3_astro_i_o_8hpp_1ab2e463561e6ca2b97cf9d892bfc432ec"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mime</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">file</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv44mimePKc" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Returns the MIME type of a file (using libmagic) </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file</strong> – <strong>[in]</strong> File Name </p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>std::string MIME type </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv48copyMetaPKcPKc">
-<span id="_CPPv38copyMetaPKcPKc"></span><span id="_CPPv28copyMetaPKcPKc"></span><span id="copyMeta__cCP.cCP"></span><span class="target" id="j3_astro_i_o_8hpp_1aab78e7d070727663a0a3d9e672cf1f0f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">copyMeta</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">inFile</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">outFile</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48copyMetaPKcPKc" title="Permalink to this definition"></a><br /></dt>
-<dd><p>Copy the meta data (EXIF etc) from one file to another. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>inFile</strong> – <strong>[in]</strong> File name of the input image </p></li>
-<li><p><strong>outFile[in]</strong> – ile name of the output image </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>int Status (0=Success) </p>
-</dd>
-</dl>
-</dd></dl>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv42cv">
+<span id="_CPPv32cv"></span><span id="_CPPv22cv"></span><span id="cv"></span><span class="target" id="namespacecv"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cv</span></span></span><a class="headerlink" href="#_CPPv42cv" title="Permalink to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N2cv10InputArrayE">
+<span id="_CPPv3N2cv10InputArrayE"></span><span id="_CPPv2N2cv10InputArrayE"></span><span id="cv::InputArray"></span><span class="target" id="j3_astro_i_o_8hpp_1a353a9de602fe76c709e12074a6f362ba"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">_InputArray</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">InputArray</span></span></span><a class="headerlink" href="#_CPPv4N2cv10InputArrayE" title="Permalink to this definition"></a><br /></dt>
+<dd></dd></dl>
 
 </div>
-<dl class="cpp struct">
-<dt class="sig sig-object cpp" id="_CPPv49PhotoPars">
-<span id="_CPPv39PhotoPars"></span><span id="_CPPv29PhotoPars"></span><span id="PhotoPars"></span><span class="target" id="struct_photo_pars"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PhotoPars</span></span></span><a class="headerlink" href="#_CPPv49PhotoPars" title="Permalink to this definition"></a><br /></dt>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv49j3AstroIO">
+<span id="_CPPv39j3AstroIO"></span><span id="_CPPv29j3AstroIO"></span><span id="j3AstroIO"></span><span class="target" id="namespacej3_astro_i_o"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">j3AstroIO</span></span></span><a class="headerlink" href="#_CPPv49j3AstroIO" title="Permalink to this definition"></a><br /></dt>
+<dd><dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N9j3AstroIO9PhotoParsE">
+<span id="_CPPv3N9j3AstroIO9PhotoParsE"></span><span id="_CPPv2N9j3AstroIO9PhotoParsE"></span><span id="j3AstroIO::PhotoPars"></span><span class="target" id="structj3_astro_i_o_1_1_photo_pars"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PhotoPars</span></span></span><a class="headerlink" href="#_CPPv4N9j3AstroIO9PhotoParsE" title="Permalink to this definition"></a><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;j3AstroIO.hpp&gt;</em></div>
 <p>Stucture to hold the lens and camera parameters that are read out from the EXIF data. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N9PhotoPars8lensNameE">
-<span id="_CPPv3N9PhotoPars8lensNameE"></span><span id="_CPPv2N9PhotoPars8lensNameE"></span><span id="PhotoPars::lensName__ss"></span><span class="target" id="struct_photo_pars_1a5623b5ee688c3021bc9d17de61c3364f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lensName</span></span></span><a class="headerlink" href="#_CPPv4N9PhotoPars8lensNameE" title="Permalink to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N9j3AstroIO9PhotoPars8lensNameE">
+<span id="_CPPv3N9j3AstroIO9PhotoPars8lensNameE"></span><span id="_CPPv2N9j3AstroIO9PhotoPars8lensNameE"></span><span id="j3AstroIO::PhotoPars::lensName__ss"></span><span class="target" id="structj3_astro_i_o_1_1_photo_pars_1a8901ebff2fe3a3b3ed820495d75b95af"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lensName</span></span></span><a class="headerlink" href="#_CPPv4N9j3AstroIO9PhotoPars8lensNameE" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N9PhotoPars7camNameE">
-<span id="_CPPv3N9PhotoPars7camNameE"></span><span id="_CPPv2N9PhotoPars7camNameE"></span><span id="PhotoPars::camName__ss"></span><span class="target" id="struct_photo_pars_1a3b1083aa49c093a6005203c73583402e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">camName</span></span></span><a class="headerlink" href="#_CPPv4N9PhotoPars7camNameE" title="Permalink to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N9j3AstroIO9PhotoPars7camNameE">
+<span id="_CPPv3N9j3AstroIO9PhotoPars7camNameE"></span><span id="_CPPv2N9j3AstroIO9PhotoPars7camNameE"></span><span id="j3AstroIO::PhotoPars::camName__ss"></span><span class="target" id="structj3_astro_i_o_1_1_photo_pars_1a6c3129ca68fad5d23c21eb8b32727131"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">camName</span></span></span><a class="headerlink" href="#_CPPv4N9j3AstroIO9PhotoPars7camNameE" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N9PhotoPars7camMakeE">
-<span id="_CPPv3N9PhotoPars7camMakeE"></span><span id="_CPPv2N9PhotoPars7camMakeE"></span><span id="PhotoPars::camMake__ss"></span><span class="target" id="struct_photo_pars_1a79565017147a9f6326c44a8e45c9114e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">camMake</span></span></span><a class="headerlink" href="#_CPPv4N9PhotoPars7camMakeE" title="Permalink to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N9j3AstroIO9PhotoPars7camMakeE">
+<span id="_CPPv3N9j3AstroIO9PhotoPars7camMakeE"></span><span id="_CPPv2N9j3AstroIO9PhotoPars7camMakeE"></span><span id="j3AstroIO::PhotoPars::camMake__ss"></span><span class="target" id="structj3_astro_i_o_1_1_photo_pars_1a4ae1e4172aa0bfea1295798c7fe25810"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">camMake</span></span></span><a class="headerlink" href="#_CPPv4N9j3AstroIO9PhotoPars7camMakeE" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N9PhotoPars11focalLengthE">
-<span id="_CPPv3N9PhotoPars11focalLengthE"></span><span id="_CPPv2N9PhotoPars11focalLengthE"></span><span id="PhotoPars::focalLength__float"></span><span class="target" id="struct_photo_pars_1a4089597e35f50fa1bbbd7a0b0ca589e3"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">focalLength</span></span></span><a class="headerlink" href="#_CPPv4N9PhotoPars11focalLengthE" title="Permalink to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N9j3AstroIO9PhotoPars11focalLengthE">
+<span id="_CPPv3N9j3AstroIO9PhotoPars11focalLengthE"></span><span id="_CPPv2N9j3AstroIO9PhotoPars11focalLengthE"></span><span id="j3AstroIO::PhotoPars::focalLength__float"></span><span class="target" id="structj3_astro_i_o_1_1_photo_pars_1a1abb71403a5ca8375d311aa33170b982"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">focalLength</span></span></span><a class="headerlink" href="#_CPPv4N9j3AstroIO9PhotoPars11focalLengthE" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N9PhotoPars9apertureNE">
-<span id="_CPPv3N9PhotoPars9apertureNE"></span><span id="_CPPv2N9PhotoPars9apertureNE"></span><span id="PhotoPars::apertureN__float"></span><span class="target" id="struct_photo_pars_1a390f8c49e985619fb17ca80c7a2724ab"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">apertureN</span></span></span><a class="headerlink" href="#_CPPv4N9PhotoPars9apertureNE" title="Permalink to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N9j3AstroIO9PhotoPars9apertureNE">
+<span id="_CPPv3N9j3AstroIO9PhotoPars9apertureNE"></span><span id="_CPPv2N9j3AstroIO9PhotoPars9apertureNE"></span><span id="j3AstroIO::PhotoPars::apertureN__float"></span><span class="target" id="structj3_astro_i_o_1_1_photo_pars_1a1993fd9baf25cd2cdadc1e3877a617f7"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">apertureN</span></span></span><a class="headerlink" href="#_CPPv4N9j3AstroIO9PhotoPars9apertureNE" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N9PhotoPars10cropFactorE">
-<span id="_CPPv3N9PhotoPars10cropFactorE"></span><span id="_CPPv2N9PhotoPars10cropFactorE"></span><span id="PhotoPars::cropFactor__float"></span><span class="target" id="struct_photo_pars_1a71c277527c53517ad81636b0357f6548"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cropFactor</span></span></span><a class="headerlink" href="#_CPPv4N9PhotoPars10cropFactorE" title="Permalink to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N9j3AstroIO9PhotoPars10cropFactorE">
+<span id="_CPPv3N9j3AstroIO9PhotoPars10cropFactorE"></span><span id="_CPPv2N9j3AstroIO9PhotoPars10cropFactorE"></span><span id="j3AstroIO::PhotoPars::cropFactor__float"></span><span class="target" id="structj3_astro_i_o_1_1_photo_pars_1a407ae4baca4a9ddfe7ae5242ce1b6d35"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cropFactor</span></span></span><a class="headerlink" href="#_CPPv4N9j3AstroIO9PhotoPars10cropFactorE" title="Permalink to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 </div>
+</dd></dl>
+
 </dd></dl>
 
 </section>
