@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04, macos-latest] # , macos-11.0 temporarily disabled due to github's issues
+        os: [ubuntu-18.04, ubuntu-20.04, macos-11.0, macos-latest] # , macos-11.0 temporarily disabled due to github's issues
 
     steps:
       - uses: actions/checkout@v2
@@ -51,7 +51,7 @@ jobs:
         if: runner.os !='Linux'
         run: |
           cd libraw-cmake
-          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_OPENMP=OFF -DENABLE_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_LCMS=OFF -DENABLE_JASPER=OFF  -DENABLE_JASPER=OFF -DZLIB_FOUND=OFF .
+          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_OPENMP=OFF -DENABLE_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_LCMS=OFF -DENABLE_JASPER=OFF  -DZLIB_FOUND=OFF .
           make
           sudo make install
 
@@ -59,7 +59,7 @@ jobs:
         if: runner.os =='Linux'
         run: |
           cd libraw-cmake
-          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_OPENMP=OFF -DENABLE_JASPER=OFF  -DENABLE_JASPER=OFF -DENABLE_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_LCMS=OFF -DUSE_JASPER=OFF .
+          cmake  -DLIBRAW_PATH=$HOME/work/j3AstroIO/j3AstroIO/libraw/ -DENABLE_OPENMP=OFF -DENABLE_EXAMPLES=OFF  -DENABLE_JASPER=OFF  -DBUILD_SHARED_LIBS=OFF -DENABLE_LCMS=OFF -DUSE_JASPER=OFF .
           make
           sudo make install
 

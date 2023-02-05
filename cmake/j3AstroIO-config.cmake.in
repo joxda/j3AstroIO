@@ -1,0 +1,21 @@
+@PACKAGE_INIT@
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}")
+find_package( OpenCV REQUIRED )
+find_package( LibRaw REQUIRED ) 
+find_package( LibMagic REQUIRED ) 
+find_package( Exiv2 REQUIRED ) 
+find_package( CFITSIO REQUIRED ) 
+
+get_filename_component(j3AstroIO_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+find_dependency( OpenCV REQUIRED )
+find_dependency( LibRaw REQUIRED ) 
+find_dependency( LibMagic REQUIRED ) 
+find_dependency( Exiv2 REQUIRED ) 
+find_dependency( CFITSIO REQUIRED ) 
+
+
+if(NOT TARGET j3AstroIO::j3AstroIO)
+    include(${CMAKE_CURRENT_LIST_DIR}/j3AstroIO-targets.cmake)
+endif()

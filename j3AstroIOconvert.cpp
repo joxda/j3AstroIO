@@ -27,34 +27,31 @@
 //  Copyright © 2020 Joachim Janz. All rights reserved.
 //
 
-
 #include "j3AstroIO.hpp"
 #include "opencv2/core.hpp"
 #include <iostream>
 
-int main(int argc, char** argv)
-{
-    if(argc < 2)
-    {
-        std::cout << "  Usage: j3AstroIOconvert inputFile" << std::endl;
-        return 1;
-    }
+int main(int argc, char **argv) {
+  if (argc < 2) {
+    std::cout << "  Usage: j3AstroIOconvert inputFile" << std::endl;
+    return 1;
+  }
 
-    if(argc==2)
-    {
-        PhotoPars p = getPars(argv[1]);
-        std::cout << p.camMake << " " << p.camName << " " << p.lensName << "  focal length: " << p.focalLength << " f: " << p.apertureN << " crop: " << p.cropFactor << std::endl;
-    } else {
-        float factor = 1.0;
-        if(argc==4) {
-          factor = atof(argv[3]);
-        }
-        cv::Mat im;
-        open(argv[1], im);
-        writeFile(argv[2], im, factor);
-        
-        copyMeta(argv[1], argv[2]); 
-
+  if (argc == 2) {
+    j3AstroIO::PhotoPars p = j3AstroIO::getPars(argv[1]);
+    std::cout << p.camMake << " " << p.camName << " " << p.lensName
+              << "  focal length: " << p.focalLength << " f: " << p.apertureN
+              << " crop: " << p.cropFactor << std::endl;
+  } else {
+    float factor = 1.0;
+    if (argc == 4) {
+      factor = atof(argv[3]);
     }
-    return 0;
+    cv::Mat im;
+    j3AstroIO::open(argv[1], im);
+    j3AstroIO::writeFile(argv[2], im, factor);
+
+    j3AstroIO::copyMeta(argv[1], argv[2]);
+  }
+  return 0;
 }

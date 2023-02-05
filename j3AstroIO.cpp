@@ -43,12 +43,14 @@
 #include <stdio.h>
 #include <strings.h>
 
+#include "opencv2/core.hpp"
 #include "opencv2/core/version.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc.hpp"
 
 #include "j3AstroIO.hpp"
 
+namespace j3AstroIO {
 typedef Exiv2::ExifData::const_iterator (*EasyAccessFct)(
     const Exiv2::ExifData &ed);
 
@@ -273,10 +275,9 @@ int writeFits(const char *ofile, cv::InputArray outA) {
   return status;
 }
 
-int writeFile(char *ofile, cv::InputArray output, float factor) {
-  char *ext;
+int writeFile(const char *ofile, cv::InputArray output, float factor) {
+  const char *ext = std::strrchr(ofile, '.');
   int success;
-  ext = std::strrchr(ofile, '.');
   std::cout << "EXT: " << ext << std::endl;
   if (strcasecmp(ext, ".fits") == 0 || strcasecmp(ext, ".fit") == 0) {
     success = writeFits(ofile, output.getMat());
@@ -484,7 +485,8 @@ std::string mime(const char *file) {
   std::cout << "LOADING BINARY MAGIC" << std::endl;
   int status =
       magic_load_buffers(myt, (void **)&text.data(), (size_t *)&text.size(), 1);
-  std::cout << status << std::endl;
+// std::cout << magic_error(myt) << std::endl;
+// std::cout << magic_buffer(myt, (void *)&text.data(), (size_t)text.size());
 #else
   int status = magic_load(
       myt, NULL /*"./magic.mgc"*/); // TBD do this copy thing and get the path
@@ -565,3 +567,5 @@ int copyMeta(const char *inFile, const char *outFile) {
     return 10;
   }
 }
+
+} // namespace j3AstroIO
