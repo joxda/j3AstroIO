@@ -59,7 +59,7 @@ endif()
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
 set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
 target_include_directories( j3AstroIO SYSTEM PRIVATE ${OpenCV_INCLUDE_DIRS} ${CFITSIO_INCLUDES})
-target_include_directories( j3AstroIO PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
+target_include_directories( j3AstroIO PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
 
 target_link_libraries( j3AstroIO  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBMAGIC_LIBRARY} ${CFITSIO_LIBRARIES} ${Exiv2_LIBRARIES})
 
@@ -99,14 +99,14 @@ install(EXPORT j3AstroIO-targets
 add_library(j3AstroIO::j3AstroIO STATIC IMPORTED)
 
 set_target_properties(j3AstroIO::j3AstroIO PROPERTIES
-    CXX_STANDARD c++11
+    CMAKE_CXX_STANDARD 11
     IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/lib
 )
 
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
-    ${CMAKE_SOURCE_DIR}/cmake/j3AstroIO-config.cmake.in
+    ${CMAKE_SOURCE_DIR}/../cmake/j3AstroIO-config.cmake.in
     ${CMAKE_BINARY_DIR}/cmake/j3AstroIO-config.cmake
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/j3AstroIO
 )
@@ -132,7 +132,7 @@ install(
 
 install(
     DIRECTORY
-        ${CMAKE_CURRENT_SOURCE_DIR}/licenses
+        ${CMAKE_CURRENT_SOURCE_DIR}/../licenses
     DESTINATION ${CMAKE_INSTALL_DATADIR}/j3AstroIO
 )
 
@@ -156,7 +156,7 @@ export(EXPORT j3AstroIO-targets
     NAMESPACE j3AstroIO::
 )
 
-add_executable(j3AstroIOconvert ${CMAKE_CURRENT_SOURCE_DIR}/j3AstroIOconvert.cpp)
+add_executable(j3AstroIOconvert ${CMAKE_CURRENT_SOURCE_DIR}/../j3AstroIOconvert.cpp)
 
 if(COMPILE_SUCCEEDED)
   target_compile_definitions(j3AstroIOconvert PUBLIC UNIQ)
