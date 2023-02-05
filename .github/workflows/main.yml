@@ -89,7 +89,7 @@ jobs:
 
       - name: cfitsio
         if: runner.os !='Linux'
-        run: brew install libmagic # cfitsio
+        run: brew install libmagic zlib # cfitsio
 
       - name: Get cfitsio
         #  if: runner.os =='Linux'

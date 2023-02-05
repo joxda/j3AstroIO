@@ -6,7 +6,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../cmake/")
 
 include(GNUInstallDirs)
 
@@ -65,7 +65,7 @@ target_link_libraries( j3AstroIO  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBMAGIC_
 
 #IF( (APPLE) )
 #  message("APPLE CI")   
-# # FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
+#  FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
 #  FIND_PACKAGE(JPEG)
 ##  target_link_libraries( j3AstroIO  PRIVATE expat /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a bz2 curl cfitsio  /usr/local/lib/libmagic.a ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libjpeg.a )
 #  target_link_libraries( j3AstroIO  PRIVATE exiv2 cfitsio  magic ${OpenCV_LIBS} raw )
