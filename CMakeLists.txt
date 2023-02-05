@@ -1,14 +1,21 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(j3AstroIO LANGUAGES CXX VERSION 0.1.0)
+project(j3AstroIO LANGUAGES CXX C VERSION 0.1.0)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+find_package( Exiv2 REQUIRED )
 
-include(GNUInstallDirs)
+
+IF(DEFINED ENV{CI})
+set(CMAKE_FIND_STATIC FIRST) 
+set(BUILD_SHARED_LIBS=OFF)
+SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
+SET(LINK_DEPENDS_NO_SHARED=ON)
+endif()
 
 find_package( OpenCV REQUIRED )
 find_package( LibRaw REQUIRED )
@@ -16,12 +23,20 @@ find_package( LibMagic REQUIRED )
 find_package( Exiv2 REQUIRED )
 find_package( CFITSIO REQUIRED )
 
+IF(DEFINED ENV{CI})
+message("THIS IS TRUE")
+add_subdirectory(ci)
+
+else()
+
+include(GNUInstallDirs)
+
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VENDOR "j3")
-set(CPACK_VERBATIM_VARIABLES ture)
+set(CPACK_VERBATIM_VARIABLES true)
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
@@ -156,3 +171,5 @@ install(
       ${OpenCV_INCLUDE_DIRS}
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
+
+endif()

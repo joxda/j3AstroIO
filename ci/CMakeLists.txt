@@ -1,26 +1,9 @@
 cmake_minimum_required(VERSION 3.11.99)
 
-project(j3AstroIO LANGUAGES CXX VERSION 0.1.0)
-
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../cmake/")
 
 include(GNUInstallDirs)
 
 message(STATUS "THIS IS A CI RUN")
-set(CMAKE_FIND_STATIC FIRST) 
-set(BUILD_SHARED_LIBS=OFF)
-SET(CMAKE_FIND_LIBRARY_SUFFIXES .a $(CMAKE_FIND_LIRBARY_SUFFIXES))
-SET(LINK_DEPENDS_NO_SHARED=ON)
-
-find_package( OpenCV REQUIRED )
-find_package( LibRaw REQUIRED )
-find_package( LibMagic REQUIRED )
-find_package( Exiv2 REQUIRED )
-find_package( CFITSIO REQUIRED )
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -36,20 +19,21 @@ set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_GENERATOR "TGZ")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Joachim Janz") # required
 set(CPACK_PACKAGE_VENDOR "j3")
-set(CPACK_VERBATIM_VARIABLES ture)
+set(CPACK_VERBATIM_VARIABLES true)
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 set (CPACK_RESOURCE_FILE_LICENSE  
-    "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE")
-    set(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_SOURCE_DIR}/../README.md)
-set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/../README.md)
+    "${CMAKE_SOURCE_DIR}/LICENSE")
+    set(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_SOURCE_DIR}/README.md)
+set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
 include(CPack)
 
 file(WRITE   ${CMAKE_BINARY_DIR}/CMakeFiles/test.cpp "#include <exiv2/exiv2.hpp>\nint main(){Exiv2::Image::UniquePtr EXimage;\nreturn 0;}")
 try_compile(COMPILE_SUCCEEDED ${CMAKE_BINARY_DIR}/CMakeFiles/compile_tests  ${CMAKE_BINARY_DIR}/CMakeFiles/test.cpp CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=/usr/local/include" CXX_STANDARD 11 OUTPUT_VARIABLE OUTPUT)
 
-add_library( j3AstroIO  ../j3AstroIO.cpp ${someResources} )
+message(${someResources})
+add_library( j3AstroIO  ${CMAKE_SOURCE_DIR}/j3AstroIO.cpp ${someResources} )
 
 target_compile_definitions( j3AstroIO PRIVATE CIRUN=1 )
 if(COMPILE_SUCCEEDED)
@@ -57,23 +41,25 @@ if(COMPILE_SUCCEEDED)
 endif()
 
 set_property(TARGET j3AstroIO PROPERTY CXX_STANDARD 11)
-set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ../j3AstroIO.hpp)
+set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ${CMAKE_SOURCE_DIR}/j3AstroIO.hpp)
 target_include_directories( j3AstroIO SYSTEM PRIVATE ${OpenCV_INCLUDE_DIRS} ${CFITSIO_INCLUDES})
-target_include_directories( j3AstroIO PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
+target_include_directories( j3AstroIO PRIVATE $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
 
-target_link_libraries( j3AstroIO  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBMAGIC_LIBRARY} ${CFITSIO_LIBRARIES} ${Exiv2_LIBRARIES})
 
-#IF( (APPLE) )
-#  message("APPLE CI")   
-#  FIND_PACKAGE(ZLIB) ${ZLIB_LIBRARIES} 
-#  FIND_PACKAGE(JPEG)
-##  target_link_libraries( j3AstroIO  PRIVATE expat /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a bz2 curl cfitsio  /usr/local/lib/libmagic.a ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libjpeg.a )
+IF( (APPLE) )
+  message("APPLE CI")   
+  #FIND_PACKAGE(BZip2 REQUIRED) #${ZLIB_LIBRARIES} 
+  FIND_PACKAGE(JPEG)
+ target_link_libraries( j3AstroIO  PRIVATE expat /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a bz2 curl cfitsio  /usr/local/lib/libmagic.a ${OpenCV_LIBS} /usr/local/lib/libraw.a /usr/local/lib/libjpeg.a )
+#target_link_libraries( j3AstroIO   ${Exiv2_LIBRARIES} bz2 curl ${CFITSIO_LIBRARIES} ${LIBMAGIC_LIBRARY} ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a)
+
 #  target_link_libraries( j3AstroIO  PRIVATE exiv2 cfitsio  magic ${OpenCV_LIBS} raw )
 #  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
-#ELSE() 
-#  message("LINUX CI")
-#  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a cfitsio  magic /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a /usr/lib/x86_64-linux-gnu/libexpat.a pthread )
-#ENDIF()
+ELSE() 
+  message("LINUX CI")
+  target_link_libraries( j3AstroIO  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBMAGIC_LIBRARY} ${CFITSIO_LIBRARIES} ${Exiv2_LIBRARIES})
+  #  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a cfitsio  magic /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a /usr/lib/x86_64-linux-gnu/libexpat.a pthread )
+ENDIF()
 
 set_target_properties(j3AstroIO PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
@@ -106,7 +92,7 @@ set_target_properties(j3AstroIO::j3AstroIO PROPERTIES
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
-    ${CMAKE_SOURCE_DIR}/../cmake/j3AstroIO-config.cmake.in
+    ${CMAKE_SOURCE_DIR}/cmake/j3AstroIO-config.cmake.in
     ${CMAKE_BINARY_DIR}/cmake/j3AstroIO-config.cmake
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/j3AstroIO
 )
@@ -132,7 +118,7 @@ install(
 
 install(
     DIRECTORY
-        ${CMAKE_CURRENT_SOURCE_DIR}/../licenses
+        ${CMAKE_SOURCE_DIR}/licenses
     DESTINATION ${CMAKE_INSTALL_DATADIR}/j3AstroIO
 )
 
@@ -141,7 +127,7 @@ export(EXPORT j3AstroIO-targets
     NAMESPACE j3AstroIO::
 )
 
-add_executable(j3AstroIOconvert ${CMAKE_CURRENT_SOURCE_DIR}/../j3AstroIOconvert.cpp)
+add_executable(j3AstroIOconvert ${CMAKE_SOURCE_DIR}/j3AstroIOconvert.cpp)
 
 if(COMPILE_SUCCEEDED)
   target_compile_definitions(j3AstroIOconvert PUBLIC UNIQ)
