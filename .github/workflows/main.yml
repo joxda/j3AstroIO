@@ -147,14 +147,18 @@ jobs:
 
       - name: archive results mac
         if: runner.os !='Linux'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
-          name: j3AstroIO-1.0.0-${{ matrix.os }}
-          path: build/j3AstroIO-1.0.0-Darwin.tar.gz
+          name: j3AstroIO-0.1.0-${{ matrix.os }}
+          path: |
+            build/j3AstroIO-0.1.0-Darwin.sh
+            build/j3AstroIO-0.1.0-Darwin.tar.gz
 
       - name: archive results linux
         if: runner.os =='Linux'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
-          name: j3AstroIO-1.0.0-${{ matrix.os }}
-          path: build/j3AstroIO-1.0.0-${{ runner.os }}.tar.gz
+          name: j3AstroIO-0.1.0-${{ matrix.os }}
+          path: |
+            build/j3AstroIO-0.1.0-${{ runner.os }}.tar.gz
+            build/j3AstroIO-0.1.0-${{ runner.os }}.sh

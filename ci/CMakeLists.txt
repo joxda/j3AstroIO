@@ -136,21 +136,6 @@ install(
     DESTINATION ${CMAKE_INSTALL_DATADIR}/j3AstroIO
 )
 
-
-
-# To install, for example, MSVC runtime libraries:
-#include(InstallRequiredSystemLibraries)
-
-# To install other/non-system 3rd party required libraries:
-#configure_file(
-#  ${CMAKE_MODULE_PATH}/FixBundle.cmake.in
-#  ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
-#  @ONLY
-#  )
-
-#install(SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake)
-
-
 export(EXPORT j3AstroIO-targets
     FILE ${CMAKE_BINARY_DIR}/cmake/j3AstroIO-targets.cmake
     NAMESPACE j3AstroIO::
@@ -165,21 +150,14 @@ endif()
 target_include_directories(j3AstroIOconvert SYSTEM PRIVATE ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(j3AstroIOconvert PRIVATE j3AstroIO ${OpenCV_LIBS})
 
-include(GetPrerequisites)
-
-set(BINARY_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/j3AstroIOconvert")
-get_prerequisites(${BINARY_LOCATION} DEPENDENCIES 0 0 "" "")
-message(${DEPENDENCIES})
-list(FILTER DEPENDENCIES INCLUDE REGEX ".libopencv*")
-message(${OpenCV_INSTALL_PATH})
-foreach(DEPENDENCY_FILE ${DEPENDENCIES})
-  get_filename_component(DEPENDENCY_NAME "${DEPENDENCY_FILE}" NAME)
-  get_filename_component(DEPENDENCY "${DEPENDENCY_FILE}" REALPATH)
-  get_filename_component(DEPENDENCY_PATH "${DEPENDENCY}" DIRECTORY)
+foreach(OCV_LIB ${OpenCV_LIBS})
+  get_filename_component(DEPENDENCY_NAME ${OpenCV_INSTALL_PATH}/lib/lib${OCV_LIB}.dylib NAME)
+  get_filename_component(DEPENDENCY \"${DEPENDENCY_FILE}\" REALPATH)
+  get_filename_component(DEPENDENCY_PATH \"${DEPENDENCY}\" DIRECTORY)
   get_filename_component(DEP_FILE ${OpenCV_INSTALL_PATH}/lib//${DEPENDENCY_NAME} REALPATH)
   message(${DEP_FILE})
-  install(FILES ${DEP_FILE} DESTINATION "${CMAKE_INSTALL_LIBDIR}" )
-endforeach()
+  install(FILES ${DEP_FILE} DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+endforeach() 
 
 install(
     DIRECTORY
