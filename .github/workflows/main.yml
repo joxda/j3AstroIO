@@ -132,7 +132,7 @@ jobs:
         run: |
           mkdir -p build
           cd build
-          cmake ../ci/
+          cmake ..
           make
           make package
         # cp /usr/share/file/magic.mgc ../ci/
