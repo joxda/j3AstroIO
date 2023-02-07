@@ -28,7 +28,7 @@ jobs:
         if: runner.os =='Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install expat
+          sudo apt-get install expat liblzma-dev
 
       - name: Get libraw
         uses: actions/checkout@v2
