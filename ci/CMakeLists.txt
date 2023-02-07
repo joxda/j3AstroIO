@@ -56,15 +56,17 @@ IF( (APPLE) )
   FIND_PACKAGE(EXPAT)
   FIND_PACKAGE(BZip2)
 
- target_link_libraries( j3AstroIO  PRIVATE ${EXPAT_LIBRARIES} ${Exiv2_LIBRARIES} ${EXIV_XMP_LIBRARY} ${Iconv_LIBRARIES} ${PNG_LIBRARIES} ${BZIP2_LIBRARIES} ${CURL_LIBRARIES} ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY} ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${JPEG_LIBRARIES} )
+ target_link_libraries( j3AstroIO  PRIVATE ${EXPAT_LIBRARIES} ${Exiv2_LIBRARIES} ${EXIV_XMP_LIBRARY} ${Iconv_LIBRARIES} ${PNG_LIBRARIES} ${BZIP2_LIBRARIES} ${CURL_LIBRARIES} ${CFITSIO_LIBRARIES}  /usr/local/lib/libmagic.a ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${JPEG_LIBRARIES} )
 #target_link_libraries( j3AstroIO   ${Exiv2_LIBRARIES} bz2 curl ${CFITSIO_LIBRARIES} ${LIBMAGIC_LIBRARY} ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a)
 
 #  target_link_libraries( j3AstroIO  PRIVATE exiv2 cfitsio  magic ${OpenCV_LIBS} raw )
 #  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
 ELSE() 
   message("LINUX CI")
-  FIND_PACKAGE(LibLZMA)
-  target_link_libraries( j3AstroIO ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES}  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES})
+  FIND_PACKAGE(LibLZMA REQUIRED )
+  find_package( LibMagic REQUIRED )
+
+  target_link_libraries( j3AstroIO ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES}  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBLZMA_LIBRARIES})
   #  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a cfitsio  magic /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a /usr/lib/x86_64-linux-gnu/libexpat.a pthread )
 ENDIF()
 

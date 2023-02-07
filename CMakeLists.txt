@@ -18,7 +18,6 @@ endif()
 
 find_package( OpenCV REQUIRED )
 find_package( LibRaw REQUIRED )
-find_package( LibMagic REQUIRED )
 find_package( Exiv2 REQUIRED )
 find_package( CFITSIO REQUIRED )
 
@@ -27,6 +26,7 @@ message("THIS IS TRUE")
 add_subdirectory(ci)
 
 else()
+find_package( LibMagic REQUIRED )
 
 include(GNUInstallDirs)
 
