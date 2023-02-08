@@ -98,7 +98,7 @@ jobs:
           repository: adobe/XMP-Toolkit-SDK
           path: XMP-Toolkit-SDK
           token: ${{ github.token }}
-          ref: "master"
+          ref: "v2022.06"
 
       - name: build xmp
         if: runner.os == 'Linux'
