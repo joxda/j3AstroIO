@@ -106,7 +106,7 @@ jobs:
         run: |
           cd XMP-Toolkit-SDK
           cd build
-          cmake ..
+          cmake .
           make StaticAll
           sudo make install StaticAll
 
@@ -151,7 +151,7 @@ jobs:
         run: |
           mkdir -p build
           cd build
-          cmake .
+          cmake ..
           make
           make package
         # cp /usr/share/file/magic.mgc ../ci/
