@@ -49,12 +49,12 @@ find_library ( EXIV_XMP_LIBRARY libexiv2-xmp )
 IF( (APPLE) )
   message("APPLE CI")   
   #FIND_PACKAGE(BZip2 REQUIRED) #${ZLIB_LIBRARIES} 
-  FIND_PACKAGE(JPEG)
-  FIND_PACKAGE(CURL)
-  FIND_PACKAGE(PNG)
+  #FIND_PACKAGE(JPEG)
+  #FIND_PACKAGE(CURL)
+  #FIND_PACKAGE(PNG)
  
 
- target_link_libraries( j3AstroIO  PRIVATE expat ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a iconv ${PNG_LIBRARIES}  ${CURL_LIBRARIES} ${CFITSIO_LIBRARIES}  /usr/local/lib/libmagic.a ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${JPEG_LIBRARIES} )
+ target_link_libraries( j3AstroIO  PRIVATE expat ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a /usr/local/lib/libcurl.a ${CFITSIO_LIBRARIES}  /usr/local/lib/libmagic.a ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a )
 #target_link_libraries( j3AstroIO   ${Exiv2_LIBRARIES} bz2 curl ${CFITSIO_LIBRARIES} ${LIBMAGIC_LIBRARY} ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a)
 
 #  target_link_libraries( j3AstroIO  PRIVATE exiv2 cfitsio  magic ${OpenCV_LIBS} raw )
@@ -64,7 +64,7 @@ ELSE()
   FIND_PACKAGE(LibLZMA REQUIRED )
   find_package( LibMagic REQUIRED )
 
-  target_link_libraries( j3AstroIO ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES}  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBLZMA_LIBRARIES}  md5 bz2 XMPcore XMPfiles)
+  target_link_libraries( j3AstroIO ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES}  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBLZMA_LIBRARIES}  crypto ssl bz2 XMPcore XMPfiles)
   #  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a cfitsio  magic /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a /usr/lib/x86_64-linux-gnu/libexpat.a pthread )
 ENDIF()
 

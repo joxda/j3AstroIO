@@ -91,6 +91,24 @@ jobs:
         if: runner.os !='Linux'
         run: brew install libmagic zlib curl expat iconv libpng bzip2 # cfitsio
 
+      - name: xmp
+        if: runner.os == 'Linux'
+        uses: actions/checkout@v2
+        with:
+          repository: adobe/XMP-Toolkit-SDK
+          path: XMP-Toolkit-SDK
+          token: ${{ github.token }}
+          ref: "master"
+
+      - name: build xmp
+        if: runner.os == 'Linux'
+        run: |
+          cd XMP-Toolkit-SDK
+          cd build
+          cmake ..
+          make StaticAll
+          sudo make install StaticAll
+
       - name: Get cfitsio
         #  if: runner.os =='Linux'
         uses: actions/checkout@v2
