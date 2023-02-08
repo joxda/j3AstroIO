@@ -61,7 +61,7 @@ ELSE()
   FIND_PACKAGE(LibLZMA REQUIRED )
   find_package( LibMagic REQUIRED )
 
-  target_link_libraries( j3AstroIO ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES}  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBLZMA_LIBRARIES}  crypto ssl bz2 XMPcore XMPfiles)
+  target_link_libraries( j3AstroIO expat ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES}  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBLZMA_LIBRARIES}  crypto ssl bz2) # XMPcore XMPfiles)
   #  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a cfitsio  magic /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a /usr/lib/x86_64-linux-gnu/libexpat.a pthread )
 ENDIF()
 
