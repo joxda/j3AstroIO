@@ -31,10 +31,6 @@
 #include <exiv2/exiv2.hpp>
 #include <magic.h>
 
-#ifdef CIRUN
-#include "resource.h"
-#endif
-
 #include <exiv2/exiv2.hpp>
 
 #include "libraw/libraw.h"
@@ -48,9 +44,17 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc.hpp"
 
-#include "j3AstroIO.hpp"
+#ifdef CIRUN
+extern "C" {
+#include "resource.h"
+#pragma message("USE EMBEDDED MAGIC")
+static Resource text = LOAD_RESOURCE(magic_mgc);
+}
+#endif
 
+#include "j3AstroIO.hpp"
 namespace j3AstroIO {
+
 typedef Exiv2::ExifData::const_iterator (*EasyAccessFct)(
     const Exiv2::ExifData &ed);
 
@@ -480,8 +484,6 @@ std::string mime(const char *file) {
   }
   // printf("%s\n",magic_version());
 #ifdef CIRUN
-#pragma message("USE EMBEDDED MAGIC")
-  Resource text = LOAD_RESOURCE(magic_mgc);
   std::cout << "LOADING BINARY MAGIC" << std::endl;
   int status =
       magic_load_buffers(myt, (void **)&text.data(), (size_t *)&text.size(), 1);
