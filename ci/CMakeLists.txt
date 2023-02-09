@@ -141,14 +141,14 @@ endif()
 target_include_directories(j3AstroIOconvert SYSTEM PRIVATE ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(j3AstroIOconvert PRIVATE j3AstroIO ${OpenCV_LIBS})
 
-foreach(OCV_LIB ${OpenCV_LIBS})
-  get_filename_component(DEPENDENCY_NAME ${OpenCV_INSTALL_PATH}/lib/lib${OCV_LIB}.dylib NAME)
-  get_filename_component(DEPENDENCY \"${DEPENDENCY_FILE}\" REALPATH)
-  get_filename_component(DEPENDENCY_PATH \"${DEPENDENCY}\" DIRECTORY)
-  get_filename_component(DEP_FILE ${OpenCV_INSTALL_PATH}/lib//${DEPENDENCY_NAME} REALPATH)
-  message(${DEP_FILE})
-  install(FILES ${DEP_FILE} DESTINATION ${CMAKE_INSTALL_LIBDIR} )
-endforeach() 
+#foreach(OCV_LIB ${OpenCV_LIBS})
+#  get_filename_component(DEPENDENCY_NAME ${OpenCV_INSTALL_PATH}/lib/lib${OCV_LIB}.dylib NAME)
+#  get_filename_component(DEPENDENCY \"${DEPENDENCY_FILE}\" REALPATH)
+#  get_filename_component(DEPENDENCY_PATH \"${DEPENDENCY}\" DIRECTORY)
+#  get_filename_component(DEP_FILE ${OpenCV_INSTALL_PATH}/lib//${DEPENDENCY_NAME} REALPATH)
+#  message(${DEP_FILE})
+#  install(FILES ${DEP_FILE} DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+#endforeach() 
 
 install(
     DIRECTORY
