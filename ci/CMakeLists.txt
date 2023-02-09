@@ -51,9 +51,8 @@ IF( (APPLE) )
   #FIND_PACKAGE(BZip2 REQUIRED) #${ZLIB_LIBRARIES} 
   #FIND_PACKAGE(JPEG)
   #FIND_PACKAGE(CURL)
-  FIND_PACKAGE(LIBMAGIC) 
-  message(${LIBMAGIC_LIBRARY})
- target_link_libraries( j3AstroIO  PRIVATE ${LIBMAGIC_LIBRARY} expat ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a curl z bz2 /usr/local/lib/liblcms2.a ${CFITSIO_LIBRARIES}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a ${LIBMAGIC_LIBRARY} )
+
+ target_link_libraries( j3AstroIO  PRIVATE /usr/local/Cellar/libmagic/5.44/lib/libmagic.a expat ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a curl z bz2 /usr/local/lib/liblcms2.a ${CFITSIO_LIBRARIES}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a /usr/local/Cellar/libmagic/5.44/lib/libmagic.a)
 #target_link_libraries( j3AstroIO   ${Exiv2_LIBRARIES} bz2 curl ${CFITSIO_LIBRARIES} ${LIBMAGIC_LIBRARY} ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a)
 #  target_link_libraries( j3AstroIO  PRIVATE exiv2 cfitsio  magic ${OpenCV_LIBS} raw )
 #  install(FILES /usr/local/opt/libmagic/share/misc/magic.mgc DESTINATION .)
