@@ -89,7 +89,9 @@ jobs:
 
       - name: prereq
         if: runner.os !='Linux'
-        run: brew install libmagic zlib curl expat iconv libpng bzip2 # cfitsio
+        run: |
+          brew install libmagic zlib curl expat iconv libpng bzip2 # cfitsio
+          brew link libmagic
 
       - name: xmp
         if: runner.os == 'Linux'

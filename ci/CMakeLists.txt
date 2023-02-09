@@ -45,13 +45,14 @@ set_property(TARGET j3AstroIO PROPERTY PUBLIC_HEADER ${CMAKE_SOURCE_DIR}/j3Astro
 target_include_directories( j3AstroIO SYSTEM PRIVATE ${OpenCV_INCLUDE_DIRS} ${CFITSIO_INCLUDES})
 target_include_directories( j3AstroIO PRIVATE $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}> $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
 target_include_directories( j3AstroIO SYSTEM PRIVATE /usr/local/include)
-find_library ( EXIV_XMP_LIBRARY libexiv2-xmp )
+
 IF( (APPLE) )
   message("APPLE CI")   
   #FIND_PACKAGE(BZip2 REQUIRED) #${ZLIB_LIBRARIES} 
   #FIND_PACKAGE(JPEG)
   #FIND_PACKAGE(CURL)
-
+  FIND_PACKAGE(LibMagic)
+target_include_directories(j3AstroIO SYSTEM PRIVATE /usr/local/Cellar/libmagic/5.44/include )
  target_link_libraries( j3AstroIO  PRIVATE /usr/local/Cellar/libmagic/5.44/lib/libmagic.a expat ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a iconv /usr/local/lib/libpng.a curl z bz2 /usr/local/lib/liblcms2.a ${CFITSIO_LIBRARIES}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a /usr/local/Cellar/libmagic/5.44/lib/libmagic.a)
 #target_link_libraries( j3AstroIO   ${Exiv2_LIBRARIES} bz2 curl ${CFITSIO_LIBRARIES} ${LIBMAGIC_LIBRARY} ${OpenCV_LIBS} ${LibRaw_LIBRARIES} /usr/local/lib/libjpeg.a)
 #  target_link_libraries( j3AstroIO  PRIVATE exiv2 cfitsio  magic ${OpenCV_LIBS} raw )
