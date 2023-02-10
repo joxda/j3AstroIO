@@ -18,7 +18,6 @@ endif()
 
 find_package( OpenCV REQUIRED )
 find_package( LibRaw REQUIRED )
-find_package( Exiv2 REQUIRED )
 find_package( CFITSIO REQUIRED )
 
 IF(DEFINED ENV{CI})
