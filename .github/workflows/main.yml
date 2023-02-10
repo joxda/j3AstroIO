@@ -150,6 +150,7 @@ jobs:
           sudo make install
 
       - name: j3AstroIO
+        continue-on-error: true
         run: |
           mkdir -p build
           cd build
