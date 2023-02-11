@@ -15,6 +15,9 @@ embed_resources( someResources magic.mgc )
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused -pedantic")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 
+set(CMAKE_MACOSX_RPATH 1)
+set(CMAKE_INSTALL_RPATH "../lib")
+
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_GENERATOR "TGZ")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Joachim Janz") # required
@@ -62,7 +65,8 @@ ELSE()
   FIND_PACKAGE(LibLZMA REQUIRED )
   find_package( LibMagic REQUIRED )
   find_package(Threads REQUIRED)
-  target_link_libraries( j3AstroIO Threads::Threads expat ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBLZMA_LIBRARIES} bz2 expat) # XMPcore XMPfiles)
+  FIND_PACKAGE(JPEG)
+  target_link_libraries( j3AstroIO Threads::Threads JPEG::JPEG expat ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBLZMA_LIBRARIES} bz2 expat) # XMPcore XMPfiles)
   #  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a cfitsio  magic /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a /usr/lib/x86_64-linux-gnu/libexpat.a pthread )
 ENDIF()
 
@@ -148,12 +152,21 @@ foreach(OCV_LIB ${OpenCV_LIBS})
   get_filename_component(DEPENDENCY \"${DEPENDENCY_FILE}\" REALPATH)
   get_filename_component(DEPENDENCY_PATH \"${DEPENDENCY}\" DIRECTORY)
   get_filename_component(DEP_FILE ${OpenCV_INSTALL_PATH}/lib//${DEPENDENCY_NAME} REALPATH)
+  get_filename_component(DEP_FILE2 ${OpenCV_INSTALL_PATH}/lib//${DEPENDENCY_NAME} ABSOLUTE)
   message(${DEP_FILE})
+  message(${DEP_FILE2})
   install(FILES ${DEP_FILE} DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+  install(FILES ${DEP_FILE2} DESTINATION ${CMAKE_INSTALL_LIBDIR} )
 endforeach() 
 
 install(
     DIRECTORY
       ${OpenCV_INCLUDE_DIRS}
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(
+    DIRECTORY
+  /usr/local/share/licenses/opencv4/
+  DESTINATION DESTINATION ${CMAKE_INSTALL_DATADIR}/j3AstroIO
 )
