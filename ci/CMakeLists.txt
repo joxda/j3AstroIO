@@ -16,7 +16,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wunused
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wno-unused")
 
 set(CMAKE_MACOSX_RPATH 1)
-set(CMAKE_INSTALL_RPATH "../lib")
+set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib/")
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_GENERATOR "TGZ")
@@ -66,7 +66,7 @@ ELSE()
   find_package( LibMagic REQUIRED )
   find_package(Threads REQUIRED)
   FIND_PACKAGE(JPEG)
-  target_link_libraries( j3AstroIO Threads::Threads JPEG::JPEG expat ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES} ${LIBLZMA_LIBRARIES} bz2 expat) # XMPcore XMPfiles)
+  target_link_libraries( j3AstroIO Threads::Threads JPEG::JPEG expat ${LIBLZMA_LIBRARIES} ${Exiv2_LIBRARIES} /usr/local/lib/libexiv2-xmp.a  ${CFITSIO_LIBRARIES}  ${LIBMAGIC_LIBRARY}  ${OpenCV_LIBS} ${LibRaw_LIBRARIES}  JPEG::JPEG ${LIBLZMA_LIBRARIES} bz2 expat) # XMPcore XMPfiles)
   #  target_link_libraries( j3AstroIO PRIVATE ${OpenCV_LIBS} /usr/local/lib/libraw.a cfitsio  magic /usr/local/lib/libexiv2.a /usr/local/lib/libexiv2-xmp.a /usr/lib/x86_64-linux-gnu/libexpat.a pthread )
 ENDIF()
 
